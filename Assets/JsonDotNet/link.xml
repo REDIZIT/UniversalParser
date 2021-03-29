@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+  <assembly fullname="System">
+    <type fullname="System.ComponentModel.TypeConverter" preserve="all" />
+    <!-- <namespace fullname="System.ComponentModel" preserve="all" /> -->
+  </assembly>
+  <assembly fullname="I18N" preserve="all"/>
+  <assembly fullname="I18N.West" preserve="all"/>
+</linker>
