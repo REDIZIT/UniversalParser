@@ -22,7 +22,7 @@ namespace InGame.UI
 		[SerializeField] private Text pagesCountText, newPositionsCountText, errorsCountText;
 
 		private List<ParseResult> results = new List<ParseResult>();
-		private bool isSaved;
+		private bool isSaved = true;
 		private bool forceQuit;
 
 
@@ -31,10 +31,7 @@ namespace InGame.UI
         {
 			Application.wantsToQuit += () =>
 			{
-				Debug.Log("Wants to quit");
-
-				if (forceQuit) return true;
-				//if (forceQuit || isSaved) return true;
+				if (forceQuit || isSaved) return true;
 
 				notSafeExitWindow.Show(new NotSafeExitWindow.Arguments()
 				{
