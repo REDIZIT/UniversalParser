@@ -1,4 +1,5 @@
 using HtmlAgilityPack;
+using InGame.Settings;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,15 +12,16 @@ namespace UnityParser
 	{
 		public HtmlDocument DownloadHtml(string url)
         {
-            // First create a proxy object
-            WebProxy proxy = new WebProxy
+            HttpClientHandler handler = new HttpClientHandler();
+            if (SettingsManager.settings.isProxyEnabled)
             {
-                Address = new Uri($"http://proxy.ko.wan:808"),
-                BypassProxyOnLocal = false
-            };
+                handler.Proxy = new WebProxy
+                {
+                    Address = new Uri(SettingsManager.settings.proxyAddress + ":" + SettingsManager.settings.proxyPort),
+                    BypassProxyOnLocal = false
+                };
+            }
 
-
-            using (HttpClientHandler handler = new HttpClientHandler()/* { Proxy = proxy }*/)
             using (HttpClient client = new HttpClient(handler))
             using (HttpResponseMessage resp = client.GetAsync(url).Result)
             {
