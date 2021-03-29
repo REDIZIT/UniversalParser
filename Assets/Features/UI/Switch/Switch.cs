@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,7 @@ namespace InGame.UI.Elements
 	public class Switch : MonoBehaviour, IPointerDownHandler 
     {
         public bool isOn { get; protected set; }
+        public Action<bool> onValueChanged { get; set; }
 
         [SerializeField] private Image background, handle;
         [SerializeField] private Color backgroundDisabled, backgroundEnabled;
@@ -23,10 +25,6 @@ namespace InGame.UI.Elements
             ForceAnimation(isOn);
         }
 
-        public void Toggle()
-        {
-            SetIsOn(!isOn, false);
-        }
         public void SetIsOn(bool isOn, bool ignoreAnimation)
         {
             this.isOn = isOn;
@@ -42,12 +40,13 @@ namespace InGame.UI.Elements
             else
             {
                 animationCoroutine = StartCoroutine(Animate(isOn));
+                onValueChanged?.Invoke(isOn);
             }
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Toggle();
+            SetIsOn(!isOn, false);
         }
 
         private IEnumerator Animate(bool turnOn)
