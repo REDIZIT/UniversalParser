@@ -89,8 +89,7 @@ namespace InGame.Parse
             var agencyNode = node.SelectSingleNode(".//a[@rel='noopener'][@data-marker='item-link']");
             if (agencyNode != null)
             {
-                lot.agency = HttpUtility.HtmlDecode(agencyNode.InnerText);
-                //lot.agency = agencyNode.InnerText;
+                lot.agency = agencyNode.InnerText;
             }
 
             #endregion
