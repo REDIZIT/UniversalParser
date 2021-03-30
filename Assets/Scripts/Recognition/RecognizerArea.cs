@@ -69,17 +69,7 @@ namespace InGame.Recognition
 
                     // Check digits on left of marker
                     // Does str contain any digit on left two chars. When area - true, when word part - false
-                    bool hasDigitOnLeft = false;
-
-                    for (int i = 1; i <= 2; i++)
-                    {
-                        int index = patternStart - i;
-
-                        hasDigitOnLeft = char.IsDigit(str[index]);
-
-                        if (hasDigitOnLeft) break;
-                    }
-
+                    bool hasDigitOnLeft = ContainsDigitBeforeIndex(patternStart, str, 2);
 
 
                     if (isLetterOnLeft == false && isLetterOnRight == false && hasDigitOnLeft)

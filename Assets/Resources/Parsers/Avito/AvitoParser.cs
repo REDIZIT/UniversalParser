@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using InGame.Recognition;
 using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,25 @@ namespace InGame.Parse
             lot.url = "https://avito.ru" + titleNode.GetAttributeValue("href", null);
 
             string text = titleNode.ChildNodes[0].InnerText;
-            string[] split = SplitTitle(text).ToArray();
 
-            if (split.Length >= 1) lot.name = split[0];
-            if (split.Length >= 2) lot.area = split[1];
-            if (split.Length >= 3) lot.storeys = split[2];
+            // Get area from recognizer and remove this from name text
+            string recognizedArea = RecognizerArea.TryExtractAreaString(text);
+            if (string.IsNullOrEmpty(recognizedArea) == false)
+            {
+                string name = text.Replace(recognizedArea, "");
+                lot.name = name;
+                lot.area = recognizedArea;
+            }
+            else
+            {
+                // For flat
+                string[] split = SplitTitle(text).ToArray();
+                if (split.Length > 1) lot.name = split[0];
+                if (split.Length > 2) lot.area = split[1];
+                if (split.Length > 3) lot.storeys = split[2];
+            }
+
+
 
             #endregion
 
