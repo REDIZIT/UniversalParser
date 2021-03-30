@@ -46,5 +46,8 @@ public class RecognizeTest
 
         str = "Коммерческое помещение 132,3 кв.м";
         Assert.AreEqual("132,3 кв.м", RecognizerArea.TryExtractAreaString(str));
+
+        str = "Собственник продает Здание 2 821 кв м";
+        Assert.AreEqual("2 821 кв м", RecognizerArea.TryExtractAreaString(str, true));
     }
 }

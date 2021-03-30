@@ -16,15 +16,19 @@ namespace InGame.Recognition
         public static void Initialize()
         {
             areaPatterns = Resources.Load<TextAsset>(pathToAreaPatternsFile).text.Replace("\n", "").Split('\r');
+            //Debug.Log("Loaded area patterns: " + string.Join(", ", areaPatterns));
         }
 
 
-        public static string TryExtractAreaString(string fullstring)
+        public static string TryExtractAreaString(string fullstring, bool debug = false)
         {
             bool way1 = TryCommaSeparatedWay(fullstring, out string way1str);
             bool way2 = TrySpaceSeparatedWay(fullstring, out string way2str);
 
-            //Debug.Log($"For string '{fullstring}' comma is {(way1 ? way1str : "-")} and space is {(way2 ? way2str : "-")}");
+            if (debug)
+            {
+                Debug.Log($"For string '{fullstring}' comma is {(way1 ? way1str : "-")} and space is {(way2 ? way2str : "-")}");
+            }
 
             // Give prioriy for space separated way
             return way2 ? way2str : way1str;
@@ -91,12 +95,22 @@ namespace InGame.Recognition
             {
                 string str = splitted[i];
 
-
-                string pattern = areaPatterns.FirstOrDefault(p => str.Contains(p));
+                string pattern = TryGetSpacePattern(splitted, i);
                 if (pattern == null) continue;
 
                 int patternStart = str.IndexOf(pattern);
+
+                // If pattern could not be found in str (splitted part of fullstring)
+                // that means, that in TryGetSpacePattern used next str (i + 1)
+                // Unite this str with next str and find indexes again
+                if (patternStart == -1)
+                {
+                    str += " " + splitted[i + 1];
+                    patternStart = str.IndexOf(pattern);
+                }
+
                 int patternEnd = patternStart + pattern.Length;
+
 
 
                 // Lets take a first variant of presenting area 260m^2 - continuous spelling
@@ -111,12 +125,20 @@ namespace InGame.Recognition
                 // If not continuous spelling, we need to check previous splitted string for a number
                 if (i != 0)
                 {
-                    string prevStr = splitted[i - 1];
-                    if (prevStr.Any(c => char.IsDigit(c)))
+                    string notContinuesArea = str;
+                    foreach (string prevStr in EnumerateArrayBackwards(splitted, i - 1))
                     {
-                        area = prevStr + " " + str;
+                        if (prevStr.Any(c => char.IsDigit(c)))
+                        {
+                            notContinuesArea = prevStr + " " + notContinuesArea;
+                        }
+                    }
+                    if (notContinuesArea != str)
+                    {
+                        area = notContinuesArea;
                         return true;
                     }
+                    
                 }
             }
 
@@ -124,7 +146,25 @@ namespace InGame.Recognition
             area = null;
             return false;
         }
+        private static string TryGetSpacePattern(string[] splitted, int i)
+        {
+            if (i < splitted.Length - 1 && splitted.Length > 1)
+            {
+                // Try to untite this splitted string with next one
+                // If we will found pattern with this untied string return that
+                string str1 = splitted[i];
+                string nextStr = splitted[i + 1];
+                string united = str1 + " " + nextStr;
 
+                string pattern1 = areaPatterns.FirstOrDefault(p => united.Contains(p));
+                if (string.IsNullOrEmpty(pattern1) == false) return pattern1;
+            }
+
+            // Not supporting patterns with space
+            string str = splitted[i];
+            string pattern = areaPatterns.FirstOrDefault(p => str.Contains(p));
+            return pattern;
+        }
      
         private static IEnumerable<string> Split(string str)
         {
@@ -157,6 +197,13 @@ namespace InGame.Recognition
                 if (char.IsDigit(str[index])) return true;
             }
             return true;
+        }
+        private static IEnumerable<string> EnumerateArrayBackwards(string[] array, int startIndex)
+        {
+            for (int i = startIndex; i >= 0; i--)
+            {
+                yield return array[i];
+            }
         }
     }
 }
