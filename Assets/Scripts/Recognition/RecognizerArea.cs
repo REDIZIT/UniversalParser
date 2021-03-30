@@ -22,11 +22,12 @@ namespace InGame.Recognition
         public static string TryExtractAreaString(string fullstring)
         {
             bool way1 = TryCommaSeparatedWay(fullstring, out string way1str);
-            bool way2 = TrySpaceSepratedWay(fullstring, out string way2str);
+            bool way2 = TrySpaceSeparatedWay(fullstring, out string way2str);
 
-            Debug.Log($"For string '{fullstring}' comma is {(way1 ? way1str : "-")} and space is {(way2 ? way2str : "-")}");
+            //Debug.Log($"For string '{fullstring}' comma is {(way1 ? way1str : "-")} and space is {(way2 ? way2str : "-")}");
 
-            return way1 ? way1str : way2str;
+            // Give prioriy for space separated way
+            return way2 ? way2str : way1str;
         }
 
         private static bool TryCommaSeparatedWay(string fullstring, out string area)
@@ -92,7 +93,7 @@ namespace InGame.Recognition
             return false;
         }
 
-        private static bool TrySpaceSepratedWay(string fullstring, out string area)
+        private static bool TrySpaceSeparatedWay(string fullstring, out string area)
         {
             string[] splitted = fullstring.Split(' ');
 
@@ -123,7 +124,7 @@ namespace InGame.Recognition
                     string prevStr = splitted[i - 1];
                     if (prevStr.Any(c => char.IsDigit(c)))
                     {
-                        area = prevStr;
+                        area = prevStr + " " + str;
                         return true;
                     }
                 }

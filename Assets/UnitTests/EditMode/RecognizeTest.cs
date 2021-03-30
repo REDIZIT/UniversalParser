@@ -40,12 +40,15 @@ public class RecognizeTest
         Assert.AreEqual("260м²", RecognizerArea.TryExtractAreaString(str));
 
         str = "Помещение под Офис или другое - 141 м²";
-        Assert.AreEqual("141", RecognizerArea.TryExtractAreaString(str));
+        Assert.AreEqual("141 м²", RecognizerArea.TryExtractAreaString(str));
 
         str = "Салон красоты, сфера услуг 74 м²";
-        Assert.AreEqual("74", RecognizerArea.TryExtractAreaString(str));
+        Assert.AreEqual("74 м²", RecognizerArea.TryExtractAreaString(str));
 
         str = "Торговая площадь, 133.4 м²";
-        Assert.AreEqual("133.4", RecognizerArea.TryExtractAreaString(str));
+        Assert.AreEqual("133.4 м²", RecognizerArea.TryExtractAreaString(str));
+
+        str = "Коммерческое помещение 132,3 кв.м";
+        Assert.AreEqual("132,3 кв.м", RecognizerArea.TryExtractAreaString(str));
     }
 }
