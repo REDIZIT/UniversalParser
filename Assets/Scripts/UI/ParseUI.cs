@@ -10,8 +10,6 @@ namespace InGame.UI
 		public SelectTableUI selectTableUI;
 		public SummaryUI summary;
 
-		public ParseResultWindow resultWindow;
-
 		[Header("UI")]
 		[SerializeField] private GameObject group;
 
@@ -61,7 +59,7 @@ namespace InGame.UI
 
 		private void OnParseFinished()
         {
-			resultWindow.Show(process);
+			GlobalUI.parseResultWindow.Show(process);
 			summary.OnParseFinished(process);
 		}
     }

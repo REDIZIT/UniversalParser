@@ -4,6 +4,8 @@ namespace InGame.UI
 {
 	public class TabsUI : MonoBehaviour
 	{
+        public ParserPageUI parserPageUI;
+
         [SerializeField] private GameObject settings, allParsers, parserContainer;
 
         public TabsUI()
@@ -21,9 +23,10 @@ namespace InGame.UI
             LeaveEnableOnlyOne(allParsers);
         }
 
-		public void ShowParserContainer()
+		public void ShowParserContainer(ParserPage page)
         {
             LeaveEnableOnlyOne(parserContainer);
+            parserPageUI.Refresh(page);
         }
 
         private void LeaveEnableOnlyOne(GameObject toEnable)

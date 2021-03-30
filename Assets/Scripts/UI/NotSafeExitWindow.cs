@@ -14,6 +14,11 @@ namespace InGame.UI
 
 		private Arguments args;
 
+
+        public NotSafeExitWindow()
+        {
+			GlobalUI.notSafeExitWindow = this;
+        }
 		protected override void OnShow(Arguments argument)
 		{
 			args = argument;

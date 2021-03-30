@@ -12,8 +12,6 @@ namespace InGame.UI
     public class SummaryUI : MonoBehaviour
 	{
 		public SelectTableUI selectTableUI;
-		public CloseExcelWindow closeExcelWindow;
-		public NotSafeExitWindow notSafeExitWindow;
 
 		[SerializeField] private Transform content;
 		[SerializeField] private SummaryUIItem itemPrefab;
@@ -33,7 +31,7 @@ namespace InGame.UI
 			{
 				if (forceQuit || isSaved) return true;
 
-				notSafeExitWindow.Show(new NotSafeExitWindow.Arguments()
+				GlobalUI.notSafeExitWindow.Show(new NotSafeExitWindow.Arguments()
 				{
 					 onExitWithoutSave = () => { forceQuit = true; Application.Quit(); },
 					 onSaveAndExit = () => { ClickSave(); forceQuit = true; Application.Quit(); }
@@ -78,7 +76,7 @@ namespace InGame.UI
 			}
             catch(Exception err)
             {
-				closeExcelWindow.Show(err);
+				GlobalUI.closeExcelWindow.Show(err);
 				Debug.LogError(err);
 			}
 

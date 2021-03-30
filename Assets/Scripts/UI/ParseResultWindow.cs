@@ -11,6 +11,10 @@ namespace InGame.UI
 
         [SerializeField] private Color successLabelColor, warnLabelColor;
 
+        public ParseResultWindow()
+        {
+            GlobalUI.parseResultWindow = this;
+        }
         protected override void OnShow(ParseProcess process)
         {
             if (process.exception == null)

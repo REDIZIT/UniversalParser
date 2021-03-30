@@ -1,5 +1,5 @@
 {
-  "isProxyEnabled": true,
-  "proxyAddress": "http://proxy.ko.wan",
+  "isProxyEnabled": false,
+  "proxyAddress": "",
   "proxyPort": 808
 }

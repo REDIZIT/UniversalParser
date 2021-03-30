@@ -19,7 +19,7 @@ namespace InGame.UI
 
         private void OnPageClicked(ParserPage page)
         {
-            GlobalUI.tabs.ShowParserContainer();
+            GlobalUI.tabs.ShowParserContainer(page);
         }
     }
 }
