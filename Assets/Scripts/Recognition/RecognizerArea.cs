@@ -20,6 +20,7 @@ namespace InGame.Recognition
         }
 
 
+
         public static string TryExtractAreaString(string fullstring, bool debug = false)
         {
             bool way1 = TryCommaSeparatedWay(fullstring, out string way1str);
@@ -33,6 +34,12 @@ namespace InGame.Recognition
             // Give prioriy for space separated way
             return way2 ? way2str : way1str;
         }
+        public static bool IsAreaString(string areaString)
+        {
+            return TryExtractAreaString(areaString) != null;
+        }
+
+
 
         private static bool TryCommaSeparatedWay(string fullstring, out string area)
         {

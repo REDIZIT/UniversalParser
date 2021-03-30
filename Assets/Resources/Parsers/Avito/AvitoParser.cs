@@ -4,6 +4,7 @@ using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using UnityParser;
 
 namespace InGame.Parse
@@ -20,13 +21,15 @@ namespace InGame.Parse
 
             lot.url = "https://avito.ru" + titleNode.GetAttributeValue("href", null);
 
-            string text = titleNode.ChildNodes[0].InnerText;
+            string text = HttpUtility.HtmlDecode(titleNode.ChildNodes[0].InnerText);
 
             // Get area from recognizer and remove this from name text
             string recognizedArea = RecognizerArea.TryExtractAreaString(text);
+
             if (string.IsNullOrEmpty(recognizedArea) == false)
             {
-                string name = text.Replace(recognizedArea, "");
+                string name = text.Replace(recognizedArea, "").Trim(new char[] { ' ', ',' });
+                
                 lot.name = name;
                 lot.area = recognizedArea;
             }
@@ -34,9 +37,16 @@ namespace InGame.Parse
             {
                 // For flat
                 string[] split = SplitTitle(text).ToArray();
-                if (split.Length > 1) lot.name = split[0];
-                if (split.Length > 2) lot.area = split[1];
-                if (split.Length > 3) lot.storeys = split[2];
+                if (split.Length >= 4 || (split.Length >= 2 && RecognizerArea.IsAreaString(split[1]) == false))
+                {
+                    lot.name = text;
+                }
+                else
+                {
+                    if (split.Length >= 1) lot.name = split[0];
+                    if (split.Length >= 2) lot.area = split[1];
+                    if (split.Length >= 3) lot.storeys = split[2];
+                }
             }
 
 
