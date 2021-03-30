@@ -11,7 +11,7 @@ namespace InGame.UI
             CanvasScaler scaler = GetComponent<CanvasScaler>();
 
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1300, 700) / (Application.isEditor ? 1 : 1.12f);
+            scaler.referenceResolution = new Vector2(1300, 700) / (Application.isEditor ? 1 : 1.1f);
             //if (Application.isEditor)
             //{
             //    scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
