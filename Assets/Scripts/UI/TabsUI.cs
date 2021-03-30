@@ -1,3 +1,4 @@
+using InGame.Settings;
 using UnityEngine;
 
 namespace InGame.UI
@@ -5,6 +6,7 @@ namespace InGame.UI
 	public class TabsUI : MonoBehaviour
 	{
         public ParserPageUI parserPageUI;
+        public SettingsUI settingsUI;
 
         [SerializeField] private GameObject settings, allParsers, parserContainer;
 
@@ -16,6 +18,7 @@ namespace InGame.UI
 		public void ShowSettings()
         {
             LeaveEnableOnlyOne(settings);
+            settingsUI.Refresh();
         }
 
 		public void ShowAllParsers()

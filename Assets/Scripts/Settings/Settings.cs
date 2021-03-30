@@ -4,8 +4,8 @@ namespace InGame.Settings
 {
 	public class Settings
 	{
-        public bool isProxyEnabled;
-        public string proxyAddress;
-        public int proxyPort;
+        public bool isProxyEnabled = true;
+        public string proxyAddress = "http://proxy.ko.wan";
+        public int proxyPort = 808;
     }
 }
