@@ -1,4 +1,5 @@
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
+using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,9 +22,9 @@ namespace InGame.Parse
             string text = titleNode.ChildNodes[0].InnerText;
             string[] split = SplitTitle(text).ToArray();
 
-            lot.name = split[0];
-            lot.area = split[1];
-            lot.storeys = split[2];
+            if (split.Length >= 1) lot.name = split[0];
+            if (split.Length >= 2) lot.area = split[1];
+            if (split.Length >= 3) lot.storeys = split[2];
 
             #endregion
 
@@ -32,7 +33,7 @@ namespace InGame.Parse
 
             HtmlNode priceNode = node.SelectSingleNode(".//span[@data-marker='item-price']");
             HtmlNode priceSpan = priceNode.SelectSingleNode(".//span");
-            lot.price = priceSpan.InnerText.Replace(" ₽", "");
+            lot.price = priceSpan.InnerText;
 
             #endregion
 
@@ -55,22 +56,6 @@ namespace InGame.Parse
                 lot.address = lot.address.Replace(lot.metro, "");
             }
 
-            //// If only address
-            //if (addressNode.ChildNodes.Count == 1)
-            //{
-            //    //lot.address = addressNode.SelectSingleNode(".//span").InnerText;
-            //    lot.address = addressNode.InnerText;
-            //}
-            //else
-            //{
-            //    var addressSpan = addressNode.SelectSingleNode(".//span");
-            //    lot.address = addressSpan.SelectSingleNode(".//span").InnerText;
-
-            //    var metroDiv = addressNode.SelectSingleNode(".//div");
-            //    var metroSpans = metroDiv.SelectNodes(".//span");
-            //    lot.metro = string.Concat(metroSpans.Select(n => n.InnerText));
-            //}
-
 
             #endregion
 
@@ -79,8 +64,8 @@ namespace InGame.Parse
             var agencyNode = node.SelectSingleNode(".//a[@rel='noopener'][@data-marker='item-link']");
             if (agencyNode != null)
             {
-                //lot.agency = HttpUtility.HtmlDecode(agencyNode.InnerText);
-                lot.agency = agencyNode.InnerText;
+                lot.agency = HttpUtility.HtmlDecode(agencyNode.InnerText);
+                //lot.agency = agencyNode.InnerText;
             }
 
             #endregion
