@@ -1,0 +1,51 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using InGame.Recognition;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+
+public class RecognizeTest
+{
+    [Test]
+    public void Area()
+    {
+        RecognizerArea.Initialize();
+
+        string str = "220 м²";
+        Assert.AreEqual(str, RecognizerArea.TryExtractAreaString(str));
+
+        str = "220м²";
+        Assert.AreEqual(str, RecognizerArea.TryExtractAreaString(str));
+
+        //
+        // Comma separated way
+        //
+        str = "Торговое помещение, 10 м²";
+        Assert.AreEqual("10 м²", RecognizerArea.TryExtractAreaString(str));
+
+
+        str = "У м. Чернышевская, проходное, 20 квт";
+        Assert.AreEqual("20 квт", RecognizerArea.TryExtractAreaString(str));
+
+        str = "Склад контейнер, 30 м2";
+        Assert.AreEqual("30 м2", RecognizerArea.TryExtractAreaString(str));
+
+
+
+        //
+        // Space separated way
+        //
+        str = "260м² активное торговое место";
+        Assert.AreEqual("260м²", RecognizerArea.TryExtractAreaString(str));
+
+        str = "Помещение под Офис или другое - 141 м²";
+        Assert.AreEqual("141", RecognizerArea.TryExtractAreaString(str));
+
+        str = "Салон красоты, сфера услуг 74 м²";
+        Assert.AreEqual("74", RecognizerArea.TryExtractAreaString(str));
+
+        str = "Торговая площадь, 133.4 м²";
+        Assert.AreEqual("133.4", RecognizerArea.TryExtractAreaString(str));
+    }
+}

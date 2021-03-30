@@ -5,7 +5,7 @@ namespace InGame.Parse
 {
     public class AvitoLot : Lot
 	{
-		[ExcelString("Количество комнат", 100)]
+		[ExcelString("Название", 100)]
 		public string name;
 
 		[ExcelString("Площадь", 40)]
