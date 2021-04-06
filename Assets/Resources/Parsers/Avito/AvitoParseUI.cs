@@ -59,13 +59,16 @@ namespace InGame.UI
 
         private void SaveNewTable(string filepath, List<ParseResult> results)
         {
-            var save = new PraseSave<AvitoLot>(results);
+            var save = new ParseSave<AvitoLot>(results);
             ExcelTable table = ExcelSerializer.CreateTable(filepath, save.GetAllLots());
         }
 
         private void SaveToExistingTable(string filepath, List<ParseResult> results)
         {
-            throw new NotImplementedException();
+            var save = new ParseSave<AvitoLot>(results);
+            ExcelSerializer.AppendUniqLots(filepath, save.GetAllLots());
+
+            //throw new NotImplementedException();
             //Excel excel = ExcelHelper.LoadExcel(filepath);
             //ExcelTable table = excel.Tables[0];
 

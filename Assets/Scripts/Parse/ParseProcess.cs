@@ -23,11 +23,11 @@ namespace InGame.Parse
         }
 	}
 
-	public class PraseSave<T> where T : Lot
+	public class ParseSave<T> where T : Lot
     {
 		public List<ParseResult> results;
 
-        public PraseSave(List<ParseResult> results)
+        public ParseSave(List<ParseResult> results)
         {
 			this.results = results;
         }

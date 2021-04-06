@@ -49,7 +49,7 @@ namespace InGame.UI
 
         private void SaveNewTable(string filepath, List<ParseResult> results)
         {
-            var save = new PraseSave<AvitoLot>(results);
+            var save = new ParseSave<AvitoLot>(results);
             ExcelTable table = ExcelSerializer.CreateTable(filepath, save.GetAllLots());
         }
 

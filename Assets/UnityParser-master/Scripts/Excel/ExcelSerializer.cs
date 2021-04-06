@@ -71,28 +71,17 @@ namespace UnityParser
 				}
 			}
         }
-		//private static void ApplyWidth<T>(ExcelTable table)
-  //      {
-		//	int column = 0;
-		//	foreach (var attribute in typeof(T).GetFields().Select(f => f.GetCustomAttribute<ExcelStringAttribute>()))
-  //          {
-		//		if (attribute != null)
-  //              {
-		//			column++;
-		//			float width = attribute.width;
-
-		//			table.SetColumnWidth(column, width);
-  //              }
-  //          }
-  //      }
 
 
-
-		private static IEnumerable<string> GetAllIDs<T>(ExcelTable table) where T : Lot
+        /// <summary>Returns all lots IDs represented in excel table</summary>
+        private static IEnumerable<string> GetAllIDs<T>(ExcelTable table) where T : Lot
         {
 			int idColumn = 0;
 			foreach (FieldInfo field in typeof(T).GetFields())
 			{
+				if (field.GetCustomAttribute<ExcelStringAttribute>() == null)
+					continue;
+
 				idColumn++;
 
 				var at = field.GetCustomAttribute<ExcelIDAttribute>();
