@@ -1,18 +1,13 @@
 using InGame.Parse;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityParser;
 
 namespace InGame.UI
 {
-	public class ParseUI : MonoBehaviour
+    public class UrlHandlerControl : Control
 	{
-		public ParseManager parse;
-		public SelectTableUI selectTableUI;
-		public SummaryUI summary;
-
-		[Header("UI")]
-		[SerializeField] private GameObject group;
-
 		[SerializeField] private GameObject progressGroup;
 
 		[SerializeField] private InputField urlField;
@@ -20,47 +15,56 @@ namespace InGame.UI
 		[SerializeField] private Slider progressBar;
 		[SerializeField] private Text progressText;
 
-		private ParseProcess process;
+		private IParser parser;
+		private ParseProcess process => parser?.process;
+
+		private Action onUrlHandled;
 
 
-        private void Update()
+
+
+		private void Update()
         {
-			group.SetActive(selectTableUI.workingTableType != SelectTableUI.WorkingTableType.NotSelected);
-
 			startButton.interactable = process == null || process.state == ParseProcess.State.Finished;
 
 			if (process == null)
-            {
+			{
 				progressGroup.SetActive(false);
-            }
+			}
 			else
-            {
+			{
 				progressGroup.SetActive(process.state == ParseProcess.State.Running);
 
 				progressBar.gameObject.SetActive(process.state == ParseProcess.State.Running);
 				progressBar.value = process.progress;
 				progressText.text = process.progressMessage;
 			}
-        }
+		}
+
+
+        public void Refresh(IParser parser, Action onUrlHandled)
+        {
+			Show();
+			this.parser = parser;
+
+			if (onUrlHandled != null && process != null) process.onfinished -= onUrlHandled;
+			this.onUrlHandled = onUrlHandled;
+
+		}
+		public void ClickStart()
+		{
+			parser.StartParsing(urlField.text);
+			process.onfinished += onUrlHandled;
+		}
 
 
 		public void Clear()
         {
 			urlField.text = "";
-			process = null;
-			summary.ClearResults();
-		}
-
-		public void ClickStart()
-        {
-			process = parse.StartParsing(urlField.text);
-			process.onfinished += OnParseFinished;
-		}
-
-		private void OnParseFinished()
-        {
-			GlobalUI.parseResultWindow.Show(process);
-			summary.OnParseFinished(process);
-		}
+			if (process != null)
+            {
+				process.onfinished -= onUrlHandled;
+			}
+        }
     }
 }

@@ -28,9 +28,5 @@ namespace InGame.Parse
 
 		[ExcelString("јгенство", 300)]
 		public string agency;
-
-		[ExcelID]
-		[ExcelString("—сылка", 1200)]
-		public string url;
 	}
 }

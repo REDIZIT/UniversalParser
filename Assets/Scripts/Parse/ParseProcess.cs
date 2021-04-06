@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityParser;
 
 namespace InGame.Parse
 {
@@ -22,7 +23,7 @@ namespace InGame.Parse
         }
 	}
 
-	public class PraseSave
+	public class PraseSave<T> where T : Lot
     {
 		public List<ParseResult> results;
 
@@ -30,12 +31,12 @@ namespace InGame.Parse
         {
 			this.results = results;
         }
-		public IEnumerable<AvitoLot> GetAllLots()
+		public IEnumerable<T> GetAllLots()
         {
-			return results.SelectMany(r => r.lots);
+			return results.SelectMany(r => r.lots).Cast<T>();
 
 		}
-		public IEnumerable<AvitoLot> GetUniqueLots(IEnumerable<string> urls)
+		public IEnumerable<T> GetUniqueLots(IEnumerable<string> urls)
         {
 			return GetAllLots().Where(l => urls.Contains(l.url) == false);
         }
@@ -43,6 +44,6 @@ namespace InGame.Parse
 
 	public class ParseResult
 	{
-		public List<AvitoLot> lots = new List<AvitoLot>();
+		public List<Lot> lots = new List<Lot>();
 	}
 }

@@ -1,20 +1,24 @@
-using InGame.Settings;
 using SFB;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace InGame.UI
 {
-	public class SelectTableUI : MonoBehaviour
+    /// <summary>Control for selecting excel table for next working</summary>
+	public class SelectTableControl : MonoBehaviour
 	{
-        public ParseUI parseUI;
-
-        [SerializeField] private GameObject selectFirstGroup, changeGroup;
-        [SerializeField] private Text tableNameText;
-
         public WorkingTableType workingTableType;
         public string tableFilePath;
+
+        public Action onTableReset;
+        public Action onTableSelected;
+
+        [SerializeField] private GameObject selectGroup, deselectGroup;
+        [SerializeField] private Text tableNameText;
+
+        
 
         public enum WorkingTableType
         {
@@ -29,8 +33,8 @@ namespace InGame.UI
 
         private void Update()
         {
-            selectFirstGroup.SetActive(workingTableType == WorkingTableType.NotSelected);
-            changeGroup.SetActive(workingTableType != WorkingTableType.NotSelected);
+            selectGroup.SetActive(workingTableType == WorkingTableType.NotSelected);
+            deselectGroup.SetActive(workingTableType != WorkingTableType.NotSelected);
 
             if (workingTableType != WorkingTableType.NotSelected)
             {
@@ -46,13 +50,11 @@ namespace InGame.UI
             {
                 if (string.IsNullOrEmpty(filepath)) return;
 
-                //SettingsManager.settings.FilebrowserLastUsedDirectory = filepath;
-                //SettingsManager.Save();
-
                 workingTableType = WorkingTableType.CreateNewTable;
                 tableFilePath = filepath;
 
-                parseUI.Clear();
+                onTableReset?.Invoke();
+                onTableSelected?.Invoke();
             });
         }
         public void ClickUseExistingTable()
@@ -66,13 +68,11 @@ namespace InGame.UI
 
                 if (string.IsNullOrEmpty(filepath)) return;
 
-                //SettingsManager.settings.FilebrowserLastUsedDirectory = filepath;
-                //SettingsManager.Save();
-
                 workingTableType = WorkingTableType.ExistingTable;
                 tableFilePath = filepath;
 
-                parseUI.Clear();
+                onTableReset?.Invoke();
+                onTableSelected?.Invoke();
             });
         }
         public void ClickChangeTable()
@@ -80,7 +80,7 @@ namespace InGame.UI
             workingTableType = WorkingTableType.NotSelected;
             tableFilePath = "";
 
-            parseUI.Clear();
+            onTableReset?.Invoke();
         }
     }
 }
