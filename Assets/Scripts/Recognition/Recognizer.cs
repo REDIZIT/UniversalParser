@@ -24,7 +24,7 @@ namespace InGame.Recognition
 
             result.name = TrimCommas(name);
 
-            return areaSuccess && storeysSuccess;
+            return areaSuccess || storeysSuccess;
         }
 
         public static string TrimCommas(string text)
