@@ -33,7 +33,7 @@ namespace InGame.Parse
         }
 		public IEnumerable<T> GetAllLots()
         {
-			return results.SelectMany(r => r.lots).Cast<T>();
+			return results.SelectMany(r => r.lots).DistinctBy(l => l.url).Cast<T>();
 
 		}
 		public IEnumerable<T> GetUniqueLots(IEnumerable<string> urls)
