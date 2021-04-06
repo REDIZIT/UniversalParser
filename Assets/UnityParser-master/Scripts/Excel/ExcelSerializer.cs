@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace UnityParser
 {
@@ -17,8 +16,6 @@ namespace UnityParser
             CreateHeader<T>(table);
 
 			AppendLots(table, lots);
-
-			//ApplyWidth<T>(table);
 
 			ExcelHelper.SaveExcel(excel, filepath);
 
@@ -89,7 +86,7 @@ namespace UnityParser
 			}
 
 
-            for (int i = 2; i < table.NumberOfRows; i++)
+            for (int i = 2; i <= table.NumberOfRows; i++)
             {
 				yield return table.GetValue(i, idColumn).ToString();
 			}

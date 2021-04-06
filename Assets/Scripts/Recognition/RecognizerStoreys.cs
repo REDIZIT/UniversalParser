@@ -1,13 +1,13 @@
-ï»¿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace InGame.Recognition
 {
-    public static class RecognizerArea 
-	{
-        private static string pathToAreaPatternsFile = "Recognition/area_patterns";
+    public static class RecognizerStoreys
+    {
+        private static string pathToAreaPatternsFile = "Recognition/storeys_patterns";
 
         private static string[] areaPatterns;
 
@@ -20,19 +20,19 @@ namespace InGame.Recognition
 
 
 
-        public static bool TryExtractAreaString(string text, out string area)
+        public static bool TryExtractStoreysString(string text, out string area)
         {
             bool way1 = TryCommaSeparatedWay(text, out string way1str);
-            bool way2 = TrySpaceSeparatedWay(text, out string way2str);
+            //bool way2 = TrySpaceSeparatedWay(text, out string way2str);
 
             // Give prioriy for space separated way
-            area = way2 ? way2str : way1 ? way1str : null;
-            area = Recognizer.TrimCommas(area);
-            return way1 || way2;
+            //area = way2 ? way2str : way1 ? way1str : null;
+            area = Recognizer.TrimCommas(way1str);
+            return way1 /*|| way2*/;
         }
-        public static bool IsAreaString(string text)
+        public static bool IsStoreysString(string text)
         {
-            return TryExtractAreaString(text, out _);
+            return TryExtractStoreysString(text, out _);
         }
 
 
@@ -53,9 +53,9 @@ namespace InGame.Recognition
                 if (string.IsNullOrEmpty(pattern) == false)
                 {
                     // Check if pattern isn't contained in word
-                    // For example: Ğ£ Ğ¼. Ğ§ĞµÑ€Ğ½Ñ‹ÑˆĞµĞ²ÑĞºĞ°Ñ, Ğ¿Ñ€Ğ¾Ñ…Ğ¾Ğ´Ğ½Ğ¾Ğµ, 20 ĞºĞ²Ñ‚
-                    // Letter Ğ¼ isn't a marker for area, because this is shortcut of Ğ¼ĞµÑ‚Ñ€Ğ¾ (metro)
-                    // 20 ĞºĞ²Ñ‚ is area
+                    // For example: Ó ì. ×åğíûøåâñêàÿ, ïğîõîäíîå, 20 êâò
+                    // Letter ì isn't a marker for area, because this is shortcut of ìåòğî (metro)
+                    // 20 êâò is area
 
                     int patternStart = str.IndexOf(pattern);
                     int patternEnd = patternStart + pattern.Length;
@@ -121,7 +121,7 @@ namespace InGame.Recognition
 
                 if (isContinuousSpelling)
                 {
-                    area = str.Substring(0, patternEnd);
+                    area = str;
                     return true;
                 }
 
@@ -141,7 +141,7 @@ namespace InGame.Recognition
                         area = notContinuesArea;
                         return true;
                     }
-                    
+
                 }
             }
 
@@ -168,7 +168,7 @@ namespace InGame.Recognition
             string pattern = areaPatterns.FirstOrDefault(p => str.Contains(p));
             return pattern;
         }
-     
+
         private static IEnumerable<string> Split(string str)
         {
             // Replace comma in area marker with spec symbols to ignore these on str.Split(',') step

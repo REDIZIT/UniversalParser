@@ -4,7 +4,6 @@ using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
 using UnityParser;
 
 namespace InGame.Parse
@@ -23,15 +22,13 @@ namespace InGame.Parse
 
             string text = HttpUtility.HtmlDecode(titleNode.ChildNodes[0].InnerText);
 
-            // Get area from recognizer and remove this from name text
-            string recognizedArea = RecognizerArea.TryExtractAreaString(text);
 
-            if (string.IsNullOrEmpty(recognizedArea) == false)
+            // Get area from recognizer and remove this from name text
+            if (Recognizer.TryRecognize(text, out Recognizer.Result result))
             {
-                string name = text.Replace(recognizedArea, "").Trim(new char[] { ' ', ',' });
-                
-                lot.name = name;
-                lot.area = recognizedArea;
+                lot.name = result.name;
+                lot.area = result.area;
+                lot.storeys = result.storeys;
             }
             else
             {

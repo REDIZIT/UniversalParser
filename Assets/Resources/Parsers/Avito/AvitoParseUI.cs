@@ -60,53 +60,13 @@ namespace InGame.UI
         private void SaveNewTable(string filepath, List<ParseResult> results)
         {
             var save = new ParseSave<AvitoLot>(results);
-            ExcelTable table = ExcelSerializer.CreateTable(filepath, save.GetAllLots());
+            ExcelSerializer.CreateTable(filepath, save.GetAllLots());
         }
 
         private void SaveToExistingTable(string filepath, List<ParseResult> results)
         {
             var save = new ParseSave<AvitoLot>(results);
             ExcelSerializer.AppendUniqLots(filepath, save.GetAllLots());
-
-            //throw new NotImplementedException();
-            //Excel excel = ExcelHelper.LoadExcel(filepath);
-            //ExcelTable table = excel.Tables[0];
-
-            //var save = new PraseSave<AvitoLot>(results);
-            //IEnumerable<string> urls = GetLotsUrls(table);
-
-            //AppendLots(table, save.GetUniqueLots(urls).Cast<AvitoLot>());
-
-            //ExcelHelper.SaveExcel(excel, filepath);
         }
-
-        //private void AppendLots(ExcelTable table, IEnumerable<AvitoLot> lots)
-        //      {
-        //	int start = table.NumberOfRows;
-
-        //	int row = start;
-        //          foreach (AvitoLot lot in lots)
-        //          {
-        //		row++;
-        //		table.SetValue(row, 1, lot.name);
-        //		table.SetValue(row, 2, lot.area);
-        //		table.SetValue(row, 3, lot.storeys);
-        //		table.SetValue(row, 4, lot.price);
-        //		table.SetValue(row, 5, lot.hasOnlineView ? "Имеет" : "-");
-        //		table.SetValue(row, 6, lot.address);
-        //		table.SetValue(row, 7, lot.metro);
-        //		table.SetValue(row, 8, lot.agency);
-        //		table.SetValue(row, 9, lot.url);
-        //          }
-        //      }
-        //private IEnumerable<string> GetLotsUrls(ExcelTable table)
-        //      {
-        //          for (int i = 1; i <= table.NumberOfRows; i++)
-        //          {
-        //		yield return table.GetCell(i, 9).Value;
-        //          }
-        //      }
-
-
     }
 }
