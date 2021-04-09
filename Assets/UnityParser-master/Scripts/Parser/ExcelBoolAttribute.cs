@@ -5,7 +5,7 @@ namespace UnityParser
         public string falseString { get; protected set; }
         public string trueString { get; protected set; }
 
-        public ExcelBoolAttribute(string name, float width, string falseString, string trueString) : base(name, width)
+        public ExcelBoolAttribute(string name, string falseString, string trueString) : base(name)
         {
             this.falseString = falseString;
             this.trueString = trueString;

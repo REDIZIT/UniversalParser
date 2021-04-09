@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 2625453177511792950}
   - component: {fileID: 1942456233942603504}
   m_Layer: 5
-  m_Name: UrlHandler
+  m_Name: UrlHandler Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -646,7 +646,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 84}
+  m_SizeDelta: {x: 1000, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1942456233942603504
 MonoBehaviour:

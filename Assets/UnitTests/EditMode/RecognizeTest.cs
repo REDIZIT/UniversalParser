@@ -91,8 +91,6 @@ public class RecognizeTest
         Assert.AreEqual("75 м²", result.area);
         Assert.AreEqual("11/14 эт.", result.storeys);
 
-        Debug.Log(result.name + " | " + result.area + " | " + result.storeys);
-
         #endregion
 
 

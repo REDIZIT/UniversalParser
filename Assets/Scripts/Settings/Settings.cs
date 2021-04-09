@@ -7,5 +7,7 @@ namespace InGame.Settings
         public bool isProxyEnabled = true;
         public string proxyAddress = "http://proxy.ko.wan";
         public int proxyPort = 808;
+
+        public bool enableConsole;
     }
 }

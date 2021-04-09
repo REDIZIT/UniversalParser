@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using InGame.Settings;
 
 // Receives debug entries and custom events (e.g. Clear, Collapse, Filter by Type)
 // and notifies the recycled list view of changes to the list of debug entries
@@ -464,6 +465,9 @@ namespace IngameDebugConsole
 						ShowLogWindow();
 				}
 			}
+
+
+			gameObject.SetActive(SettingsManager.settings.enableConsole);
 		}
 
 		private void LateUpdate()

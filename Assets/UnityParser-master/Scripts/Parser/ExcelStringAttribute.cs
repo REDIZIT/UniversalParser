@@ -7,12 +7,9 @@ namespace UnityParser
 	public class ExcelStringAttribute : Attribute
     {
 		public string name { get; protected set; }
-        public float width { get; protected set; } = 100;
-
-        public ExcelStringAttribute(string name, float width)
+        public ExcelStringAttribute(string name)
         {
 			this.name = name;
-            this.width = width;
         }
 
         public virtual string ToString(object fieldValue)

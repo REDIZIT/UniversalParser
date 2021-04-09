@@ -1,4 +1,5 @@
 using InGame.UI.Elements;
+using IngameDebugConsole;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,13 +11,18 @@ namespace InGame.Settings
 		public Switch proxySwitch;
 		public InputField proxyAddress, proxyPort;
 
+		[Header("Dev")]
+		public Switch enableConsoleSwitch;
+
 		private Settings settings => SettingsManager.settings;
 		private bool isRefreshing;
 
         private void Awake()
         {
 			proxySwitch.onValueChanged += (_) => OnAnyValueChanged();
-        }
+			enableConsoleSwitch.onValueChanged += (_) => OnAnyValueChanged();
+
+		}
         public void Show()
         {
 			gameObject.SetActive(true);
@@ -36,6 +42,9 @@ namespace InGame.Settings
 			proxyAddress.text = settings.proxyAddress;
 			proxyPort.text = settings.proxyPort == 0 ? "" : settings.proxyPort.ToString();
 
+
+			enableConsoleSwitch.SetIsOn(settings.enableConsole, true);
+
 			isRefreshing = false;
 		}
 
@@ -50,6 +59,11 @@ namespace InGame.Settings
             {
 				settings.proxyPort = port;
 			}
+
+
+
+			settings.enableConsole = enableConsoleSwitch.isOn;
+			DebugLogManager.Instance.gameObject.SetActive(SettingsManager.settings.enableConsole);
 
 			SettingsManager.Save();
         }
