@@ -121,13 +121,4 @@ namespace UnityParser
             return result;
         }
     }
-
-	public class Lot
-    {
-        public Exception exception;
-
-        [ExcelID]
-        [ExcelString("—сылка")]
-        public string url;
-    }
 }

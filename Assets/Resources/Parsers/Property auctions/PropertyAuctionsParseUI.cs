@@ -12,7 +12,7 @@ namespace InGame.UI
 		public UrlHandlerControl urlControl;
         public SummaryControl summary;
 
-        private PropertyAuctionsParser parser = new PropertyAuctionsParser();
+        private Parser<PropertyAuctionsLot> parser;
         private List<ParseResult> results = new List<ParseResult>();
 
         private void Awake()
