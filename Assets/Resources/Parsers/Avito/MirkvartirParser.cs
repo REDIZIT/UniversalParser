@@ -33,12 +33,24 @@ namespace InGame.Parse
             #region Price
 
             HtmlNode priceNode = node.SelectSingleNode(".//div[2]/div[2]/div[2]/div[1]/span");
-            //HtmlNode priceNode2 = node.SelectSingleNode(".//div[1]/div[1]/div[1]/div[0]");
-            //HtmlNode priceNode3 = node.SelectSingleNode(".//div[1]/div[1]/div[1]");
-            //HtmlNode priceNode4 = node.SelectSingleNode(".//div[1]/div[1]");
-            //HtmlNode priceNode5 = node.SelectSingleNode(".//div[1]");
 
             lot.price = priceNode.InnerText;
+
+            #endregion
+
+            #region Address
+
+            HtmlNode addressNode = node.SelectSingleNode(".//div[@class='address']");
+            lot.address = addressNode.InnerText;
+
+            #endregion
+
+            HtmlNode placeNode = node.SelectSingleNode(".//div[@class='place']");
+            lot.metroOrDistrict = placeNode.InnerText;
+
+            #region Metro
+
+
 
             #endregion
 
