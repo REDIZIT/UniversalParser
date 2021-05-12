@@ -10,15 +10,21 @@ namespace InGame.Parse
 {
     public class AvitoParser : Parser<AvitoLot>
     {
+        protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
+        {
+            HtmlNode content = doc.DocumentNode.SelectSingleNode(".//div[@class='items-items-38oUm']");
+            IEnumerable<HtmlNode> nodes = content.ChildNodes.Where(n => n.Attributes.Any(a => a.Name == "data-marker" && a.Value == "item"));
+
+            return nodes;
+        }
         protected override AvitoLot ParseLotOrThrowException(HtmlNode node)
         {
-            AvitoLot lot = new AvitoLot();
+            HtmlNode titleNode = node.SelectSingleNode(".//a[@itemprop='url'][@data-marker='item-title']");
+            string url = "https://avito.ru" + titleNode.GetAttributeValue("href", null);
+
+            AvitoLot lot = new AvitoLot(url);
 
             #region Title (name, area, storyes)
-
-            HtmlNode titleNode = node.SelectSingleNode(".//a[@itemprop='url'][@data-marker='item-title']");
-
-            lot.url = "https://avito.ru" + titleNode.GetAttributeValue("href", null);
 
             string text = HttpUtility.HtmlDecode(titleNode.ChildNodes[0].InnerText);
 

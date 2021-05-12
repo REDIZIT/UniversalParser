@@ -90,6 +90,7 @@ namespace UnityParser
         }
 
 
+        protected abstract IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc);
         protected abstract T ParseLotOrThrowException(HtmlNode node);
 
 
@@ -114,9 +115,8 @@ namespace UnityParser
             process.progress = 0.5f;
             process.progressMessage = "Анализирую";
 
-            HtmlNode content = doc.DocumentNode.SelectSingleNode(".//div[@class='items-items-38oUm']");
-            IEnumerable<HtmlNode> nodes = content.ChildNodes.Where(n => n.Attributes.Any(a => a.Name == "data-marker" && a.Value == "item"));
-            result.lots.AddRange(ParseLots(nodes));
+            IEnumerable<HtmlNode> nodesToParse = GetNodesToParse(doc);
+            result.lots.AddRange(ParseLots(nodesToParse));
 
             return result;
         }

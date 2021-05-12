@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace UnityParser
 {
@@ -9,5 +9,15 @@ namespace UnityParser
         [ExcelID]
         [ExcelString("Ссылка")]
         public string url;
+
+
+        public Lot()
+        {
+
+        }
+        public Lot(string url)
+        {
+            this.url = url;
+        }
     }
 }

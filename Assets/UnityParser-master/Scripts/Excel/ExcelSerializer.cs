@@ -1,3 +1,4 @@
+using InGame.Parse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,23 @@ namespace UnityParser
 {
 	public static class ExcelSerializer
 	{ 
-		public static ExcelTable CreateTable<T>(string filepath, IEnumerable<T> lots) where T : Lot
+		public static ExcelTable CreateTable(string filepath, ParseResult result)
         {
             Excel excel = ExcelHelper.CreateExcel(filepath);
             ExcelTable table = excel.Tables[0];
 			
 
-            CreateHeader<T>(table);
+            CreateHeader(table, result.lots[0].GetType());
 
-			AppendLots(table, lots);
+			
+
+			AppendLots(result.lots[0].GetType(), table, result.lots);
 
 			ExcelHelper.SaveExcel(excel, filepath);
 
 			return table;            
         }
+
         /// <summary>
 		/// Append to table only these lots, which are not presented in table yet. Comparing by <see cref="ExcelIDAttribute"/>
 		/// </summary>
@@ -39,11 +43,15 @@ namespace UnityParser
 
 		private static void AppendLots<T>(ExcelTable table, IEnumerable<T> lots) where T : Lot
         {
+			AppendLots(typeof(T), table, lots);
+
+		}
+		private static void AppendLots(Type lotType, ExcelTable table, IEnumerable<Lot> lots)
+        {
 			int row = table.NumberOfRows;
 
 			List<ExcelStringAttribute> attributes = new List<ExcelStringAttribute>();
 
-			Type lotType = typeof(T);
 			foreach (FieldInfo field in lotType.GetFields())
 			{
 				var attribute = field.GetCustomAttribute<ExcelStringAttribute>();
@@ -55,19 +63,19 @@ namespace UnityParser
 
 
 			foreach (var lot in lots)
-            {
+			{
 				row++;
 
 				int column = 0;
-                foreach (ExcelStringAttribute attribute in attributes)
-                {
+				foreach (ExcelStringAttribute attribute in attributes)
+				{
 					column++;
 
-					string value = GetValueByAttribute(attribute, lot);
+					string value = GetValueByAttribute(attribute, lotType, lot);
 					table.SetValue(row, column, value);
 				}
 			}
-        }
+		}
 
 
         /// <summary>Returns all lots IDs represented in excel table</summary>
@@ -93,10 +101,9 @@ namespace UnityParser
         }
 
 
-		private static void CreateHeader<T>(ExcelTable table)
+		private static void CreateHeader(ExcelTable table, Type lotType)
         {
 			int column = 0;
-			Type lotType = typeof(T);
             foreach (FieldInfo field in lotType.GetFields())
             {
 				var attribute = field.GetCustomAttribute<ExcelStringAttribute>();
@@ -108,9 +115,9 @@ namespace UnityParser
 			}
         }
 
-		private static string GetValueByAttribute<T>(ExcelStringAttribute attribute, T lot) where T : Lot
+		private static string GetValueByAttribute(ExcelStringAttribute attribute, Type lotType, Lot lot)
         {
-			foreach (var field in typeof(T).GetFields())
+			foreach (var field in lotType.GetFields())
 			{
 				var at = field.GetCustomAttribute<ExcelStringAttribute>();
 				if (at != null && at.name == attribute.name)

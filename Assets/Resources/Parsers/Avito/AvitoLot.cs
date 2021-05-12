@@ -26,7 +26,12 @@ namespace InGame.Parse
 		[ExcelString("Метро")]
 		public string metro;
 
-		[ExcelString("Агенство")]
+		[ExcelString("Агентство")]
 		public string agency;
+
+
+		public AvitoLot(string url) : base(url)
+		{
+		}
 	}
 }

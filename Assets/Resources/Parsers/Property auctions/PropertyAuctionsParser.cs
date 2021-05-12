@@ -14,5 +14,9 @@ namespace InGame.Parse
 
         [ExcelString("Адрес")]
         public string address;
+
+        public PropertyAuctionsLot(string url) : base(url)
+        {
+        }
     }
 }

@@ -50,7 +50,8 @@ namespace InGame.UI
         private void SaveNewTable(string filepath, List<ParseResult> results)
         {
             var save = new ParseSave<AvitoLot>(results);
-            ExcelTable table = ExcelSerializer.CreateTable(filepath, save.GetAllLots());
+            //ExcelTable table = ExcelSerializer.CreateTable(filepath, save);
+            throw new NotImplementedException();
         }
 
         private void SaveToExistingTable(string filepath, List<ParseResult> results)
@@ -79,7 +80,7 @@ namespace InGame.UI
         //		table.SetValue(row, 2, lot.area);
         //		table.SetValue(row, 3, lot.storeys);
         //		table.SetValue(row, 4, lot.price);
-        //		table.SetValue(row, 5, lot.hasOnlineView ? "»ÏÂÂÚ" : "-");
+        //		table.SetValue(row, 5, lot.hasOnlineView ? "–ò–º–µ–µ—Ç" : "-");
         //		table.SetValue(row, 6, lot.address);
         //		table.SetValue(row, 7, lot.metro);
         //		table.SetValue(row, 8, lot.agency);
