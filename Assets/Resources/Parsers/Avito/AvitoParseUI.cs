@@ -16,7 +16,7 @@ namespace InGame.UI
 
 		private IParser parser;
 
-		private List<ParseResult> results = new List<ParseResult>();
+		//private List<ParseResult> results = new List<ParseResult>();
 
 		private void Awake()
 		{
@@ -50,35 +50,36 @@ namespace InGame.UI
 
 		private void OnParseFinished()
         {
-			results.Add(parser.process.result);
+			//results.Add(parser.process.bigResult);
 
 			GlobalUI.parseResultWindow.Show(parser.process);
-			summary.OnParseFinished(parser.process, Save);
+			summary.OnParseFinished(parser, Save);
 		}
 
 		private void Save()
 		{
+			ParseResult bigResult = summary.GetBigResult();
+
 			if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.CreateNewTable)
 			{
-				SaveNewTable(selectTableUI.tableFilePath, results);
+				SaveNewTable(selectTableUI.tableFilePath, bigResult);
 			}
             else if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.ExistingTable)
 			{
-                SaveToExistingTable(selectTableUI.tableFilePath, GetSave(results));
+                SaveToExistingTable(selectTableUI.tableFilePath, bigResult);
             }
+
+			GlobalUI.savedWindow.Show(selectTableUI.tableFilePath);
         }
 
-        private void SaveNewTable(string filepath, List<ParseResult> results)
+        private void SaveNewTable(string filepath, ParseResult result)
         {
-			ParseResult bigResult = new ParseResult();
-			bigResult.lots = results.SelectMany(r => r.lots).ToList();
-
-            ExcelSerializer.CreateTable(filepath, bigResult);
+            ExcelSerializer.CreateTable(filepath, result);
         }
 
-        private void SaveToExistingTable(string filepath, IParseSave save)
+        private void SaveToExistingTable(string filepath, ParseResult result)
         {
-            ExcelSerializer.AppendUniqLots(filepath, save.GetAllLots());
+			ExcelSerializer.AppendUniqLots(filepath, result);
         }
     }
 }

@@ -19,9 +19,10 @@ namespace InGame.UI
 
 		[SerializeField] private Text pagesCountText, newPositionsCountText, errorsCountText;
 
-		private List<ParseResult> results = new List<ParseResult>();
-		private bool isSaved = true;
-		private bool forceQuit;
+        private List<ParseResult> results = new List<ParseResult>();
+        private bool isSaved = true;
+        private bool forceQuit;
+		//private IParser parser;
 
 		private Action onSaveClick;
 
@@ -41,12 +42,13 @@ namespace InGame.UI
 				return false;
 			};
 		}
-        public void OnParseFinished(ParseProcess process, Action onSaveClick)
+        public void OnParseFinished(IParser parser, Action onSaveClick)
         {
-			if (process.result == null) return;
+			if (parser == null || parser.process == null || parser.process.bigResult == null) return;
 
 			this.onSaveClick = onSaveClick;
-			results.Add(process.result);
+			//this.parser = parser;
+			results.AddRange(parser.process.results);
 
 			isSaved = false;
 
@@ -54,6 +56,7 @@ namespace InGame.UI
 		}
 		public void ClearResults()
         {
+			//parser = null;
 			results.Clear();
 			RefreshContent();
 		}
@@ -74,26 +77,35 @@ namespace InGame.UI
 
 			isSaved = true;
 		}
-
+		public ParseResult GetBigResult()
+        {
+			return new ParseResult()
+			{
+				lots = results.SelectMany(r => r.lots).DistinctBy(l => l.url).ToList()
+			};
+        }
 		
 
 		private void RefreshContent()
 		{
 			ClearChildren(content);
 
+			UIHelper.ClearChildren(content);
+
+			//if (parser == null || parser.process == null) return;
+
 			int i = 0;
-			foreach (ParseResult result in results)
+			UIHelper.FillContent<SummaryUIItem, ParseResult>(content, itemPrefab.gameObject, results, (uii, r) =>
 			{
-				GameObject inst = Instantiate(itemPrefab.gameObject, content);
-				SummaryUIItem uii = inst.GetComponent<SummaryUIItem>();
-				uii.Refresh(result, i);
-
+				uii.Refresh(r, i);
 				i++;
-			}
+			});
 
-			pagesCountText.text = "Страниц обработано: " + i;
-			newPositionsCountText.text = "Новых позиций: " + results.Sum(r => r.lots.Count(l => l.exception == null));
-			errorsCountText.text = "Ошибок: " + results.Sum(r => r.lots.Count(l => l.exception != null));
+			var bigResult = GetBigResult();
+
+			pagesCountText.text = "Страниц обработано: " + results.Count;
+			newPositionsCountText.text = "Новых позиций: " + bigResult.lots.Count(l => l.exception == null);
+			errorsCountText.text = "Ошибок: " + bigResult.lots.Count(l => l.exception != null);
 		}
 		private void ClearChildren(Transform content)
         {

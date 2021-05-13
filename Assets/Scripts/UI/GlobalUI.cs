@@ -7,5 +7,6 @@ namespace InGame.UI
 		public static ParseResultWindow parseResultWindow;
 		public static CloseExcelWindow closeExcelWindow;
 		public static NotSafeExitWindow notSafeExitWindow;
+		public static SavedWindow savedWindow;
 	}
 }

@@ -7,11 +7,14 @@ namespace InGame.Parse
 {
     public class ParseProcess
     {
-		public ParseResult result;
+		public ParseResult bigResult;
+		public List<ParseResult> results = new List<ParseResult>();
 
 		public State state;
 		public float progress;
 		public string progressMessage;
+
+		public List<string> urlsToParse;
 
 		public Exception exception;
 

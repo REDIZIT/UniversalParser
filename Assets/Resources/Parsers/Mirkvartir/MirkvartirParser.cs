@@ -6,17 +6,17 @@ using UnityParser;
 
 namespace InGame.Parse
 {
-    public class MirkvartirParser : Parser<MirkvatrirLot>
+    public class MirkvartirParser : Parser<MirkvartirLot>
     {
         protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
         {
             return doc.DocumentNode.SelectSingleNode(".//div[@class='b-flats-list']").ChildNodes.Where(n => n.HasClass("b-flat"));
         }
-        protected override MirkvatrirLot ParseLotOrThrowException(HtmlNode node)
+        protected override MirkvartirLot ParseLotOrThrowException(HtmlNode node)
         {
             HtmlNode urlNode = node.SelectSingleNode(".//div[@class='img']/a");
 
-            MirkvatrirLot lot = new MirkvatrirLot(urlNode.GetAttributeValue("href", "<url not found>"));
+            MirkvartirLot lot = new MirkvartirLot(urlNode.GetAttributeValue("href", "<url not found>"));
 
 
             #region Rooms, area, floor (title)

@@ -1,8 +1,8 @@
-using UnityParser;
+﻿using UnityParser;
 
 namespace InGame.Parse
 {
-    public class MirkvatrirLot : Lot
+    public class MirkvartirLot : Lot
     {
 		[ExcelString("Комнаты")]
 		public string rooms;
@@ -22,11 +22,11 @@ namespace InGame.Parse
 		[ExcelString("Цена")]
 		public string price;
 
-        public MirkvatrirLot()
+        public MirkvartirLot()
         {
 
         }
-		public MirkvatrirLot(string url) : base(url)
+		public MirkvartirLot(string url) : base(url)
         {
 
         }

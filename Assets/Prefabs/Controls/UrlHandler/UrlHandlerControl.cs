@@ -15,6 +15,10 @@ namespace InGame.UI
 		[SerializeField] private Slider progressBar;
 		[SerializeField] private Text progressText;
 
+		[Header("Some pages")]
+		[SerializeField] private Toggle enableSomePagesToggle;
+		[SerializeField] private InputField startPageField, endPageField;
+
 		private IParser parser;
 		private ParseProcess process => parser?.process;
 
@@ -39,6 +43,9 @@ namespace InGame.UI
 				progressBar.value = process.progress;
 				progressText.text = process.progressMessage;
 			}
+
+			startPageField.interactable = enableSomePagesToggle.isOn;
+			endPageField.interactable = enableSomePagesToggle.isOn;
 		}
 
 
@@ -53,7 +60,10 @@ namespace InGame.UI
 		}
 		public void ClickStart()
 		{
-			parser.StartParsing(urlField.text);
+            int.TryParse(startPageField.text, out int startPage);
+            int.TryParse(endPageField.text, out int endPage);
+
+            parser.StartParsing(urlField.text, enableSomePagesToggle.isOn ? startPage : 0, endPage);
 			process.onfinished += onUrlHandled;
 		}
 

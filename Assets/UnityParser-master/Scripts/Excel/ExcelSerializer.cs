@@ -16,8 +16,6 @@ namespace UnityParser
 
             CreateHeader(table, result.lots[0].GetType());
 
-			
-
 			AppendLots(result.lots[0].GetType(), table, result.lots);
 
 			ExcelHelper.SaveExcel(excel, filepath);
@@ -28,13 +26,13 @@ namespace UnityParser
         /// <summary>
 		/// Append to table only these lots, which are not presented in table yet. Comparing by <see cref="ExcelIDAttribute"/>
 		/// </summary>
-        public static void AppendUniqLots<T>(string filepath, IEnumerable<T> lots) where T : Lot
+        public static void AppendUniqLots(string filepath, ParseResult result)
         {
 			Excel excel = ExcelHelper.LoadExcel(filepath);
 			ExcelTable table = excel.Tables[0];
 
-			IEnumerable<string> tableIDs = GetAllIDs<T>(table);
-			IEnumerable<T> lotsToAppend = lots.Where(l => tableIDs.Contains(GetIDValue(l)) == false);
+			IEnumerable<string> tableIDs = GetAllIDs(result.lots[0].GetType(), table);
+			IEnumerable<Lot> lotsToAppend = result.lots.Where(l => tableIDs.Contains(GetIDValue(l)) == false);
 
 			AppendLots(table, lotsToAppend);
 
@@ -79,10 +77,10 @@ namespace UnityParser
 
 
         /// <summary>Returns all lots IDs represented in excel table</summary>
-        private static IEnumerable<string> GetAllIDs<T>(ExcelTable table) where T : Lot
+        private static IEnumerable<string> GetAllIDs(Type lotType, ExcelTable table)
         {
 			int idColumn = 0;
-			foreach (FieldInfo field in typeof(T).GetFields())
+			foreach (FieldInfo field in lotType.GetFields())
 			{
 				if (field.GetCustomAttribute<ExcelStringAttribute>() == null)
 					continue;

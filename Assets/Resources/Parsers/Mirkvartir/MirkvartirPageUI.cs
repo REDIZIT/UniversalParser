@@ -4,7 +4,7 @@ using UnityParser;
 
 namespace InGame.UI
 {
-    public class ParkingParseUI : AvitoParseUI
+    public class MirkvartirPageUI : AvitoParseUI
 	{
         public override IParser CreateParser()
         {
@@ -13,7 +13,7 @@ namespace InGame.UI
 
         protected override IParseSave GetSave(List<ParseResult> results)
         {
-            return new ParseSave<MirkvatrirLot>(results);
+            return new ParseSave<MirkvartirLot>(results);
         }
     }
 }

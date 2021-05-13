@@ -29,10 +29,10 @@ namespace InGame.UI
 
         private void OnParseFinished()
         {
-            results.Add(parser.process.result);
+            results.Add(parser.process.bigResult);
 
             GlobalUI.parseResultWindow.Show(parser.process);
-            summary.OnParseFinished(parser.process, Save);
+            summary.OnParseFinished(parser, Save);
         }
 
         private void Save()
@@ -80,7 +80,7 @@ namespace InGame.UI
         //		table.SetValue(row, 2, lot.area);
         //		table.SetValue(row, 3, lot.storeys);
         //		table.SetValue(row, 4, lot.price);
-        //		table.SetValue(row, 5, lot.hasOnlineView ? "–ò–º–µ–µ—Ç" : "-");
+        //		table.SetValue(row, 5, lot.hasOnlineView ? "»ÏÂÂÚ" : "-");
         //		table.SetValue(row, 6, lot.address);
         //		table.SetValue(row, 7, lot.metro);
         //		table.SetValue(row, 8, lot.agency);

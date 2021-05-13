@@ -1,6 +1,7 @@
 using HtmlAgilityPack;
 using InGame.Parse;
 using InGame.Settings;
+using RestSharp.Contrib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace UnityParser
     public interface IParser
     {
         ParseProcess process { get; }
-        ParseProcess StartParsing(string url);
+        ParseProcess StartParsing(string url, int startPage = 0, int endPage = 0);
     }
     public abstract class Parser<T> : IParser where T : Lot
     {
@@ -22,13 +23,13 @@ namespace UnityParser
 
         private Thread parseThread;
 
-        public ParseProcess StartParsing(string url)
+        public ParseProcess StartParsing(string url, int startPage = 0, int endPage = 0)
         {
             parseThread?.Abort();
 
             process = new ParseProcess();
 
-            parseThread = new Thread(() => Parse(url));
+            parseThread = new Thread(() => Parse(url, startPage, endPage));
             parseThread.Start();
 
             return process;
@@ -94,25 +95,62 @@ namespace UnityParser
         protected abstract T ParseLotOrThrowException(HtmlNode node);
 
 
-        private void Parse(string url)
+        private void Parse(string url, int startPage, int endPage)
         {
-            process.progress = 0;
-            process.progressMessage = "Скачиваю страницу";
+            if (startPage > 0 && endPage >= startPage)
+            {
+                var quary = HttpUtility.ParseQueryString(url);
+                string baseUrl = url.Replace("p=" + quary["p"], "");
+
+                if (baseUrl.Contains("?") == false)
+                {
+                    baseUrl += "?";
+                }
 
 
-            process.result = ParsePage(url, process);
+                process.urlsToParse = new List<string>();
+                for (int i = startPage; i <= endPage; i++)
+                {
+                    string urlToParse = baseUrl + "&p=" + i;
+                    Debug.Log("urlToParse: " + urlToParse);
+                    process.urlsToParse.Add(urlToParse);
+                }
+            }
+            else
+            {
+                process.urlsToParse = new List<string>();
+                process.urlsToParse.Add(url);
+            }
 
+
+            process.bigResult = new ParseResult();
+            for (int i = 0; i < process.urlsToParse.Count; i++)
+            {
+                Parse(process.urlsToParse[i], i);
+            }
 
             process.state = ParseProcess.State.Finished;
             UnityMainThreadDispatcher.Instance().Enqueue(process.onfinished);
         }
+        private void Parse(string url, int currentUrlIndex)
+        {
+            process.progress = currentUrlIndex / (float)process.urlsToParse.Count;
+
+            process.progressMessage = "Скачиваю страницу";
+
+
+            ParseResult result = ParsePage(url, process);
+            process.bigResult.lots.AddRange(result.lots);
+            process.results.Add(result);
+        }
+
         private ParseResult ParsePage(string url, ParseProcess process)
         {
             ParseResult result = new ParseResult();
 
             HtmlDocument doc = DownloadHtml(url);
 
-            process.progress = 0.5f;
+            process.progress += 1 / (float)process.urlsToParse.Count / 2f;
             process.progressMessage = "Анализирую";
 
             IEnumerable<HtmlNode> nodesToParse = GetNodesToParse(doc);
