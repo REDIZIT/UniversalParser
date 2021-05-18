@@ -11,6 +11,10 @@ namespace InGame.Settings
 		public Switch proxySwitch;
 		public InputField proxyAddress, proxyPort;
 
+		[Header("M2")]
+		public InputField m2Login;
+		public InputField m2Password;
+
 		[Header("Dev")]
 		public Switch enableConsoleSwitch;
 
@@ -22,6 +26,8 @@ namespace InGame.Settings
 			proxySwitch.onValueChanged += (_) => OnAnyValueChanged();
 			enableConsoleSwitch.onValueChanged += (_) => OnAnyValueChanged();
 
+			m2Login.onValueChanged.AddListener((_) => OnAnyValueChanged());
+			m2Password.onValueChanged.AddListener((_) => OnAnyValueChanged());
 		}
         public void Show()
         {
@@ -43,6 +49,9 @@ namespace InGame.Settings
 			proxyPort.text = settings.proxyPort == 0 ? "" : settings.proxyPort.ToString();
 
 
+			m2Login.text = settings.m2Login;
+			m2Password.text = settings.m2Password;
+
 			enableConsoleSwitch.SetIsOn(settings.enableConsole, true);
 
 			isRefreshing = false;
@@ -60,6 +69,9 @@ namespace InGame.Settings
 				settings.proxyPort = port;
 			}
 
+
+			settings.m2Login = m2Login.text;
+			settings.m2Password = m2Password.text;
 
 
 			settings.enableConsole = enableConsoleSwitch.isOn;

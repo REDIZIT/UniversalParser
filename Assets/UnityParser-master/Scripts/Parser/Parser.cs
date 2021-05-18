@@ -4,11 +4,11 @@ using InGame.Settings;
 using RestSharp.Contrib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using UnityEngine;
+using OpenQA.Selenium;
 
 namespace UnityParser
 {
@@ -35,7 +35,7 @@ namespace UnityParser
             return process;
         }
 
-		public HtmlDocument DownloadHtml(string url)
+		public virtual HtmlDocument DownloadHtml(string url)
         {
             HttpClientHandler handler = new HttpClientHandler();
             if (SettingsManager.settings.isProxyEnabled)
@@ -84,7 +84,7 @@ namespace UnityParser
                 T lot = Activator.CreateInstance<T>();
                 lot.exception = err;
 
-                Debug.LogError("Lot can't be handled.\n\nNode html was:\n " + node.InnerHtml + "\n\nError is: " + err);
+                Debug.LogError("Lot can't be handled." + "\n\nError is: " + err + "\n\nNode html was:\n " + node.InnerHtml);
 
                 return lot;
             }
