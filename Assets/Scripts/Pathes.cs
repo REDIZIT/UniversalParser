@@ -8,10 +8,12 @@ namespace InGame
 	{
         public static string buildFolder;
         public static string settingsFile;
+        public static string dataFolder;
 
         public static void Initialize()
         {
-            buildFolder = new DirectoryInfo(Application.dataPath).Parent.FullName;
+            dataFolder = Application.dataPath;
+            buildFolder = new DirectoryInfo(dataFolder).Parent.FullName;
 
             settingsFile = buildFolder + "/settings.json";
         }

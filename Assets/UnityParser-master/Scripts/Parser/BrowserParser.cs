@@ -1,10 +1,8 @@
 using HtmlAgilityPack;
 using System;
-using System.Linq;
-using UnityEngine;
-using OpenQA.Selenium.Opera;
-using System.IO;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
+using InGame;
 
 namespace UnityParser
 {
@@ -14,14 +12,7 @@ namespace UnityParser
 
         public override HtmlDocument DownloadHtml(string url)
         {
-            string filepath = Directory.GetFiles(Environment.CurrentDirectory, "operadriver.exe", SearchOption.AllDirectories).First();
-            Debug.Log("Loading Opera driver from " + filepath);
-
-            OperaDriverService service = OperaDriverService.CreateDefaultService(new FileInfo(filepath).DirectoryName);
-            service.HideCommandPromptWindow = true;
-
-            OperaOptions options = new OperaOptions();
-            driver = new OperaDriver(service, options);
+            OpenBrowser();
 
             driver.Navigate().GoToUrl(url);
 
@@ -35,6 +26,8 @@ namespace UnityParser
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(driver.PageSource);
 
+            driver.Close();
+
             return doc;
         }
 
@@ -42,6 +35,16 @@ namespace UnityParser
         protected virtual void Login(string urlLoadAfterLogin)
         {
             throw new NotImplementedException();
+        }
+
+        private void OpenBrowser()
+        {
+            EdgeDriverService service = EdgeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets");
+            service.HideCommandPromptWindow = true;
+
+            EdgeOptions options = new EdgeOptions();
+
+            driver = new EdgeDriver(service, options);
         }
     }
 }
