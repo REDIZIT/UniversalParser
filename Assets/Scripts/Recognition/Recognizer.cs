@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace InGame.Recognition
 {
     public static class Recognizer
@@ -25,6 +27,18 @@ namespace InGame.Recognition
             result.name = TrimCommas(name);
 
             return areaSuccess || storeysSuccess;
+        }
+
+        public static bool TrySplit(string text, out Result result)
+        {
+            result = new Result();
+
+            var splitted = RecognizerArea.Split(text).ToList();
+            result.area = splitted[0];
+            result.name = splitted[1];
+            result.storeys = splitted[2];
+
+            return true;
         }
 
         public static string TrimCommas(string text)

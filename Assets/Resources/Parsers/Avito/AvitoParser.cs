@@ -10,6 +10,8 @@ namespace InGame.Parse
 {
     public class AvitoParser : Parser<AvitoLot>
     {
+        protected override string UrlPageArgument => "p";
+
         protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
         {
             HtmlNode content = doc.DocumentNode.SelectSingleNode(".//div[@class='items-items-38oUm']");

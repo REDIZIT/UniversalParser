@@ -8,6 +8,8 @@ namespace InGame.Parse
 {
     public class MirkvartirParser : Parser<MirkvartirLot>
     {
+        protected override string UrlPageArgument => "p";
+
         protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
         {
             return doc.DocumentNode.SelectSingleNode(".//div[@class='b-flats-list']").ChildNodes.Where(n => n.HasClass("b-flat"));

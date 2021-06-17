@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace InGame.Settings
 {
 	public class Settings

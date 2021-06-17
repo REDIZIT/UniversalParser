@@ -15,6 +15,9 @@ namespace InGame.UI
 		[SerializeField] private Slider progressBar;
 		[SerializeField] private Text progressText;
 
+		[Header("Current page")]
+		[SerializeField] private Text currentPageText;
+
 		[Header("Some pages")]
 		[SerializeField] private Toggle enableSomePagesToggle;
 		[SerializeField] private InputField startPageField, endPageField;
@@ -22,7 +25,7 @@ namespace InGame.UI
 		private IParser parser;
 		private ParseProcess process => parser?.process;
 
-		private Action onUrlHandled;
+		private Action onUrlHandled, onPageParsed;
 
 
 
@@ -46,17 +49,26 @@ namespace InGame.UI
 
 			startPageField.interactable = enableSomePagesToggle.isOn;
 			endPageField.interactable = enableSomePagesToggle.isOn;
+
+
+
+			int number = parser.GetCurrentPageNumberByUrl(urlField.text);
+			currentPageText.text = number == -1 ? "-" : number.ToString();
 		}
 
 
-        public void Refresh(IParser parser, Action onUrlHandled)
+        public void Refresh(IParser parser, Action onUrlHandled, Action onPageParsed)
         {
 			Show();
 			this.parser = parser;
 
-			if (onUrlHandled != null && process != null) process.onfinished -= onUrlHandled;
+			if (onUrlHandled != null && process != null)
+            {
+				process.onfinished -= onUrlHandled;
+				process.onPageParsed += onPageParsed;
+			}
 			this.onUrlHandled = onUrlHandled;
-
+			this.onPageParsed = onPageParsed;
 		}
 		public void ClickStart()
 		{
@@ -65,8 +77,22 @@ namespace InGame.UI
 
             parser.StartParsing(urlField.text, enableSomePagesToggle.isOn ? startPage : 0, endPage);
 			process.onfinished += onUrlHandled;
+			process.onPageParsed += onPageParsed;
 		}
+		public void ClickNextPage()
+        {
+			int pageNumber = parser.GetCurrentPageNumberByUrl(urlField.text);
+			pageNumber++;
 
+			urlField.text = parser.GetUrlWithPageNumber(urlField.text, pageNumber);
+        }
+		public void ClickPrevPage()
+        {
+			int pageNumber = parser.GetCurrentPageNumberByUrl(urlField.text);
+			pageNumber--;
+
+			urlField.text = parser.GetUrlWithPageNumber(urlField.text, pageNumber);
+		}
 
 		public void Clear()
         {
@@ -74,6 +100,9 @@ namespace InGame.UI
 			if (process != null)
             {
 				process.onfinished -= onUrlHandled;
+				process.onPageParsed -= onPageParsed;
+
+
 			}
         }
     }

@@ -9,6 +9,7 @@ namespace InGame.Parse
     {
 		public ParseResult bigResult;
 		public List<ParseResult> results = new List<ParseResult>();
+		public ParseResult currentPageResult;
 
 		public State state;
 		public float progress;
@@ -18,6 +19,7 @@ namespace InGame.Parse
 
 		public Exception exception;
 
+		public Action onPageParsed;
 		public Action onfinished;
 
 		public enum State

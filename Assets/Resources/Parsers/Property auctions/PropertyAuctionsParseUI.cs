@@ -18,7 +18,7 @@ namespace InGame.UI
         private void Awake()
         {
             selectTableUI.onTableReset += Clear;
-            selectTableUI.onTableSelected += () => urlControl.Refresh(parser, OnParseFinished);
+            selectTableUI.onTableSelected += () => urlControl.Refresh(parser, OnParseFinished, OnParseFinished);
             urlControl.Hide();
         }
 

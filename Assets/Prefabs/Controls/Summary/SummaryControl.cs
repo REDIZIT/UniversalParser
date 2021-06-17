@@ -42,12 +42,23 @@ namespace InGame.UI
 				return false;
 			};
 		}
-        public void OnParseFinished(IParser parser, Action onSaveClick)
+		public void OnPageParsed(IParser parser, Action onSaveClick)
+		{
+			if (parser == null || parser.process == null || parser.process.bigResult == null) return;
+
+			this.onSaveClick = onSaveClick;
+			results.Add(parser.process.currentPageResult);
+
+			isSaved = false;
+
+			RefreshContent();
+		}
+
+		public void OnParseFinished(IParser parser, Action onSaveClick)
         {
 			if (parser == null || parser.process == null || parser.process.bigResult == null) return;
 
 			this.onSaveClick = onSaveClick;
-			//this.parser = parser;
 			results.AddRange(parser.process.results);
 
 			isSaved = false;
@@ -56,7 +67,6 @@ namespace InGame.UI
 		}
 		public void ClearResults()
         {
-			//parser = null;
 			results.Clear();
 			RefreshContent();
 		}

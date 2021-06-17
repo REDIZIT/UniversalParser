@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading;
 using UnityEngine;
 using OpenQA.Selenium;
+using System.Linq;
 
 namespace UnityParser
 {
@@ -16,6 +17,8 @@ namespace UnityParser
     {
         ParseProcess process { get; }
         ParseProcess StartParsing(string url, int startPage = 0, int endPage = 0);
+        int GetCurrentPageNumberByUrl(string url);
+        string GetUrlWithPageNumber(string baseUrl, int pageNumber);
     }
     public abstract class Parser<T> : IParser where T : Lot
     {
@@ -89,18 +92,47 @@ namespace UnityParser
                 return lot;
             }
         }
+        public int GetCurrentPageNumberByUrl(string url)
+        {
+            var quary = HttpUtility.ParseQueryString(url);
+            if (string.IsNullOrEmpty(quary[UrlPageArgument]))
+            {
+                return -1;
+            }
+
+            return int.Parse(quary[UrlPageArgument]);
+        }
+        public string GetUrlWithPageNumber(string baseUrl, int pageNumber)
+        {
+            var quary = HttpUtility.ParseQueryString(baseUrl);
+            baseUrl = baseUrl.Replace(UrlPageArgument + "=" + quary[UrlPageArgument], "");
+
+            if (baseUrl.Contains("?") == false)
+            {
+                baseUrl += "?";
+            }
+
+            if (baseUrl.EndsWith("&"))
+            {
+                return baseUrl + UrlPageArgument + "=" + pageNumber;
+            }
+            else 
+            {
+                return baseUrl + "&" + UrlPageArgument + "=" + pageNumber;
+            }
+        }
 
 
         protected abstract IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc);
         protected abstract T ParseLotOrThrowException(HtmlNode node);
-
+        protected abstract string UrlPageArgument { get; }
 
         private void Parse(string url, int startPage, int endPage)
         {
             if (startPage > 0 && endPage >= startPage)
             {
                 var quary = HttpUtility.ParseQueryString(url);
-                string baseUrl = url.Replace("p=" + quary["p"], "");
+                string baseUrl = url.Replace(UrlPageArgument + "=" + quary[UrlPageArgument], "");
 
                 if (baseUrl.Contains("?") == false)
                 {
@@ -111,8 +143,7 @@ namespace UnityParser
                 process.urlsToParse = new List<string>();
                 for (int i = startPage; i <= endPage; i++)
                 {
-                    string urlToParse = baseUrl + "&p=" + i;
-                    Debug.Log("urlToParse: " + urlToParse);
+                    string urlToParse = baseUrl + "&" + UrlPageArgument + "=" + i;
                     process.urlsToParse.Add(urlToParse);
                 }
             }
@@ -127,6 +158,7 @@ namespace UnityParser
             for (int i = 0; i < process.urlsToParse.Count; i++)
             {
                 Parse(process.urlsToParse[i], i);
+                UnityMainThreadDispatcher.Instance().Enqueue(process.onPageParsed);
             }
 
             process.state = ParseProcess.State.Finished;
@@ -142,6 +174,7 @@ namespace UnityParser
             ParseResult result = ParsePage(url, process);
             process.bigResult.lots.AddRange(result.lots);
             process.results.Add(result);
+            process.currentPageResult = result;
         }
 
         private ParseResult ParsePage(string url, ParseProcess process)

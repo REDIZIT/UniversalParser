@@ -20,7 +20,7 @@ namespace UnityParser
 
 			ExcelHelper.SaveExcel(excel, filepath);
 
-			return table;            
+			return table;
         }
 
         /// <summary>

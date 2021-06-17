@@ -169,7 +169,7 @@ namespace InGame.Recognition
             return pattern;
         }
      
-        private static IEnumerable<string> Split(string str)
+        public static IEnumerable<string> Split(string str)
         {
             // Replace comma in area marker with spec symbols to ignore these on str.Split(',') step
             // 17.1 is okay

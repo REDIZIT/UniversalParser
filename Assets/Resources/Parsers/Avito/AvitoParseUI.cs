@@ -39,7 +39,7 @@ namespace InGame.UI
 
 		public void OnTableSelected()
         {
-			urlControl.Refresh(parser, OnParseFinished);
+			urlControl.Refresh(parser, OnParseFinished, OnPageParsed);
 		}
 		public void Clear()
         {
@@ -48,15 +48,21 @@ namespace InGame.UI
 		}
 
 
+		private void OnPageParsed()
+        {
+			summary.OnPageParsed(parser, Save);
+			Save(false);
+		}
 		private void OnParseFinished()
         {
-			//results.Add(parser.process.bigResult);
-
 			GlobalUI.parseResultWindow.Show(parser.process);
-			summary.OnParseFinished(parser, Save);
 		}
 
 		private void Save()
+        {
+			Save(true);
+        }
+		private void Save(bool showWindow)
 		{
 			ParseResult bigResult = summary.GetBigResult();
 
@@ -69,7 +75,10 @@ namespace InGame.UI
                 SaveToExistingTable(selectTableUI.tableFilePath, bigResult);
             }
 
-			GlobalUI.savedWindow.Show(selectTableUI.tableFilePath);
+			if (showWindow)
+            {
+				GlobalUI.savedWindow.Show(selectTableUI.tableFilePath);
+			}
         }
 
         private void SaveNewTable(string filepath, ParseResult result)
