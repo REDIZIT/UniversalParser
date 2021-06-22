@@ -8,20 +8,19 @@ namespace InGame.UI
 		[SerializeField] private Text nameText, descriptionText;
 		[SerializeField] private Transform content;
 
-		private ParserPage page;
 
-		public void Refresh(ParserPage page)
+		public void Refresh(ParserSO page)
         {
-			this.page = page;
-
-			nameText.text = page.name;
+			nameText.text = page.parserName;
 			descriptionText.text = page.description;
 
 			if (content.childCount > 1)
             {
 				Destroy(content.GetChild(1).gameObject);
             }
-			GameObject go = Instantiate(page.gameObject, content);
+			
+			
+			Instantiate(page.prefabPage, content);
         }
 	}
 }

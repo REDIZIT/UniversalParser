@@ -1,6 +1,5 @@
 using InGame.UI.Items;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace InGame.UI
 {
@@ -11,13 +10,13 @@ namespace InGame.UI
 
         private void Start()
         {
-            UIHelper.FillContent<ParserPageUII, ParserPage>(content, prefab.gameObject, ParsersStorage.pages, (uii, page) =>
+            UIHelper.FillContent<ParserPageUII, ParserSO>(content, prefab.gameObject, ParsersStorage.parsersInfo, (uii, info) =>
             {
-                uii.Refresh(page, OnPageClicked);
+                uii.Refresh(info, OnPageClicked);
             });
         }
 
-        private void OnPageClicked(ParserPage page)
+        private void OnPageClicked(ParserSO page)
         {
             GlobalUI.tabs.ShowParserContainer(page);
         }

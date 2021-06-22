@@ -26,7 +26,7 @@ namespace InGame.UI
             LeaveEnableOnlyOne(allParsers);
         }
 
-		public void ShowParserContainer(ParserPage page)
+		public void ShowParserContainer(ParserSO page)
         {
             LeaveEnableOnlyOne(parserContainer);
             parserPageUI.Refresh(page);

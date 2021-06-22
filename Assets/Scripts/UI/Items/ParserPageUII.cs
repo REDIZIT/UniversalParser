@@ -8,15 +8,15 @@ namespace InGame.UI.Items
 	{
 		[SerializeField] private Text text;
 
-		private ParserPage page;
-		private Action<ParserPage> onclick;
+		private ParserSO page;
+		private Action<ParserSO> onclick;
 
-		public void Refresh(ParserPage page, Action<ParserPage> onclick)
+		public void Refresh(ParserSO page, Action<ParserSO> onclick)
         {
 			this.page = page;
 			this.onclick = onclick;
 
-			text.text = page.name;
+			text.text = page.parserName;
         }
 
 		public void Click()
