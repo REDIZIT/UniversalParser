@@ -7,6 +7,8 @@ namespace InGame.Settings
 {
 	public class SettingsUI : MonoBehaviour
 	{
+		public Text versionText;
+
 		[Header("Proxy")]
 		public Switch proxySwitch;
 		public InputField proxyAddress, proxyPort;
@@ -28,6 +30,9 @@ namespace InGame.Settings
 
 			m2Login.onValueChanged.AddListener((_) => OnAnyValueChanged());
 			m2Password.onValueChanged.AddListener((_) => OnAnyValueChanged());
+
+
+			versionText.text = "Версия приложения " + Application.version;
 		}
         public void Show()
         {
