@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 725a188cd5d74d04bb84eaad205e31cc, type: 3}
-  m_Name: AvitoParserSO
+  m_Name: SpbMove
   m_EditorClassIdentifier: Core:InGame:ParserSO
-  parserName: "\u041F\u0430\u0440\u0441\u0435\u0440 avito"
-  parseUIType: AvitoParseUI
-  parseUI: {fileID: 11500000, guid: 734e2a09583a1ff44bc40f9d158aeb12, type: 3}
+  parserName: Spb.move.ru
+  parseUIType: SpbMovePageUI
+  parseUI: {fileID: 11500000, guid: 742746d0ed74463408617b7180bdf99e, type: 3}
   prefabPage: {fileID: 0}

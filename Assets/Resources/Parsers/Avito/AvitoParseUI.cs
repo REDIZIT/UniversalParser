@@ -1,25 +1,24 @@
 using InGame.Parse;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityParser;
 
 namespace InGame.UI
 {
 	public class AvitoParseUI : MonoBehaviour
 	{
-		public SelectTableControl selectTableUI;
-		public UrlHandlerControl urlControl;
-		public SummaryControl summary;
+		public SelectTableControl selectTableUI => page.selectTableUI;
+		public UrlHandlerControl urlControl => page.urlControl;
+		public SummaryControl summary => page.summary;
 
 		private IParser parser;
+		private ParserPage page;
 
-		//private List<ParseResult> results = new List<ParseResult>();
 
-		private void Awake()
+		private void Start()
 		{
+			page = GetComponent<ParserPage>();
+
 			selectTableUI.onTableReset += Clear;
 			selectTableUI.onTableSelected += OnTableSelected;
 			urlControl.Hide();

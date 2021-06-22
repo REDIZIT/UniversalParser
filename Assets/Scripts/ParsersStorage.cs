@@ -40,7 +40,7 @@ namespace InGame
                 {
 					so.prefabPage = defaultPage.gameObject;
                 }
-				
+
 				parsersInfo.Add(so);
             }
         }

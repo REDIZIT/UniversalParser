@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 725a188cd5d74d04bb84eaad205e31cc, type: 3}
   m_Name: MirkvartirParserSO
   m_EditorClassIdentifier: Core:InGame:ParserSO
-  parserName: mirkvartir.ru
+  parserName: "\u041C\u0438\u0440 \u043A\u0432\u0430\u0440\u0442\u0438\u0440"
+  parseUIType: MirkvartirPageUI
+  parseUI: {fileID: 11500000, guid: 20d2051aaa7df5c42928f98af07ce746, type: 3}
   prefabPage: {fileID: 0}

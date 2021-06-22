@@ -1,27 +1,26 @@
+using InGame.UI;
+using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace InGame
 {
-	public class ParserPage : MonoBehaviour
+    public class ParserPage : MonoBehaviour
 	{
 		public new string name;
 		public string description;
-	}
-
-	[CreateAssetMenu(fileName = "Parser Info SO")]
-	public class ParserSO : ScriptableObject
-    {
-		public string parserName;
-		public string description => "Собирает всю доступную информацию с поисковой страницы и создаёт (или дополняет уже существующею) таблицу";
 
 
-		[Tooltip("Custom prefab page, if null will be used default")]
-		public GameObject prefabPage;
+		public SelectTableControl selectTableUI;
+		public UrlHandlerControl urlControl;
+		public SummaryControl summary;
 
 
-		public ParserSO Clone()
-		{
-			return MemberwiseClone() as ParserSO;
+		public void Initialize(ParserSO parserInfo)
+        {
+			Type classType = Assembly.GetExecutingAssembly().GetType(parserInfo.parseUIType);
+			MonoBehaviour mono = Activator.CreateInstance(/*parserInfo.parseUI.GetClass()*/classType) as MonoBehaviour;
+			gameObject.AddComponent(mono.GetType());
 		}
 	}
 }
