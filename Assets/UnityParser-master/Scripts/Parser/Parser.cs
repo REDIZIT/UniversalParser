@@ -10,6 +10,7 @@ using System.Threading;
 using UnityEngine;
 using OpenQA.Selenium;
 using System.Linq;
+using InGame.Exceptions;
 
 namespace UnityParser
 {
@@ -65,7 +66,7 @@ namespace UnityParser
                     }
                 }
 
-                throw new Exception($"Webpage ({url}) can't be downloaded. Response code is {resp.StatusCode}");
+                throw new ExceptionResponseCode($"Webpage ({url}) can't be downloaded. Response code is {resp.StatusCode}", resp.StatusCode);
             }
         }
 
@@ -181,7 +182,28 @@ namespace UnityParser
         {
             ParseResult result = new ParseResult();
 
-            HtmlDocument doc = DownloadHtml(url);
+            HtmlDocument doc = null;
+            try
+            {
+                doc = DownloadHtml(url);
+            }
+            catch (Exception err)
+            {
+                process.progressMessage = "Неизвестная ошибка во время скачивания страницы (консоль)";
+
+                if (err is ExceptionResponseCode resp)
+                {
+                    string code = resp.responseCode.ToString();
+                    if ((int)resp.responseCode == 429)
+                    {
+                        code = "Слишком много запросов";
+                    }
+
+                    process.progressMessage = $"Ошибка во время скачивания страницы ({code})";
+                }
+
+                throw err;
+            }
 
             process.progress += 1 / (float)process.urlsToParse.Count / 2f;
             process.progressMessage = "Анализирую";

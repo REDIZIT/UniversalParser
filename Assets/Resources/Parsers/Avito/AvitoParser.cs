@@ -4,6 +4,7 @@ using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using UnityParser;
 
 namespace InGame.Parse
@@ -14,7 +15,12 @@ namespace InGame.Parse
 
         protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
         {
-            HtmlNode content = doc.DocumentNode.SelectSingleNode(".//div[@class='items-items-38oUm']");
+            HtmlNode content = doc.DocumentNode.SelectSingleNode(".//div[@data-marker='catalog-serp']");
+            if (content == null)
+            {
+                throw new System.NullReferenceException("Content is null");
+            }
+
             IEnumerable<HtmlNode> nodes = content.ChildNodes.Where(n => n.Attributes.Any(a => a.Name == "data-marker" && a.Value == "item"));
 
             return nodes;
