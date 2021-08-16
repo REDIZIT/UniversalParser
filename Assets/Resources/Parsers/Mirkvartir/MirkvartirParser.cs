@@ -64,14 +64,34 @@ namespace InGame.Parse
         {
             string[] split = titleText.Split(',');
 
-            Recognizer.Result result = new Recognizer.Result
+            if (split.Length >= 3)
             {
-                name = split[0].Trim(),
-                area = split[1].Trim(),
-                storeys = split[2].Trim()
-            };
-
-            return result;
+                return new Recognizer.Result
+                {
+                    name = split[0].Trim(),
+                    area = split[1].Trim(),
+                    storeys = split[2].Trim()
+                };
+            }
+            else if (split.Length == 2)
+            {
+                return new Recognizer.Result
+                {
+                    area = split[0].Trim(),
+                    storeys = split[1].Trim()
+                };
+            }
+            else if (split.Length == 1)
+            {
+                return new Recognizer.Result
+                {
+                    area = split[0].Trim()
+                };
+            }
+            else
+            {
+                throw new System.Exception($"Can't extract info from title '{titleText}'");
+            }
         }
     }
 }
