@@ -8,5 +8,6 @@ namespace InGame.UI
 		public static CloseExcelWindow closeExcelWindow;
 		public static NotSafeExitWindow notSafeExitWindow;
 		public static SavedWindow savedWindow;
+		public static LegacyDriverWindow legacyDriverWindow;
 	}
 }

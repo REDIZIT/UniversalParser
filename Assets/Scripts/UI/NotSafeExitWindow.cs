@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace InGame.UI
 {
-	public class NotSafeExitWindow : Window<NotSafeExitWindow.Arguments>
+    public class NotSafeExitWindow : Window<NotSafeExitWindow.Arguments>
 	{
         public class Arguments
         {

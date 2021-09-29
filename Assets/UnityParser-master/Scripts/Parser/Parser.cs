@@ -11,6 +11,7 @@ using UnityEngine;
 using OpenQA.Selenium;
 using System.Linq;
 using InGame.Exceptions;
+using InGame.UI;
 
 namespace UnityParser
 {
@@ -202,6 +203,10 @@ namespace UnityParser
                     process.progressMessage = $"Ошибка во время скачивания страницы ({code})";
                 }
 
+                if (err.Message.Contains("This version of MSEdgeDriver only supports MSEdge"))
+                {
+                    UnityMainThreadDispatcher.Instance().Enqueue(() => GlobalUI.legacyDriverWindow.Show(err));
+                }
                 throw err;
             }
 
