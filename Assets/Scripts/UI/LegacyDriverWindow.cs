@@ -20,5 +20,10 @@ namespace InGame.UI
 
             messageText.text = $"Парсер не поддерживает новую версию Microsoft Edge.\nПарсер поддерживает до {supportedVersion}, а у вас {currentVersion}";
         }
+
+        public void OpenURL(string url)
+        {
+            Application.OpenURL(url);
+        }
     }
 }
