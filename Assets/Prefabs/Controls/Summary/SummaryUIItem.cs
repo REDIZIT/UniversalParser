@@ -9,12 +9,12 @@ namespace InGame.UI
     {
 		[SerializeField] private Text pageText, handledCountText, errorsCountText;
 
-		public void Refresh(ParseResult result, int pageIndex)
+		public void Refresh(IParseResult result, int pageIndex)
         {
 			pageText.text = (pageIndex + 1).ToString();
 
-			handledCountText.text = "Обработано: " + result.lots.Count(l => l.exception == null);
-			errorsCountText.text = "Не удалось: " + result.lots.Count(l => l.exception != null);
+			handledCountText.text = "Обработано: " + result.EnumerateLots().Count(l => l.exception == null);
+			errorsCountText.text = "Не удалось: " + result.EnumerateLots().Count(l => l.exception != null);
         }
     }
 }

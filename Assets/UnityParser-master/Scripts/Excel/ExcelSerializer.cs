@@ -3,20 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace UnityParser
 {
 	public static class ExcelSerializer
 	{ 
-		public static ExcelTable CreateTable(string filepath, ParseResult result)
+		public static ExcelTable CreateTable(string filepath, IParseResult result)
         {
             Excel excel = ExcelHelper.CreateExcel(filepath);
             ExcelTable table = excel.Tables[0];
 			
 
-            CreateHeader(table, result.lots[0].GetType());
+            CreateHeader(table, result.EnumerateLots().First().GetType());
 
-			AppendLots(result.lots[0].GetType(), table, result.lots);
+			AppendLots(result.EnumerateLots().First().GetType(), table, result.EnumerateLots());
 
 			ExcelHelper.SaveExcel(excel, filepath);
 
@@ -26,31 +27,26 @@ namespace UnityParser
         /// <summary>
 		/// Append to table only these lots, which are not presented in table yet. Comparing by <see cref="ExcelIDAttribute"/>
 		/// </summary>
-        public static void AppendUniqLots(string filepath, ParseResult result)
+        public static void AppendUniqLots(string filepath, IParseResult result)
         {
 			Excel excel = ExcelHelper.LoadExcel(filepath);
 			ExcelTable table = excel.Tables[0];
 
-			IEnumerable<string> tableIDs = GetAllIDs(result.lots[0].GetType(), table);
-			IEnumerable<Lot> lotsToAppend = result.lots.Where(l => tableIDs.Contains(GetIDValue(l)) == false);
+			IEnumerable<string> tableIDs = GetAllIDs(result.EnumerateLots().First().GetType(), table);
+			IEnumerable<Lot> lotsToAppend = result.EnumerateLots().Where(l => tableIDs.Contains(GetIDValue(l)) == false);
 
-			AppendLots(table, lotsToAppend);
+			AppendLots(result.EnumerateLots().First().GetType(), table, lotsToAppend);
 
 			ExcelHelper.SaveExcel(excel, filepath);
 		}
 
-		private static void AppendLots<T>(ExcelTable table, IEnumerable<T> lots) where T : Lot
-        {
-			AppendLots(typeof(T), table, lots);
-
-		}
 		private static void AppendLots(Type lotType, ExcelTable table, IEnumerable<Lot> lots)
         {
 			int row = table.NumberOfRows;
 
 			List<ExcelStringAttribute> attributes = new List<ExcelStringAttribute>();
-
-			foreach (FieldInfo field in lotType.GetFields())
+            //Debug.Log("Type: " + lotType + " lots count: " + lots.Count());
+            foreach (FieldInfo field in lotType.GetFields())
 			{
 				var attribute = field.GetCustomAttribute<ExcelStringAttribute>();
 				if (attribute != null)

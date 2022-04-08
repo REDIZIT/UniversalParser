@@ -14,7 +14,6 @@ namespace UnityParser
         {
             OpenBrowser();
 
-            throw new Exception();
             driver.Navigate().GoToUrl(url);
 
 

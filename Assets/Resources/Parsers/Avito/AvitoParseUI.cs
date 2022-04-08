@@ -1,5 +1,6 @@
 using InGame.Parse;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityParser;
 
@@ -30,10 +31,10 @@ namespace InGame.UI
 		{
 			return new AvitoParser();
 		}
-		protected virtual IParseSave GetSave(List<ParseResult> results)
+		protected virtual IParseSave GetSave(List<IParseResult> results)
         {
-			return new ParseSave<AvitoLot>(results);
-        }
+			return new ParseSave<AvitoLot>(results.Cast<ParseResult<AvitoLot>>().ToList());
+		}
 
 
 		public void OnTableSelected()
@@ -63,7 +64,7 @@ namespace InGame.UI
         }
 		private void Save(bool showWindow)
 		{
-			ParseResult bigResult = summary.GetBigResult();
+			IParseResult bigResult = summary.GetBigResult();
 
 			if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.CreateNewTable)
 			{
@@ -80,12 +81,12 @@ namespace InGame.UI
 			}
         }
 
-        private void SaveNewTable(string filepath, ParseResult result)
+        private void SaveNewTable(string filepath, IParseResult result)
         {
             ExcelSerializer.CreateTable(filepath, result);
         }
 
-        private void SaveToExistingTable(string filepath, ParseResult result)
+        private void SaveToExistingTable(string filepath, IParseResult result)
         {
 			ExcelSerializer.AppendUniqLots(filepath, result);
         }

@@ -19,10 +19,9 @@ namespace InGame.UI
 
 		[SerializeField] private Text pagesCountText, newPositionsCountText, errorsCountText;
 
-        private List<ParseResult> results = new List<ParseResult>();
+        private List<IParseResult> results = new List<IParseResult>();
         private bool isSaved = true;
         private bool forceQuit;
-		//private IParser parser;
 
 		private Action onSaveClick;
 
@@ -87,12 +86,21 @@ namespace InGame.UI
 
 			isSaved = true;
 		}
-		public ParseResult GetBigResult()
+		public IParseResult GetBigResult()
         {
-			return new ParseResult()
-			{
-				lots = results.SelectMany(r => r.lots).DistinctBy(l => l.url).ToList()
-			};
+			if (results.Count == 0) return new ParseResult<Lot>();
+
+			IParseResult bigResult = results[0].Clone();
+            bigResult.Clear();
+            foreach (var item in results)
+            {
+				bigResult.MergeWith(item);
+            }
+
+			var uniqueLots = bigResult.EnumerateLots().DistinctBy(l => l.url);
+            bigResult.RemoveWhere(t => uniqueLots.Contains(t) == false);
+
+			return bigResult;
         }
 		
 
@@ -105,7 +113,7 @@ namespace InGame.UI
 			//if (parser == null || parser.process == null) return;
 
 			int i = 0;
-			UIHelper.FillContent<SummaryUIItem, ParseResult>(content, itemPrefab.gameObject, results, (uii, r) =>
+			UIHelper.FillContent<SummaryUIItem, IParseResult>(content, itemPrefab.gameObject, results, (uii, r) =>
 			{
 				uii.Refresh(r, i);
 				i++;
@@ -114,8 +122,8 @@ namespace InGame.UI
 			var bigResult = GetBigResult();
 
 			pagesCountText.text = "Страниц обработано: " + results.Count;
-			newPositionsCountText.text = "Новых позиций: " + bigResult.lots.Count(l => l.exception == null);
-			errorsCountText.text = "Ошибок: " + bigResult.lots.Count(l => l.exception != null);
+			newPositionsCountText.text = "Новых позиций: " + bigResult.EnumerateLots().Count(l => l.exception == null);
+			errorsCountText.text = "Ошибок: " + bigResult.EnumerateLots().Count(l => l.exception != null);
 		}
 		private void ClearChildren(Transform content)
         {

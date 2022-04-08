@@ -1,5 +1,6 @@
 using InGame.Parse;
 using System.Collections.Generic;
+using System.Linq;
 using UnityParser;
 
 namespace InGame.UI
@@ -11,9 +12,9 @@ namespace InGame.UI
 			return new MirkvartirParser();
 		}
 
-        protected override IParseSave GetSave(List<ParseResult> results)
+        protected override IParseSave GetSave(List<IParseResult> results)
         {
-            return new ParseSave<MirkvartirLot>(results);
+            return new ParseSave<MirkvartirLot>(results.Cast<ParseResult<MirkvartirLot>>().ToList());
         }
     }
 }

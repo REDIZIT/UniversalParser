@@ -76,6 +76,10 @@ namespace InGame.Parse
         public string name;
         [ExcelString("Тип сделки")]
         public string contractType;
+        [ExcelString("Класс")]
+        public string storageClass;
+        [ExcelString("Метро")]
+        public string metro;
         [ExcelString("Адрес")]
         public string address;
         [ExcelString("Цена за метр")]

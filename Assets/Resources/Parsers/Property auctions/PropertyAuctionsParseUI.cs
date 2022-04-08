@@ -13,7 +13,7 @@ namespace InGame.UI
         public SummaryControl summary;
 
         private Parser<PropertyAuctionsLot> parser;
-        private List<ParseResult> results = new List<ParseResult>();
+        private List<IParseResult> results = new List<IParseResult>();
 
         private void Awake()
         {
@@ -47,14 +47,14 @@ namespace InGame.UI
             }
         }
 
-        private void SaveNewTable(string filepath, List<ParseResult> results)
+        private void SaveNewTable(string filepath, List<IParseResult> results)
         {
-            var save = new ParseSave<AvitoLot>(results);
+            //var save = new ParseSave<AvitoLot>(results);
             //ExcelTable table = ExcelSerializer.CreateTable(filepath, save);
             throw new NotImplementedException();
         }
 
-        private void SaveToExistingTable(string filepath, List<ParseResult> results)
+        private void SaveToExistingTable(string filepath, List<IParseResult> results)
         {
             throw new NotImplementedException();
             //Excel excel = ExcelHelper.LoadExcel(filepath);

@@ -156,7 +156,7 @@ namespace UnityParser
             }
 
 
-            process.bigResult = new ParseResult();
+            process.bigResult = new ParseResult<T>();
             for (int i = 0; i < process.urlsToParse.Count; i++)
             {
                 Parse(process.urlsToParse[i], i);
@@ -173,15 +173,15 @@ namespace UnityParser
             process.progressMessage = "Скачиваю страницу";
 
 
-            ParseResult result = ParsePage(url, process);
-            process.bigResult.lots.AddRange(result.lots);
+            ParseResult<T> result = ParsePage(url, process);
+            process.bigResult.AddRange(result.lots);
             process.results.Add(result);
             process.currentPageResult = result;
         }
 
-        private ParseResult ParsePage(string url, ParseProcess process)
+        private ParseResult<T> ParsePage(string url, ParseProcess process)
         {
-            ParseResult result = new ParseResult();
+            ParseResult<T> result = new ParseResult<T>();
 
             HtmlDocument doc = null;
             try

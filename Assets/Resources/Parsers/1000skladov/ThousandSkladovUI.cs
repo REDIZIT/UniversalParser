@@ -1,5 +1,6 @@
 using InGame.Parse;
 using System.Collections.Generic;
+using System.Linq;
 using UnityParser;
 
 namespace InGame.UI
@@ -11,9 +12,9 @@ namespace InGame.UI
             return new ThousandSkladovParser();
         }
 
-        protected override IParseSave GetSave(List<ParseResult> results)
+        protected override IParseSave GetSave(List<IParseResult> results)
         {
-            return new ParseSave<StorageLot>(results);
+            return new ParseSave<StorageLot>(results.Cast<ParseResult<StorageLot>>().ToList());
         }
     }
 }
