@@ -7,7 +7,7 @@ namespace UnityParser
         public Exception exception;
 
         [ExcelID]
-        [ExcelString("РЎСЃС‹Р»РєР°")]
+        [ExcelString("Ссылка")]
         public string url;
 
 
