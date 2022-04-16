@@ -13,11 +13,10 @@ namespace UnityParser
         {
             Excel excel = ExcelHelper.CreateExcel(filepath);
             ExcelTable table = excel.Tables[0];
-			
 
-            CreateHeader(table, result.EnumerateLots().First().GetType());
+            CreateHeader(table, result.EnumerateUnpackedLots().First().GetType());
 
-			AppendLots(result.EnumerateLots().First().GetType(), table, result.EnumerateLots());
+			AppendLots(result.EnumerateUnpackedLots().First().GetType(), table, result.EnumerateUnpackedLots());
 
 			ExcelHelper.SaveExcel(excel, filepath);
 
@@ -45,7 +44,7 @@ namespace UnityParser
 			int row = table.NumberOfRows;
 
 			List<ExcelStringAttribute> attributes = new List<ExcelStringAttribute>();
-            //Debug.Log("Type: " + lotType + " lots count: " + lots.Count());
+            Debug.Log("Type: " + lotType + " lots count: " + lots.Count());
             foreach (FieldInfo field in lotType.GetFields())
 			{
 				var attribute = field.GetCustomAttribute<ExcelStringAttribute>();

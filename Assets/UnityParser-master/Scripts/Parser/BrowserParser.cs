@@ -12,7 +12,10 @@ namespace UnityParser
 
         public override HtmlDocument DownloadHtml(string url)
         {
-            OpenBrowser();
+            if (driver == null)
+            {
+                OpenBrowser();
+            }
 
             driver.Navigate().GoToUrl(url);
 
@@ -26,11 +29,16 @@ namespace UnityParser
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(driver.PageSource);
 
-            driver.Close();
+            //driver.Close();
 
             return doc;
         }
-
+        //~BrowserParser()
+        //{
+        //    driver?.Close();
+        //    driver?.Quit();
+        //    driver?.Dispose();
+        //}
 
         protected virtual void Login(string urlLoadAfterLogin)
         {

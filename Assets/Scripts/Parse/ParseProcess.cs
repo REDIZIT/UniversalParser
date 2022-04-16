@@ -62,42 +62,11 @@ namespace InGame.Parse
 	public interface IParseResult
     {
 		IEnumerable<Lot> EnumerateLots();
+		IEnumerable<Lot> EnumerateUnpackedLots();
 		void MergeWith(IParseResult another);
 		void AddRange(IEnumerable<Lot> lots);
 		void Clear();
 		void RemoveWhere(Func<Lot, bool> func);
 		IParseResult Clone();
     }
-	public class ParseResult<T> : IParseResult where T : Lot
-	{
-		public List<T> lots = new List<T>();
-
-		public IEnumerable<Lot> EnumerateLots()
-        {
-			return lots.Cast<Lot>();
-        }
-		public void AddRange(IEnumerable<Lot> lotsToAdd)
-        {
-			lots.AddRange(lotsToAdd.Cast<T>());
-        }
-		public void RemoveWhere(Func<Lot, bool> func)
-        {
-			lots.RemoveAll(t => func(t));
-		}
-		public void MergeWith(IParseResult another)
-        {
-			ParseResult<T> result = (ParseResult<T>)another;
-			lots.AddRange(result.lots);
-        }
-		public void Clear()
-        {
-			lots.Clear();
-        }
-		public IParseResult Clone()
-        {
-			ParseResult<T> clone = new ParseResult<T>();
-			clone.lots.AddRange(lots);
-			return clone;
-        }
-	}
 }
