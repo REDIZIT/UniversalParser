@@ -28,8 +28,9 @@ namespace InGame.Parse
                 Thread.Sleep(1000);
             }
 
-            HtmlNode link = doc.DocumentNode.SelectSingleNode(".//a[@class='zen-hotelcard-name-link link']");
-            yield return link;
+            Thread.Sleep(3000);
+
+            return doc.DocumentNode.SelectNodes(".//a[@class='zen-hotelcard-name-link link']");
         }
 
         protected override LotContainer<OstrovokLot> ParseLotOrThrowException(HtmlNode node)
@@ -37,6 +38,8 @@ namespace InGame.Parse
             string url = "https://ostrovok.ru" + node.GetAttributeValue("href", "");
 
             driver.Navigate().GoToUrl(url);
+            Thread.Sleep(1000);
+
             LotContainer<OstrovokLot> container = new LotContainer<OstrovokLot>();
             string hotelName = driver.FindElement(By.ClassName("zen-roomspage-title-name")).Text;
 
@@ -51,9 +54,13 @@ namespace InGame.Parse
 
                 lot.hotelName = hotelName;
                 lot.roomName = roomName;
+
+                lot.food = room.FindElement(By.ClassName("valueadds-item-title-inner")).Text.Replace("?", "");
+                lot.cancelPrice = room.FindElement(By.ClassName("valueadds-item-cancellation")).Text.Replace("?", "");
+                lot.payMethod = room.FindElement(By.ClassName("valueadds-item-payment")).Text.Replace("?", "");
+                lot.price = room.FindElement(By.ClassName("zenroomspage-b2c-rates-price-amount")).Text.Replace("?", "");
             }
 
-            Debug.Log("Container lots count: " + container.lots.Count);
             return container;
         }
     }
@@ -66,14 +73,19 @@ namespace InGame.Parse
         [ExcelString("Название номера")]
         public string roomName;
 
-        [ExcelID()]
-        [ExcelString("ID")]
-        public new string url;
+        [ExcelString("Питание")]
+        public string food;
+
+        [ExcelString("Отмена")]
+        public string cancelPrice;
+
+        [ExcelString("Оплата")]
+        public string payMethod;
+
+        [ExcelString("Цена")]
+        public string price;
 
         public OstrovokLot() : base() { }
-        public OstrovokLot(string url) : base(url)
-        {
-            this.url = url;
-        }
+        public OstrovokLot(string url) : base(url) { }
     }
 }
