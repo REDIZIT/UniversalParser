@@ -70,6 +70,7 @@ namespace UnityParser
                 throw new ExceptionResponseCode($"Webpage ({url}) can't be downloaded. Response code is {resp.StatusCode}", resp.StatusCode);
             }
         }
+        public virtual void OnParseFinished() { }
 
         public IEnumerable<T> ParseLots(IEnumerable<HtmlNode> nodes)
         {
@@ -90,6 +91,7 @@ namespace UnityParser
                 lot.exception = err;
 
                 Debug.LogError("Lot can't be handled." + "\n\nError is: " + err + "\n\nNode html was:\n " + node.InnerHtml);
+                Debug.LogException(err);
 
                 return lot;
             }
@@ -165,6 +167,8 @@ namespace UnityParser
 
             process.state = ParseProcess.State.Finished;
             UnityMainThreadDispatcher.Instance().Enqueue(process.onfinished);
+
+            OnParseFinished();
         }
         private void Parse(string url, int currentUrlIndex)
         {

@@ -9,7 +9,9 @@ namespace InGame.UI
     {
         public override IParser CreateParser()
         {
-            return new OstrovokParser();
+            OstrovokParser parser = new OstrovokParser();
+            parser.Setup(selectTableUI);
+            return parser;
         }
 
         protected override IParseSave GetSave(List<IParseResult> results)
