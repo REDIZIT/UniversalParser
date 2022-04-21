@@ -65,39 +65,48 @@ namespace InGame.Parse
                 lot.food = room.FindElement(By.ClassName("valueadds-item-title-inner")).Text.Replace("?", "");
                 lot.cancelPrice = room.FindElement(By.ClassName("valueadds-item-cancellation")).Text.Replace("?", "");
                 lot.payMethod = room.FindElement(By.ClassName("valueadds-item-payment")).Text.Replace("?", "");
-                lot.price = room.FindElement(By.ClassName("zenroomspage-b2c-rates-price-amount")).Text.Replace("?", "");
 
-                Thread.Sleep(1000);
+                string priceStr = room.FindElement(By.ClassName("zenroomspage-b2c-rates-price-amount")).Text.Replace("?", "");
+                string taxStr = room.FindElement(By.ClassName("zenroomspage-b2c-rates-price-included")).Text.Replace("?", "");
+                lot.price = $"{priceStr} ({taxStr})";
 
                 try
                 {
-                    var photoButton = room.FindElement(By.ClassName("zenroomspage-rates-roomheader-photo"));
-                    if (photoButton != null)
-                    {
-                        photoButton.Click();
-
-                        Thread.Sleep(1000);
-
-                        int photosCount = int.Parse(driver.FindElement(By.ClassName("zenpopupgallery-footer-counter")).Text.Split('/')[1].Trim());
-                        var nextButton = driver.FindElement(By.ClassName("zenpopupgallery-controls-arrow-next"));
-
-                        for (int i = 0; i < photosCount; i++)
-                        {
-                            lot.photos.Add(driver.FindElement(By.ClassName("zenimage-content")).GetAttribute("src"));
-
-                            if (i < photosCount - 1) nextButton.Click();
-                            Thread.Sleep(500);
-                        }
-
-                        driver.FindElement(By.ClassName("zenpopupgallery-controls-close")).Click();
-                        Thread.Sleep(1000);
-                    }
+                    lot.square = room.FindElement(By.ClassName("zenroomspageroom-header-content-amenity-square")).Text.Split(' ')[0];
                 }
-                catch (System.Exception err)
-                {
-                    Debug.LogError("Photo exception");
-                    Debug.LogException(err);
-                }
+                catch { }
+
+                //Thread.Sleep(1000);
+
+                //try
+                //{
+                //    var photoButton = room.FindElement(By.ClassName("zenroomspage-rates-roomheader-photo"));
+                //    if (photoButton != null)
+                //    {
+                //        photoButton.Click();
+
+                //        Thread.Sleep(1000);
+
+                //        int photosCount = int.Parse(driver.FindElement(By.ClassName("zenpopupgallery-footer-counter")).Text.Split('/')[1].Trim());
+                //        var nextButton = driver.FindElement(By.ClassName("zenpopupgallery-controls-arrow-next"));
+
+                //        for (int i = 0; i < photosCount; i++)
+                //        {
+                //            lot.photos.Add(driver.FindElement(By.ClassName("zenimage-content")).GetAttribute("src"));
+
+                //            if (i < photosCount - 1) nextButton.Click();
+                //            Thread.Sleep(500);
+                //        }
+
+                //        driver.FindElement(By.ClassName("zenpopupgallery-controls-close")).Click();
+                //        Thread.Sleep(1000);
+                //    }
+                //}
+                //catch (System.Exception err)
+                //{
+                //    Debug.LogError("Photo exception");
+                //    Debug.LogException(err);
+                //}
             }
 
             return container;
@@ -109,6 +118,9 @@ namespace InGame.Parse
         }
         public override void OnParseFinished()
         {
+            Debug.Log("OstrovokParser OnParseFinished photo save disabled");
+            return;
+
             Debug.Log("OnParseFinished, photosCount: " + process.results.Sum(s => s.EnumerateUnpackedLots().Cast<OstrovokLot>().Sum(l => l.photos.Count)));
             FileInfo fileInfo = new FileInfo(selectTableControl.tableFilePath);
             string photoFolder = fileInfo.Directory.FullName.Replace(@"\\", "/") + "/Фотографии";
@@ -138,6 +150,9 @@ namespace InGame.Parse
 
         [ExcelString("Название номера")]
         public string roomName;
+
+        [ExcelString("Площадь")]
+        public string square;
 
         [ExcelString("Питание")]
         public string food;
