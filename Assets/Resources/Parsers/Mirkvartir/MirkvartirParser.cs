@@ -6,7 +6,7 @@ using UnityParser;
 
 namespace InGame.Parse
 {
-    public class MirkvartirParser : Parser<MirkvartirLot>
+    public class MirkvartirParser : BrowserParser<MirkvartirLot>
     {
         protected override string UrlPageArgument => "p";
 

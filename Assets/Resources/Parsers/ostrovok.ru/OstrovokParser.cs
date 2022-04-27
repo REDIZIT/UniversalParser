@@ -29,14 +29,13 @@ namespace InGame.Parse
                 }
 
                 tryCount++;
-                if (tryCount >= 10) throw new System.TimeoutException("OstrovokParser page load timeout. Not found div with class hotels-inner");
+                if (tryCount >= 20) throw new System.TimeoutException("OstrovokParser page load timeout. Not found div with class hotels-inner");
                 Thread.Sleep(1000);
             }
 
-            Thread.Sleep(3000);
+            Thread.Sleep(10000);
 
             return doc.DocumentNode.SelectNodes(".//a[@class='zen-hotelcard-name-link link']");
-            //yield return doc.DocumentNode.SelectSingleNode(".//a[@class='zen-hotelcard-name-link link']");
         }
 
         protected override LotContainer<OstrovokLot> ParseLotOrThrowException(HtmlNode node)
@@ -75,38 +74,6 @@ namespace InGame.Parse
                     lot.square = room.FindElement(By.ClassName("zenroomspageroom-header-content-amenity-square")).Text.Split(' ')[0];
                 }
                 catch { }
-
-                //Thread.Sleep(1000);
-
-                //try
-                //{
-                //    var photoButton = room.FindElement(By.ClassName("zenroomspage-rates-roomheader-photo"));
-                //    if (photoButton != null)
-                //    {
-                //        photoButton.Click();
-
-                //        Thread.Sleep(1000);
-
-                //        int photosCount = int.Parse(driver.FindElement(By.ClassName("zenpopupgallery-footer-counter")).Text.Split('/')[1].Trim());
-                //        var nextButton = driver.FindElement(By.ClassName("zenpopupgallery-controls-arrow-next"));
-
-                //        for (int i = 0; i < photosCount; i++)
-                //        {
-                //            lot.photos.Add(driver.FindElement(By.ClassName("zenimage-content")).GetAttribute("src"));
-
-                //            if (i < photosCount - 1) nextButton.Click();
-                //            Thread.Sleep(500);
-                //        }
-
-                //        driver.FindElement(By.ClassName("zenpopupgallery-controls-close")).Click();
-                //        Thread.Sleep(1000);
-                //    }
-                //}
-                //catch (System.Exception err)
-                //{
-                //    Debug.LogError("Photo exception");
-                //    Debug.LogException(err);
-                //}
             }
 
             return container;

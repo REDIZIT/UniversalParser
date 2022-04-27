@@ -9,7 +9,7 @@ using UnityParser;
 
 namespace InGame.Parse
 {
-    public class AvitoParser : Parser<AvitoLot>
+    public class AvitoParser : BrowserParser<AvitoLot>
     {
         protected override string UrlPageArgument => "p";
 
@@ -69,7 +69,7 @@ namespace InGame.Parse
 
             HtmlNode priceNode = node.SelectSingleNode(".//span[@data-marker='item-price']");
             HtmlNode priceSpan = priceNode.SelectSingleNode(".//span");
-            lot.price = priceSpan.InnerText;
+            lot.price = priceSpan.InnerText.Replace("&nbsp;", " ");
 
             #endregion
 
