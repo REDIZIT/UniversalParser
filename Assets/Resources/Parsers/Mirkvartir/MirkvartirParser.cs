@@ -47,7 +47,7 @@ namespace InGame.Parse
 
             #endregion
 
-            HtmlNode placeNode = node.SelectSingleNode(".//div[@class='place']");
+            HtmlNode placeNode = node.SelectSingleNode(".//div[@class='address']");
             lot.metroOrDistrict = placeNode.InnerText;
 
             #region Metro
