@@ -20,8 +20,7 @@ namespace InGame.UI
             }
 			
 			
-			ParserPage prefab = Instantiate(page.prefabPage, content).GetComponent<ParserPage>();
-			prefab.Initialize(page);
+			Instantiate(page.prefabPage, content).GetComponent<UniversalParserPage>().Initialize(page);
         }
 	}
 }

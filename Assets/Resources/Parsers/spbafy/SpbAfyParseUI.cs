@@ -1,20 +1,64 @@
 using InGame.Parse;
-using System.Collections.Generic;
-using System.Linq;
-using UnityParser;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace InGame.UI
 {
-    public class SpbAfyParseUI : AvitoParseUI
+    public class SpbAfyParseUI : MonoBehaviour
     {
-        public override IParser CreateParser()
+        [SerializeField] private SelectTableControl importTableControl, exportTableControl;
+        [SerializeField] private InputField urlField, pagesField;
+        [SerializeField] private Button startButton, cancelButton;
+        [SerializeField] private Text currentPageText;
+
+        private SpbAfyParser parser = new SpbAfyParser();
+        private int pagesCount;
+
+        private void Update()
         {
-            return new SpbAfyParser();
+            startButton.gameObject.SetActive(parser.IsWorking == false);
+            startButton.interactable = importTableControl.IsSelected && exportTableControl.IsSelected && string.IsNullOrEmpty(urlField.text) == false;
+            cancelButton.gameObject.SetActive(startButton.gameObject.activeSelf == false);
+
+            urlField.interactable = parser.IsWorking == false;
+            pagesField.interactable = parser.IsWorking == false;
+
+            if (int.TryParse(pagesField.text, out int page))
+            {
+                pagesCount = page;
+                if (page <= 0 && string.IsNullOrWhiteSpace(pagesField.text) == false)
+                {
+                    pagesField.text = "1";
+                }
+            }
+
+            if (parser.IsWorking)
+            {
+                currentPageText.text = "Текущая страница: " + parser.CurrentPage;
+            }
+            else
+            {
+                currentPageText.text = "";
+            }
+        }
+        public void ClickStart()
+        {
+            parser.StartParsing(urlField.text);
+            parser.process.onfinished += () => { };
+            parser.process.onPageParsed += OnFinished;
+
+            parser.SetImportResults(importTableControl.Load<MirkvartirLot>());
+            parser.SetPagesCount(pagesCount);
+        }
+        public void ClickCancel()
+        {
+            parser.Abort();
         }
 
-        protected override IParseSave GetSave(List<IParseResult> results)
+        private void OnFinished()
         {
-            return new ParseSave<MirkvartirLot>(results.Cast<ParseResult<MirkvartirLot>>().ToList());
+            GlobalUI.parseResultWindow.Show(parser.process);
+            exportTableControl.SaveResult(parser.process.bigResult);
         }
     }
 }

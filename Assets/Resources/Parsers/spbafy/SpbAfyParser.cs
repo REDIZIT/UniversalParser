@@ -1,5 +1,7 @@
 ﻿using HtmlAgilityPack;
+using OpenQA.Selenium;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityParser;
 
@@ -7,15 +9,70 @@ namespace InGame.Parse
 {
     public class SpbAfyParser : BrowserParser<MirkvartirLot>
     {
+        public int CurrentPage { get; private set; }
+
         protected override string UrlPageArgument => "page";
 
+        private HashSet<string> importedIDs = new HashSet<string>();
+        private int pageCount = 0;
+
+        public void SetImportResults(IEnumerable<string> IDs)
+        {
+            importedIDs.Clear();
+            if (IDs != null) importedIDs.UnionWith(IDs);
+        }
+        public void SetPagesCount(int pageCount)
+        {
+            this.pageCount = pageCount;
+        }
         protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
         {
-            HtmlNode listNode = doc.DocumentNode.SelectSingleNode(".//div[@class='object-list']").ChildNodes[1];
+            HtmlDocument currentDocument = new HtmlDocument();
 
-            foreach (HtmlNode node in listNode.ChildNodes)
+            bool isImportedNodeFound = false;
+            CurrentPage = 0;
+
+            while (isImportedNodeFound == false && (pageCount == 0 || CurrentPage < pageCount))
             {
-                if (node.GetAttributeValue("data-role", null) == "pbbitem_in_list")
+                if (CurrentPage != 0)
+                {
+                    Debug.Log("Go to the next page");
+                    try
+                    {
+                        driver.FindElement(By.ClassName("object-list-more-link")).Click();
+                    }
+                    catch
+                    {
+                        isImportedNodeFound = true;
+                    }
+
+                    Thread.Sleep(1000);
+                }
+                CurrentPage++;
+
+                if (importedIDs.Count != 0)
+                {
+                    currentDocument.LoadHtml(driver.PageSource);
+
+                    HtmlNode listNode = currentDocument.DocumentNode.SelectSingleNode(".//div[@class='object-list']").ChildNodes[1];
+
+                    foreach (HtmlNode node in listNode.ChildNodes)
+                    {
+                        if (node.GetAttributeValue("data-role", null) == "pbbitem_in_list" && importedIDs.Contains(GetUrl(node)))
+                        {
+                            Debug.Log("Found imported lot");
+                            isImportedNodeFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+            currentDocument.LoadHtml(driver.PageSource);
+            foreach (HtmlNode node in currentDocument.DocumentNode.SelectSingleNode(".//div[@class='object-list']").ChildNodes[1].ChildNodes)
+            {
+                if (node.GetAttributeValue("data-role", null) == "pbbitem_in_list" && importedIDs.Contains(GetUrl(node)) == false)
                 {
                     yield return node;
                 }
@@ -26,9 +83,8 @@ namespace InGame.Parse
         {
             MirkvartirLot lot = new MirkvartirLot();
 
-            //
-            HtmlNode urlButton = node.SelectSingleNode(".//a[@class='object-item-info-more-link']");
-            lot.url = urlButton.GetAttributeValue("href", null);
+
+            lot.url = GetUrl(node);
 
 
             HtmlNode titleNode = node.SelectSingleNode(".//a[@class='object-item-head-title']");
@@ -77,6 +133,17 @@ namespace InGame.Parse
             lot.price = priceNode.InnerText;
 
             return lot;
+        }
+        public override void OnParseFinished()
+        {
+            base.OnParseFinished();
+
+            driver.Close();
+        }
+        private string GetUrl(HtmlNode lotNode)
+        {
+            HtmlNode urlButton = lotNode.SelectSingleNode(".//a[@class='object-item-info-more-link']");
+            return urlButton.GetAttributeValue("href", null);
         }
     }
 }

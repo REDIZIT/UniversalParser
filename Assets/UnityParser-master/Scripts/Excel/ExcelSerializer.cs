@@ -39,6 +39,12 @@ namespace UnityParser
 			ExcelHelper.SaveExcel(excel, filepath);
 		}
 
+		public static IEnumerable<string> LoadIDs<T>(string filepath) where T : Lot
+        {
+			Excel excel = ExcelHelper.LoadExcel(filepath);
+			return GetAllIDs(typeof(T), excel.Tables[0]);
+        }
+
 		private static void AppendLots(Type lotType, ExcelTable table, IEnumerable<Lot> lots)
         {
 			int row = table.NumberOfRows;

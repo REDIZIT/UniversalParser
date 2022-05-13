@@ -959,10 +959,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   workingTableType: 0
+  selectMode: 0
   tableFilePath: 
   selectGroup: {fileID: 4769986880713993412}
   deselectGroup: {fileID: 4869734041673496544}
   tableNameText: {fileID: 8399969379109195974}
+  newTableButton: {fileID: 8399969379448129394}
+  oldTableButton: {fileID: 8399969378962911872}
+  separator: {fileID: 8399969378340119872}
 --- !u!1 &8399969380136053761
 GameObject:
   m_ObjectHideFlags: 0

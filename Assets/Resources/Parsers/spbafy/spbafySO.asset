@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: spbafySO
   m_EditorClassIdentifier: Core:InGame:ParserSO
   parserName: Spb.afy.ru
-  parseUIType: SpbAfyParseUI
+  parseUIType: InGame.UI.SpbAfyParseUI
   parseUI: {fileID: 11500000, guid: d134bae2cfede704b80ddd49c9123c1a, type: 3}
-  prefabPage: {fileID: 0}
+  prefabPage: {fileID: 2301213270703227789, guid: b0253fa23dd4f284b811e708b32a1eb5, type: 3}

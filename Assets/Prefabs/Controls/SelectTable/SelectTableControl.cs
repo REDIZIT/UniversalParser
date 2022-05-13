@@ -1,15 +1,21 @@
+using InGame.Parse;
 using SFB;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityParser;
 
 namespace InGame.UI
 {
     /// <summary>Control for selecting excel table for next working</summary>
 	public class SelectTableControl : MonoBehaviour
 	{
+        public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
+
         public WorkingTableType workingTableType;
+        public TableSelectMode selectMode;
         public string tableFilePath;
 
         public Action onTableReset;
@@ -18,8 +24,15 @@ namespace InGame.UI
         [SerializeField] private GameObject selectGroup, deselectGroup;
         [SerializeField] private Text tableNameText;
 
+        [SerializeField] private GameObject newTableButton, oldTableButton, separator;
         
 
+        public enum TableSelectMode
+        {
+            NewAndOld,
+            OnlyOld,
+            OnlyNew
+        }
         public enum WorkingTableType
         {
             NotSelected,
@@ -35,6 +48,11 @@ namespace InGame.UI
         {
             selectGroup.SetActive(workingTableType == WorkingTableType.NotSelected);
             deselectGroup.SetActive(workingTableType != WorkingTableType.NotSelected);
+
+            newTableButton.SetActive(selectMode == TableSelectMode.NewAndOld || selectMode == TableSelectMode.OnlyNew);
+            oldTableButton.SetActive(selectMode == TableSelectMode.NewAndOld || selectMode == TableSelectMode.OnlyOld);
+            separator.SetActive(selectMode == TableSelectMode.NewAndOld);
+
 
             if (workingTableType != WorkingTableType.NotSelected)
             {
@@ -81,6 +99,28 @@ namespace InGame.UI
             tableFilePath = "";
 
             onTableReset?.Invoke();
+        }
+        public void SaveResult(IParseResult result)
+        {
+            if (workingTableType == WorkingTableType.CreateNewTable)
+            {
+                ExcelSerializer.CreateTable(tableFilePath, result);
+            }
+            else
+            {
+                ExcelSerializer.AppendUniqLots(tableFilePath, result);
+            }
+        }
+        public IEnumerable<string> Load<T>() where T : Lot
+        {
+            if (workingTableType == WorkingTableType.CreateNewTable)
+            {
+                return null;
+            }
+            else
+            {
+                return ExcelSerializer.LoadIDs<T>(tableFilePath);
+            }
         }
     }
 }

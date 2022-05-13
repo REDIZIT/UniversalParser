@@ -15,15 +15,9 @@ using InGame.UI;
 
 namespace UnityParser
 {
-    public interface IParser
-    {
-        ParseProcess process { get; }
-        ParseProcess StartParsing(string url, int startPage = 0, int endPage = 0);
-        int GetCurrentPageNumberByUrl(string url);
-        string GetUrlWithPageNumber(string baseUrl, int pageNumber);
-    }
     public abstract class Parser<T> : IParser where T : Lot
     {
+        public bool IsWorking { get; private set; }
         public ParseProcess process { get; protected set; }
 
         private Thread parseThread;
@@ -36,8 +30,14 @@ namespace UnityParser
 
             parseThread = new Thread(() => Parse(url, startPage, endPage));
             parseThread.Start();
+            IsWorking = true;
 
             return process;
+        }
+        public void Abort()
+        {
+            parseThread?.Abort();
+            IsWorking = false;
         }
 
 		public virtual HtmlDocument DownloadHtml(string url)
@@ -70,7 +70,10 @@ namespace UnityParser
                 throw new ExceptionResponseCode($"Webpage ({url}) can't be downloaded. Response code is {resp.StatusCode}", resp.StatusCode);
             }
         }
-        public virtual void OnParseFinished() { }
+        public virtual void OnParseFinished()
+        {
+            IsWorking = false;
+        }
 
         public IEnumerable<T> ParseLots(IEnumerable<HtmlNode> nodes)
         {
