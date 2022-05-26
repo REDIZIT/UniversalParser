@@ -60,9 +60,9 @@ namespace InGame.Parse
                     {
                         if (node.GetAttributeValue("data-role", null) == "pbbitem_in_list" && importedIDs.Contains(GetUrl(node)))
                         {
-                            Debug.Log("Found imported lot");
+                            Debug.Log("Found imported lot with id: " + GetUrl(node));
                             isImportedNodeFound = true;
-                            break;
+                            //break;
                         }
                     }
                 }

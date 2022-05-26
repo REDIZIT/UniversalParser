@@ -47,6 +47,7 @@ namespace InGame.Parse
 
             LotContainer<OstrovokLot> container = new LotContainer<OstrovokLot>();
             string hotelName = driver.FindElement(By.ClassName("zen-roomspage-title-name")).Text;
+            string hotelAddress = driver.FindElement(By.ClassName("zenroomspagelocation-address")).Text;
 
             container.url = hotelName;
 
@@ -59,6 +60,7 @@ namespace InGame.Parse
                 container.lots.Add(lot);
 
                 lot.hotelName = hotelName;
+                lot.hotelAddress = hotelAddress;
                 lot.roomName = roomName;
 
                 lot.food = room.FindElement(By.ClassName("valueadds-item-title-inner")).Text.Replace("?", "");
@@ -114,6 +116,9 @@ namespace InGame.Parse
     {
         [ExcelString("Название отеля")]
         public string hotelName;
+
+        [ExcelString("Адрес отеля")]
+        public string hotelAddress;
 
         [ExcelString("Название номера")]
         public string roomName;
