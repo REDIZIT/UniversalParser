@@ -34,16 +34,28 @@ namespace UnityParser
 
             return doc;
         }
-        //~BrowserParser()
-        //{
-        //    driver?.Close();
-        //    driver?.Quit();
-        //    driver?.Dispose();
-        //}
+        ~BrowserParser()
+        {
+            driver?.Close();
+            driver?.Quit();
+            driver?.Dispose();
+        }
 
         protected virtual void Login(string urlLoadAfterLogin)
         {
             throw new NotImplementedException();
+        }
+
+        protected string TryGetText(IWebElement body, By elementBy)
+        {
+            try
+            {
+                return body.FindElement(elementBy).Text;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         private void OpenBrowser()

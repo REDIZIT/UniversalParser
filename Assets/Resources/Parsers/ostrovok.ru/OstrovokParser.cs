@@ -68,7 +68,7 @@ namespace InGame.Parse
                 lot.payMethod = room.FindElement(By.ClassName("valueadds-item-payment")).Text.Replace("?", "");
 
                 string priceStr = room.FindElement(By.ClassName("zenroomspage-b2c-rates-price-amount")).Text.Replace("?", "");
-                string taxStr = room.FindElement(By.ClassName("zenroomspage-b2c-rates-price-included")).Text.Replace("?", "");
+                string taxStr = (TryGetText(room, By.ClassName("zenroomspage-b2c-rates-price-included")) + TryGetText(room, By.ClassName("zenroomspage-b2c-rates-price-postpay"))).Replace("?", "");
                 lot.price = $"{priceStr} ({taxStr})";
 
                 try
