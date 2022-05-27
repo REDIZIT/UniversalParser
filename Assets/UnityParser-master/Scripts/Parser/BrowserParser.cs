@@ -2,6 +2,7 @@ using HtmlAgilityPack;
 using System;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using InGame;
 
 namespace UnityParser
@@ -47,12 +48,10 @@ namespace UnityParser
 
         private void OpenBrowser()
         {
-            EdgeDriverService service = EdgeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets");
+            var service = ChromeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets");
             service.HideCommandPromptWindow = true;
 
-            EdgeOptions options = new EdgeOptions();
-
-            driver = new EdgeDriver(service, options);
+            driver = new ChromeDriver(service);
         }
     }
 }
