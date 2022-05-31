@@ -245,7 +245,7 @@ namespace IngameDebugConsole
 		private bool snapToBottom = true;
 
 		// List of unique debug entries (duplicates of entries are not kept)
-		private List<DebugLogEntry> collapsedLogEntries;
+		public List<DebugLogEntry> collapsedLogEntries;
 
 		// Dictionary to quickly find if a log already exists in collapsedLogEntries
 		private Dictionary<DebugLogEntry, int> collapsedLogEntriesMap;
@@ -743,7 +743,7 @@ namespace IngameDebugConsole
 			else
 				logEntry = new DebugLogEntry();
 
-			logEntry.Initialize( queuedLogEntry.logString, queuedLogEntry.stackTrace );
+			logEntry.Initialize( queuedLogEntry.logString, queuedLogEntry.stackTrace, logType );
 
 			// Check if this entry is a duplicate (i.e. has been received before)
 			int logEntryIndex;

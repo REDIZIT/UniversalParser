@@ -55,6 +55,10 @@ namespace InGame.UI
 			int number = parser.GetCurrentPageNumberByUrl(urlField.text);
 			currentPageText.text = number == -1 ? "-" : number.ToString();
 		}
+        private void OnApplicationQuit()
+        {
+			parser?.Abort();
+        }
 
 
         public void Refresh(IParser parser, Action onUrlHandled, Action onPageParsed)

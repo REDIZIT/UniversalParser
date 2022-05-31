@@ -41,6 +41,10 @@ namespace InGame.UI
                 currentPageText.text = "";
             }
         }
+        private void OnApplicationQuit()
+        {
+            parser.Abort();
+        }
         public void ClickStart()
         {
             parser.StartParsing(urlField.text);

@@ -8,8 +8,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using UnityEngine;
-using OpenQA.Selenium;
-using System.Linq;
 using InGame.Exceptions;
 using InGame.UI;
 
@@ -34,7 +32,7 @@ namespace UnityParser
 
             return process;
         }
-        public void Abort()
+        public virtual void Abort()
         {
             parseThread?.Abort();
             IsWorking = false;

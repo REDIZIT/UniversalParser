@@ -9,6 +9,7 @@ namespace IngameDebugConsole
 
 		public string logString;
 		public string stackTrace;
+		public LogType logType;
 
 		private string completeLog;
 
@@ -20,10 +21,11 @@ namespace IngameDebugConsole
 
 		private int hashValue;
 
-		public void Initialize( string logString, string stackTrace )
+		public void Initialize( string logString, string stackTrace, LogType logType)
 		{
 			this.logString = logString;
 			this.stackTrace = stackTrace;
+			this.logType = logType;
 
 			completeLog = null;
 			count = 1;

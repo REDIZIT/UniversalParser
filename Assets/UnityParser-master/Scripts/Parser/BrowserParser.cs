@@ -34,8 +34,10 @@ namespace UnityParser
 
             return doc;
         }
-        ~BrowserParser()
+        public override void Abort()
         {
+            base.Abort();
+
             driver?.Close();
             driver?.Quit();
             driver?.Dispose();
