@@ -63,7 +63,7 @@ namespace InGame.Parse
                 lot.hotelAddress = hotelAddress;
                 lot.roomName = roomName;
 
-                lot.food = room.FindElement(By.ClassName("valueadds-item-title-inner")).Text.Replace("?", "");
+                lot.food = room.FindElement(By.ClassName("valueadds-item-meal")).Text.Replace("?", "");
                 lot.cancelPrice = room.FindElement(By.ClassName("valueadds-item-cancellation")).Text.Replace("?", "");
                 lot.payMethod = room.FindElement(By.ClassName("valueadds-item-payment")).Text.Replace("?", "");
 
