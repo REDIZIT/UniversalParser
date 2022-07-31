@@ -10,5 +10,7 @@ namespace InGame.Settings
         public string m2Password;
 
         public bool enableConsole;
+
+        public bool enableImageLoading = true;
     }
 }

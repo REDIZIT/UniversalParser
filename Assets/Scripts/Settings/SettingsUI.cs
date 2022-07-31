@@ -10,15 +10,18 @@ namespace InGame.Settings
 		public Text versionText;
 
 		[Header("Proxy")]
-		public Switch proxySwitch;
-		public InputField proxyAddress, proxyPort;
+		[SerializeField] private Switch proxySwitch;
+		[SerializeField] private InputField proxyAddress, proxyPort;
 
 		[Header("M2")]
-		public InputField m2Login;
-		public InputField m2Password;
+		[SerializeField] private InputField m2Login;
+		[SerializeField] private InputField m2Password;
 
 		[Header("Dev")]
-		public Switch enableConsoleSwitch;
+		[SerializeField] private Switch enableConsoleSwitch;
+
+		[Header("Browser")]
+		[SerializeField] private Switch enableImageLoadingSwitch;
 
 		private Settings settings => SettingsManager.settings;
 		private bool isRefreshing;
@@ -31,6 +34,7 @@ namespace InGame.Settings
 			m2Login.onValueChanged.AddListener((_) => OnAnyValueChanged());
 			m2Password.onValueChanged.AddListener((_) => OnAnyValueChanged());
 
+			enableImageLoadingSwitch.onValueChanged += (_) => OnAnyValueChanged();
 
 			versionText.text = "Версия приложения " + Application.version;
 		}
@@ -59,6 +63,8 @@ namespace InGame.Settings
 
 			enableConsoleSwitch.SetIsOn(settings.enableConsole, true);
 
+			enableImageLoadingSwitch.SetIsOn(settings.enableImageLoading, true);
+
 			isRefreshing = false;
 		}
 
@@ -81,6 +87,8 @@ namespace InGame.Settings
 
 			settings.enableConsole = enableConsoleSwitch.isOn;
 			DebugLogManager.Instance.gameObject.SetActive(SettingsManager.settings.enableConsole);
+
+			settings.enableImageLoading = enableImageLoadingSwitch.isOn;
 
 			SettingsManager.Save();
         }

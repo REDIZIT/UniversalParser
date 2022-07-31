@@ -4,6 +4,7 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using InGame;
+using InGame.Settings;
 
 namespace UnityParser
 {
@@ -29,8 +30,6 @@ namespace UnityParser
 
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(driver.PageSource);
-
-            //driver.Close();
 
             return doc;
         }
@@ -65,7 +64,14 @@ namespace UnityParser
             var service = ChromeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets");
             service.HideCommandPromptWindow = true;
 
-            driver = new ChromeDriver(service);
+            ChromeOptions options = new ChromeOptions();
+
+            if (SettingsManager.settings.enableImageLoading == false)
+            {
+                options.AddUserProfilePreference("profile.managed_default_content_settings.images", 2);
+            }
+
+            driver = new ChromeDriver(service, options);
         }
     }
 }
