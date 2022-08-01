@@ -61,7 +61,7 @@ namespace UnityParser
 
         private void OpenBrowser()
         {
-            var service = ChromeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets");
+            var service = ChromeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets", "yandexdriver.exe");
             service.HideCommandPromptWindow = true;
 
             ChromeOptions options = new ChromeOptions();
