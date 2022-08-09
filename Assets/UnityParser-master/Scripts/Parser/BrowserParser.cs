@@ -66,8 +66,6 @@ namespace UnityParser
 
             ChromeOptions options = new ChromeOptions();
 
-            options.AddArgument("--disable-dev-shm-usage");
-
             if (SettingsManager.settings.enableImageLoading == false)
             {
                 options.AddUserProfilePreference("profile.managed_default_content_settings.images", 2);
