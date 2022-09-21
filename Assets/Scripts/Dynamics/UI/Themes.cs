@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace InGame.Dynamics.UI
 {
-    [CreateAssetMenu(menuName = "SODB/Themes")]
+    [CreateAssetMenu(menuName = "SODB/T")]
     public class Themes : ScriptableObject
     {
-        [SerializeField] private Dictionary<ColorLayer, Color> colors;
+        [SerializeField] private ColorLayersDictionary colors;
 
         public Color GetColor(ColorLayer layer)
         {

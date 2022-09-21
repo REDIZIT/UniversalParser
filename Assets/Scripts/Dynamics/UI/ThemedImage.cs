@@ -27,9 +27,14 @@ namespace InGame.Dynamics.UI
             {
                 animationTimeLeft -= Time.deltaTime;
                 image.color = Color.Lerp(themes.GetColor(targetColor), themes.GetColor(colorLayer), animationTimeLeft / animationTimeLength);
+
+                if (animationTimeLeft <= 0)
+                {
+                    colorLayer = targetColor;
+                }
             }
         }
-        public void SetColor(ColorLayer layer, float animationTime = 0.3f)
+        public void SetColor(ColorLayer layer, float animationTime = 0.1f)
         {
             animationTimeLength = animationTimeLeft = animationTime;
             targetColor = layer;

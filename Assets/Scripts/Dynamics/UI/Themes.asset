@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 824d1268dfc39d94aba63ac05665d495, type: 3}
   m_Name: Themes
   m_EditorClassIdentifier: 
+  colors:
+    m_keys: 0200000003000000
+    m_values:
+    - {r: 0.19607843, g: 0.24705882, b: 0.29411766, a: 1}
+    - {r: 0.12156863, g: 0.16078432, b: 0.2, a: 1}
