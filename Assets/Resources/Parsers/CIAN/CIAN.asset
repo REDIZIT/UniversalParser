@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725a188cd5d74d04bb84eaad205e31cc, type: 3}
+  m_Name: CIAN
+  m_EditorClassIdentifier: 
+  parserName: CIAN
+  parseUIType: InGame.UI.CIANUI
+  parseUI: {fileID: 11500000, guid: e15b98d8e089b4f4784b65a4e4cbf2be, type: 3}
+  prefabPage: {fileID: 0}
