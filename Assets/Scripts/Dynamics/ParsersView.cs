@@ -5,13 +5,15 @@ namespace InGame.Dynamics
 {
     public class ParsersView : MonoBehaviour
     {
-        public List<ParserModel> parsers = new List<ParserModel>();
+        private ParserModel[] parsers;
 
         [SerializeField] private ParserBuilder builder;
 
         private void Start()
         {
-            OnParserSelected(parsers[0]);
+            parsers = Resources.LoadAll<ParserModel>("Dynamics");
+
+            //UIHelper.FillContent<>
         }
 
         public void OnParserSelected(IParserModel model)
