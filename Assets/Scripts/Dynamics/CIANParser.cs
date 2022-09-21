@@ -8,35 +8,19 @@ namespace InGame.Dynamics
         private FolderElement folderSelect;
 
         [Inject]
-        private void Construct(FolderElement f1, FolderElement folderSelect, FolderElement f2, FolderElement f3)
+        private void Construct(FolderElement folderSelect)
         {
             this.folderSelect = folderSelect;
 
-            f1.Setup(new FolderElementModel()
-            {
-                labelText = "1"
-            });
-
-
-            folderSelect.Setup(new FolderElementModel()
+            folderSelect.Setup(new FolderElement.Model()
             {
                 labelText = "Select folder",
-                placeholderText = "Test placeholder"
-            });
-
-           
-            f2.Setup(new FolderElementModel()
-            {
-                labelText = "2"
-            });
-
-            f3.Setup(new FolderElementModel()
-            {
-                labelText = "3"
+                placeholderText = "Test placeholder",
+                onPathChanged = OnTextChanged
             });
 
         }
-        public void Start()
+        private void OnTextChanged()
         {
             Debug.Log(folderSelect.Path);
         }
