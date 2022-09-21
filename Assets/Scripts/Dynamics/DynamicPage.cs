@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace InGame.Dynamics
 {
@@ -34,7 +33,7 @@ namespace InGame.Dynamics
             {
                 IDynamicElement elementInst = Instantiate(element.gameObject, elementsContainer).GetComponent<IDynamicElement>();
 
-                instance.RegisterElement(elementInst);
+                //instance.RegisterElement(elementInst);
             }
         }
     }
@@ -63,30 +62,9 @@ namespace InGame.Dynamics
     public class CIANModel : ParserModel<CIANParser>
     {
     }
-    public abstract class DynamicParser
+    public abstract class DynamicParser : MonoBehaviour
     {
 
-    }
-    public class CIANParser : DynamicParser
-    {
-        private FolderElement folderSelect;
-
-        private void Construct(FolderElement folderSelect)
-        {
-            this.folderSelect = folderSelect;
-        }
-        public void Register()
-        {
-            folderSelect.Setup(new FolderElementModel()
-            {
-                labelText = "Select folder",
-                placeholderText = "Test placeholder"
-            });
-        }
-        public void Start()
-        {
-            Debug.Log(folderSelect.Path);
-        }
     }
 
 
@@ -119,18 +97,5 @@ namespace InGame.Dynamics
     public class FolderElementModel : DynamicElementModel<FolderElement>
     {
         public string labelText, placeholderText;
-    }
-    public class FolderElement : DynamicElement<FolderElementModel>
-    {
-        public string Path => inputField.text;
-
-        [SerializeField] private Text label, placeholderText;
-        [SerializeField] private InputField inputField;
-
-        protected override void OnSetup()
-        {
-            label.text = Model.labelText;
-            placeholderText.text = Model.placeholderText;
-        }
     }
 }
