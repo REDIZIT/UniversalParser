@@ -5,6 +5,7 @@ using Zenject;
 namespace InGame.Dynamics.UI
 {
     [RequireComponent(typeof(Image))]
+    [ExecuteInEditMode]
     public class ThemedImage : MonoBehaviour
     {
         [SerializeField] private ColorLayer colorLayer;
@@ -33,6 +34,18 @@ namespace InGame.Dynamics.UI
                     colorLayer = targetColor;
                 }
             }
+        }
+        private void OnValidate()
+        {
+            if (themes == null && Application.isPlaying == false)
+            {
+                // Scene mode in Editor
+                themes = Resources.Load<Themes>("Themes");
+                Debug.Log("Load themes = " + themes);
+            }
+            if (image == null) image = GetComponent<Image>();
+
+            image.color = themes.GetColor(colorLayer);
         }
         public void SetColor(ColorLayer layer, float animationTime = 0.1f)
         {

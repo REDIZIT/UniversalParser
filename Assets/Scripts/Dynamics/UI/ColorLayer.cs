@@ -5,6 +5,7 @@ namespace InGame.Dynamics.UI
         Background,
         Group,
         ListItemSelected,
-        ListItemNotSelected
+        ListItemNotSelected,
+        Button
     }
 }

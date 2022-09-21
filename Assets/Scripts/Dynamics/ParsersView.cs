@@ -1,5 +1,4 @@
 using InGame.Dynamics.UI;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -22,7 +21,10 @@ namespace InGame.Dynamics
 
             uiHelper.FillContent(container, prefab, parsers, (item, model) => item.Refresh(model, OnParserSelected));
         }
-
+        private void Awake()
+        {
+            ShowView();
+        }
         public void OnParserSelected(IParserModel model)
         {
             builder.Build(model);
