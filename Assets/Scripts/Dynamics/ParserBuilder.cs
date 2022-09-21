@@ -20,7 +20,8 @@ namespace InGame.Dynamics
         }
         public void Clear()
         {
-            parser.Stop();
+            parser?.Stop();
+            parser = null;
         }
     }
 }
