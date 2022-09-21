@@ -12,7 +12,7 @@ namespace InGame.Dynamics
     }
     public abstract class DynamicParser
     {
-
+        public abstract void Stop();
     }
 
     public interface IDynamicElement

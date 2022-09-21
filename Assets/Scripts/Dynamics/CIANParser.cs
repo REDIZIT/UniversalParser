@@ -20,6 +20,12 @@ namespace InGame.Dynamics
             });
 
         }
+
+        public override void Stop()
+        {
+            //throw new System.NotImplementedException();
+        }
+
         private void OnTextChanged()
         {
             Debug.Log(folderSelect.Path);

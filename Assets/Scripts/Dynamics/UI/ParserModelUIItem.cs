@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,12 +13,14 @@ namespace InGame.Dynamics.UI
         [SerializeField] private ThemedImage themed;
 
         private ParserModel model;
+        private Action<ParserModel> onClick;
 
-        public void Refresh(ParserModel model)
+        public void Refresh(ParserModel model, Action<ParserModel> onClick)
         {
             this.model = model;
             icon.sprite = model.Icon;
             nameText.text = model.Name;
+            this.onClick = onClick;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -38,6 +41,10 @@ namespace InGame.Dynamics.UI
         public void OnWebsiteClicked()
         {
             Application.OpenURL(model.WebsiteUrl);
+        }
+        public void OnClick()
+        {
+            onClick?.Invoke(model);
         }
     }
 }

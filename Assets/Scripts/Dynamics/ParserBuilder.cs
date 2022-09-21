@@ -18,5 +18,9 @@ namespace InGame.Dynamics
             parser = (DynamicParser)container.Instantiate(model.GetParserType());
             Debug.Log("Parser created: " + parser.GetType());
         }
+        public void Clear()
+        {
+            parser.Stop();
+        }
     }
 }
