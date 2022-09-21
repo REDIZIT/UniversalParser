@@ -1,19 +1,24 @@
+using InGame.Dynamics.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace InGame.Dynamics
 {
     public class ParsersView : MonoBehaviour
     {
+        [SerializeField] private ParserBuilder builder;
+        [SerializeField] private Transform container;
+        [SerializeField] private ParserModelUIItem prefab;
+
         private ParserModel[] parsers;
 
-        [SerializeField] private ParserBuilder builder;
-
-        private void Start()
+        [Inject]
+        private void Construct(UIHelperPort uiHelper)
         {
             parsers = Resources.LoadAll<ParserModel>("Dynamics");
 
-            //UIHelper.FillContent<>
+            uiHelper.FillContent(container, prefab, parsers, (item, model) => item.Refresh(model));
         }
 
         public void OnParserSelected(IParserModel model)

@@ -11,6 +11,15 @@ namespace InGame.Dynamics.UI
         [SerializeField] private GameObject websiteButton;
         [SerializeField] private ThemedImage themed;
 
+        private ParserModel model;
+
+        public void Refresh(ParserModel model)
+        {
+            this.model = model;
+            icon.sprite = model.Icon;
+            nameText.text = model.Name;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             websiteButton.SetActive(true);
@@ -24,6 +33,11 @@ namespace InGame.Dynamics.UI
 
             websiteButton.SetActive(false);
             themed.SetColor(ColorLayer.ListItemNotSelected);
+        }
+
+        public void OnWebsiteClicked()
+        {
+            Application.OpenURL(model.WebsiteUrl);
         }
     }
 }
