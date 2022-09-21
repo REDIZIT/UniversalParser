@@ -1,21 +1,21 @@
-using UnityEngine;
+using System.IO;
 using Zenject;
 
 namespace InGame.Dynamics
 {
     public class CIANParser : DynamicParser
     {
-        private FolderElement folderSelect;
+        private InputFieldElement folderSelect;
 
         [Inject]
-        private void Construct(FolderElement folderSelect)
+        private void Construct(InputFieldElement folderSelect)
         {
             this.folderSelect = folderSelect;
 
-            folderSelect.Setup(new FolderElement.Model()
+            folderSelect.Setup(new InputFieldElement.Model()
             {
-                labelText = "Select folder",
-                placeholderText = "Test placeholder",
+                labelText = "Путь до папки, куда будут выгружены таблицы",
+                placeholderText = "Путь до папки",
                 onPathChanged = OnTextChanged
             });
 
@@ -28,7 +28,7 @@ namespace InGame.Dynamics
 
         private void OnTextChanged()
         {
-            Debug.Log(folderSelect.Path);
+            folderSelect.SetError(Directory.Exists(folderSelect.Path) == false);
         }
     }
 }

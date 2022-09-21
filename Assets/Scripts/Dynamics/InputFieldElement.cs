@@ -1,16 +1,17 @@
+using InGame.Dynamics.UI;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using static InGame.Dynamics.FolderElement;
 
 namespace InGame.Dynamics
 {
-    public class FolderElement : DynamicElement<Model>
+    public class InputFieldElement : DynamicElement<InputFieldElement.Model>
     {
         public string Path => inputField.text;
 
         [SerializeField] private Text label, placeholderText;
         [SerializeField] private InputField inputField;
+        [SerializeField] private ThemedImage themed;
 
         public class Model
         {
@@ -27,6 +28,11 @@ namespace InGame.Dynamics
         public void OnTextChanged()
         {
             model.onPathChanged?.Invoke();
+        }
+
+        public void SetError(bool paintAsError)
+        {
+            themed.SetColor(paintAsError ? ColorLayer.Error : ColorLayer.Button);
         }
     }
 }

@@ -41,7 +41,6 @@ namespace InGame.Dynamics.UI
             {
                 // Scene mode in Editor
                 themes = Resources.Load<Themes>("Themes");
-                Debug.Log("Load themes = " + themes);
             }
             if (image == null) image = GetComponent<Image>();
 

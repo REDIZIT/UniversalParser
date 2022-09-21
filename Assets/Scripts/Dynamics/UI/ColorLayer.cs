@@ -6,6 +6,7 @@ namespace InGame.Dynamics.UI
         Group,
         ListItemSelected,
         ListItemNotSelected,
-        Button
+        Button,
+        Error
     }
 }
