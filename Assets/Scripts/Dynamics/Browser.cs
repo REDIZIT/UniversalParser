@@ -1,6 +1,9 @@
 using InGame.Settings;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
+using System;
+using System.Collections.Generic;
 
 namespace InGame.Dynamics
 {
@@ -19,7 +22,13 @@ namespace InGame.Dynamics
             var service = ChromeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets", "yandexdriver.exe");
             service.HideCommandPromptWindow = true;
 
+            string downloadFilepath = @"C:\\Users\\REDIZIT\\Desktop\\1";
+            Dictionary<string, object> chromePrefs = new();
+            chromePrefs.Add("profile.default_content_settings.popups", 0);
+            chromePrefs.Add("download.default_directory", downloadFilepath);
             ChromeOptions options = new ChromeOptions();
+
+            options.AddUserProfilePreference("prefs", chromePrefs);
 
             if (SettingsManager.settings.enableImageLoading == false)
             {
@@ -31,7 +40,6 @@ namespace InGame.Dynamics
         public void Close()
         {
             Driver?.Quit();
-            Driver?.Close();
             Driver?.Dispose();
             Driver = null;
         }

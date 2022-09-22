@@ -5,7 +5,10 @@ namespace InGame.Dynamics
 {
     public class ParserBuilder : MonoBehaviour
     {
-        private DynamicParser parser;
+        public DynamicParser ActiveParser { get; private set; }
+
+        [SerializeField] private Transform[] containers;
+
         private DiContainer container;
 
         [Inject]
@@ -15,13 +18,16 @@ namespace InGame.Dynamics
         }
         public void Build(IParserModel model)
         {
-            parser = (DynamicParser)container.Instantiate(model.GetParserType());
-            Debug.Log("Parser created: " + parser.GetType());
+            foreach (Transform container in containers)
+            {
+                UIHelper.ClearChildren(container);
+            }
+            ActiveParser = (DynamicParser)container.Instantiate(model.GetParserType());
         }
         public void Clear()
         {
-            parser?.Stop();
-            parser = null;
+            ActiveParser?.Stop();
+            ActiveParser = null;
         }
     }
 }

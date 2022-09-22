@@ -15,5 +15,6 @@ namespace InGame.Dynamics
     public interface IDynamicElement
     {
         public GameObject gameObject { get; }
+        public bool IsValid { get; }
     }
 }

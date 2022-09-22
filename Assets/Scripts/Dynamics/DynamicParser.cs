@@ -1,18 +1,27 @@
+using System.Collections.Generic;
+using System.Threading;
+
 namespace InGame.Dynamics
 {
     public abstract class DynamicParser
     {
         public bool IsWorking { get; private set; }
 
+        public List<IDynamicElement> Elements { get; private set; } = new();
+
+        private Thread thread;
+
         public void Start()
         {
-            OnStart();
             IsWorking = true;
+            thread = new Thread(OnStart);
+            thread.Start();
         }
         public void Stop()
         {
-            OnStop();
             IsWorking = false;
+            OnStop();
+            thread?.Abort();
         }
         protected void SwitchWorkState()
         {
