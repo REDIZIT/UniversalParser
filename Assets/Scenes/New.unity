@@ -456,6 +456,7 @@ MonoBehaviour:
   progressElements:
   - {fileID: 5423034493239227372, guid: f7875d8abe101ae4cb4d89894c3b827d, type: 3}
   settingsElements:
+  - {fileID: 1694415399223269578, guid: 627ee3d720baf494cbdb22448686c781, type: 3}
   - {fileID: 6678255654437588047, guid: e61462303843a0e438fcaec86c0a4931, type: 3}
   builder: {fileID: 628624407}
 --- !u!114 &847021690
