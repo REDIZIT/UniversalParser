@@ -5,9 +5,8 @@ namespace InGame.Dynamics
 {
     public class DynamicElementsInstaller : MonoInstaller
     {
-        [SerializeField] private Transform elementsContainer, progressContainer;
-        [SerializeField] private GameObject[] elements;
-        [SerializeField] private GameObject[] progressElements;
+        [SerializeField] private Transform elementsContainer, progressContainer, settingsContainer;
+        [SerializeField] private GameObject[] elements, progressElements, settingsElements;
         [SerializeField] private ParserBuilder builder;
 
         public override void InstallBindings()
@@ -19,6 +18,10 @@ namespace InGame.Dynamics
             foreach (GameObject go in progressElements)
             {
                 BindElement(go, progressContainer);
+            }
+            foreach (GameObject go in settingsElements)
+            {
+                Container.InstantiatePrefab(go, settingsContainer);
             }
 
             Container.BindInstance(builder);

@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
 using System;
+using System.Collections;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace InGame.Dynamics
         [SerializeField] private Text versionText;
         [SerializeField] private Button updateButton;
 
-        private WebClient c;
+        private WebClient c = new WebClient();
 
         private const string LATEST_URL = "https://api.github.com/repos/yandex/YandexDriver/releases";
         private const string DRIVER_INFO_PATH = "/driverAssetInfo.txt";
@@ -43,13 +42,17 @@ namespace InGame.Dynamics
 
         private void Start()
         {
-            c = new WebClient();
-            c.Headers.Add("User-Agent", "request");
-
             UpdateVersionText();
         }
         public void OnUpdateClicked()
         {
+            StartCoroutine(IEStartUpdate());
+        }
+        private IEnumerator IEStartUpdate()
+        {
+            updateButton.interactable = false;
+            yield return null;
+
             Asset winAsset = GetLatestAsset();
 
             Debug.Log("Downloading asset " + winAsset.name + " from " + winAsset.browser_download_url);
@@ -58,6 +61,7 @@ namespace InGame.Dynamics
             string infoFile = Pathes.steamingAssets + DRIVER_INFO_PATH;
 
 
+            c.Headers.Add("User-Agent", "request");
             c.DownloadFile(winAsset.browser_download_url, zipFile);
             ZipFile.ExtractToDirectory(zipFile, Pathes.steamingAssets, true);
 
@@ -66,6 +70,7 @@ namespace InGame.Dynamics
 
 
             UpdateVersionText();
+            updateButton.interactable = true;
         }
 
         private void UpdateVersionText()
@@ -78,16 +83,22 @@ namespace InGame.Dynamics
             b.AppendLine($"Версия Chromium: {format}{GetDriverVersion()}{formatEnd}");
 
             string currentVersion = File.ReadAllText(Pathes.steamingAssets + DRIVER_INFO_PATH);
-            b.AppendLine($"Парсер поддерживает версию браузера: {format}{currentVersion}{formatEnd}");
+            b.Append($"Парсер поддерживает версию браузера: {format}{currentVersion}{formatEnd}");
 
 
             string latestVersion = GetLatestAsset().BrowserVersion;
             if (latestVersion != currentVersion)
             {
-                b.AppendLine($"\r\n<size=12><color=#efc8a4>Доступно обновление драйвера <size=10>({latestVersion})</size>. Обновите драйвер если после обновления браузера парсер перестал работать.</color></size>");
+                b.AppendLine($"\n\n<size=12><color=#efc8a4>Доступно обновление драйвера <size=10>({latestVersion})</size>. Обновите драйвер если после обновления браузера парсер перестал работать.</color></size>");
+                b.AppendLine();
+                updateButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                updateButton.gameObject.SetActive(false);
             }
 
-            versionText.text = b.ToString().Trim();
+            versionText.text = b.ToString();
         }
         private string GetDriverVersion()
         {
@@ -104,6 +115,7 @@ namespace InGame.Dynamics
         }
         private Asset GetLatestAsset()
         {
+            c.Headers.Add("User-Agent", "request");
             string json = c.DownloadString(LATEST_URL);
 
             var releases = JsonConvert.DeserializeObject<Release[]>(json);
