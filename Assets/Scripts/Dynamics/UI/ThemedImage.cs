@@ -43,8 +43,11 @@ namespace InGame.Dynamics.UI
                 themes = Resources.Load<Themes>("Themes");
             }
             if (image == null) image = GetComponent<Image>();
-
-            image.color = themes.GetColor(colorLayer);
+            
+            if (image != null && themes != null)
+            {
+                image.color = themes.GetColor(colorLayer);
+            }
         }
         public void SetColor(ColorLayer layer, float animationTime = 0.1f)
         {
