@@ -283,7 +283,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &184546125
 RectTransform:
   m_ObjectHideFlags: 0
@@ -378,7 +378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &628624406
 RectTransform:
   m_ObjectHideFlags: 0
@@ -453,6 +453,7 @@ MonoBehaviour:
   settingsContainer: {fileID: 1027236935}
   elements:
   - {fileID: 4693674309314446731, guid: d89b3afb98c165a45a68e03d20febb06, type: 3}
+  - {fileID: 3552619156568328995, guid: 4448fb62cfaed9b47aec1f01fbb3979c, type: 3}
   progressElements:
   - {fileID: 5423034493239227372, guid: f7875d8abe101ae4cb4d89894c3b827d, type: 3}
   settingsElements:
@@ -1299,7 +1300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7059792714832377412, guid: 0906767d78d278a42ad18a1f1e27d976, type: 3}
       propertyPath: m_Name
-      value: Button
+      value: Back Button
       objectReference: {fileID: 0}
     - target: {fileID: 7059792714832377417, guid: 0906767d78d278a42ad18a1f1e27d976, type: 3}
       propertyPath: m_Sprite

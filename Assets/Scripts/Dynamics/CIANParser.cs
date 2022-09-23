@@ -20,9 +20,8 @@ namespace InGame.Dynamics
             this.url = url;
             this.browser = browser;
 
-            status.Setup(new StatusElement.Model()
+            status.Setup(new StatusElement.Model(this)
             {
-                parser = this,
                 onSwitchWorkStatus = SwitchWorkState
             });
             folderSelect.Setup(new InputFieldElement.Model()

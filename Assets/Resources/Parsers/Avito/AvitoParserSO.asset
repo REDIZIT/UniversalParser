@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AvitoParserSO
   m_EditorClassIdentifier: Core:InGame:ParserSO
   parserName: "\u041F\u0430\u0440\u0441\u0435\u0440 avito"
-  parseUIType: AvitoParseUI
+  parseUIType: InGame.UI.AvitoParseUI
   parseUI: {fileID: 11500000, guid: 734e2a09583a1ff44bc40f9d158aeb12, type: 3}
-  prefabPage: {fileID: 0}
+  prefabPage: {fileID: 3466363742730968630, guid: 98120a7310369d24480388bc47b428fb, type: 3}
