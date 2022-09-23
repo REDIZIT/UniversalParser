@@ -8,7 +8,7 @@ namespace InGame.UI
 {
 	public class AvitoParseUI : MonoBehaviour
 	{
-		public SelectTableControl selectTableUI => page.selectTableUI;
+		public SelectTableElement selectTableUI => page.selectTableUI;
 		public UrlHandlerControl urlControl => page.urlControl;
 		public SummaryControl summary => page.summary;
 
@@ -66,11 +66,11 @@ namespace InGame.UI
 		{
 			IParseResult bigResult = summary.GetBigResult();
 
-			if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.CreateNewTable)
+			if (selectTableUI.workingTableType == SelectTableElement.WorkingTableType.CreateNewTable)
 			{
 				SaveNewTable(selectTableUI.tableFilePath, bigResult);
 			}
-            else if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.ExistingTable)
+            else if (selectTableUI.workingTableType == SelectTableElement.WorkingTableType.ExistingTable)
 			{
                 SaveToExistingTable(selectTableUI.tableFilePath, bigResult);
             }

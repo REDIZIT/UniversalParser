@@ -1,3 +1,4 @@
+using InGame.UI;
 using Zenject;
 
 namespace InGame.Dynamics
@@ -6,9 +7,10 @@ namespace InGame.Dynamics
     {
         private InputFieldElement url;
         private PagingElement paging;
+        private SelectTableElement table;
 
         [Inject]
-        private void Construct(InputFieldElement url, PagingElement paging, StatusElement status)
+        private void Construct(InputFieldElement url, PagingElement paging, SelectTableElement table, StatusElement status)
         {
             this.url = url;
             this.paging = paging;
@@ -22,6 +24,7 @@ namespace InGame.Dynamics
             {
 
             });
+            table.Setup(new SelectTableElement.Model());
             status.Setup(new StatusElement.Model(this)
             {
 

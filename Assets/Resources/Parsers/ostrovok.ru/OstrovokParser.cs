@@ -14,7 +14,7 @@ namespace InGame.Parse
     public class OstrovokParser : BrowserParser<LotContainer<OstrovokLot>>
     {
         protected override string UrlPageArgument => "page";
-        private SelectTableControl selectTableControl;
+        private SelectTableElement selectTableControl;
 
         protected override IEnumerable<HtmlNode> GetNodesToParse(HtmlDocument doc)
         {
@@ -81,7 +81,7 @@ namespace InGame.Parse
             return container;
         }
 
-        public void Setup(SelectTableControl selectTableControl)
+        public void Setup(SelectTableElement selectTableControl)
         {
             this.selectTableControl = selectTableControl;
         }

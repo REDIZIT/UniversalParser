@@ -8,7 +8,7 @@ namespace InGame.UI
 {
 	public class PropertyAuctionsParseUI : MonoBehaviour
 	{
-		public SelectTableControl selectTableUI;
+		public SelectTableElement selectTableUI;
 		public UrlHandlerControl urlControl;
         public SummaryControl summary;
 
@@ -37,11 +37,11 @@ namespace InGame.UI
 
         private void Save()
         {
-            if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.CreateNewTable)
+            if (selectTableUI.workingTableType == SelectTableElement.WorkingTableType.CreateNewTable)
             {
                 SaveNewTable(selectTableUI.tableFilePath, results);
             }
-            else if (selectTableUI.workingTableType == SelectTableControl.WorkingTableType.ExistingTable)
+            else if (selectTableUI.workingTableType == SelectTableElement.WorkingTableType.ExistingTable)
             {
                 SaveToExistingTable(selectTableUI.tableFilePath, results);
             }

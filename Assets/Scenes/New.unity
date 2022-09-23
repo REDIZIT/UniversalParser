@@ -178,7 +178,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 4
+  m_Spacing: 24
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -454,6 +454,7 @@ MonoBehaviour:
   elements:
   - {fileID: 4693674309314446731, guid: d89b3afb98c165a45a68e03d20febb06, type: 3}
   - {fileID: 3552619156568328995, guid: 4448fb62cfaed9b47aec1f01fbb3979c, type: 3}
+  - {fileID: 283400385351154687, guid: 4749e1536b765734eb133df2965626dc, type: 3}
   progressElements:
   - {fileID: 5423034493239227372, guid: f7875d8abe101ae4cb4d89894c3b827d, type: 3}
   settingsElements:

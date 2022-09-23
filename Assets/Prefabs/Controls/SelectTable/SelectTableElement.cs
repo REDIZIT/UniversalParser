@@ -1,3 +1,4 @@
+using InGame.Dynamics;
 using InGame.Parse;
 using SFB;
 using System;
@@ -10,7 +11,7 @@ using UnityParser;
 namespace InGame.UI
 {
     /// <summary>Control for selecting excel table for next working</summary>
-	public class SelectTableControl : MonoBehaviour
+	public class SelectTableElement : DynamicElement<SelectTableElement.Model>
 	{
         public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
 
@@ -26,7 +27,10 @@ namespace InGame.UI
 
         [SerializeField] private GameObject newTableButton, oldTableButton, separator;
         
+        public class Model
+        {
 
+        }
         public enum TableSelectMode
         {
             NewAndOld,
@@ -58,6 +62,8 @@ namespace InGame.UI
             {
                 tableNameText.text = Path.GetFileName(tableFilePath);
             }
+
+            IsValid = IsSelected;
         }
 
         public void ClickUseNewTable()
@@ -79,7 +85,7 @@ namespace InGame.UI
         {
             workingTableType = WorkingTableType.NotSelected;
 
-            StandaloneFileBrowser.OpenFilePanelAsync("Выберите таблицу", "", "xlsx", false, (filepathes) =>
+            StandaloneFileBrowser.OpenFilePanelAsync("Выбрать таблицу", "", "xlsx", false, (filepathes) =>
             {
                 if (filepathes == null || filepathes.Length == 0) return;
                 string filepath = filepathes[0];

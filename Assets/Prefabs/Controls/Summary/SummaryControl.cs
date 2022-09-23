@@ -11,7 +11,7 @@ namespace InGame.UI
 {
     public class SummaryControl : MonoBehaviour
 	{
-		public SelectTableControl selectTableUI;
+		public SelectTableElement selectTableUI;
 
 		[SerializeField] private Transform content;
 		[SerializeField] private SummaryUIItem itemPrefab;
