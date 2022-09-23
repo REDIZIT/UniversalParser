@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using UnityEngine;
 
 namespace InGame.Dynamics
 {
@@ -14,7 +17,7 @@ namespace InGame.Dynamics
         public void Start()
         {
             IsWorking = true;
-            thread = new Thread(OnStart);
+            thread = new Thread(ThreadStart);
             thread.Start();
         }
         public void Stop()
@@ -31,5 +34,27 @@ namespace InGame.Dynamics
 
         protected abstract void OnStart();
         protected abstract void OnStop();
+
+        private void ThreadStart()
+        {
+            StatusElement status = (StatusElement)Elements.First(e => e is StatusElement);
+
+            try
+            {
+                OnStart();
+            }
+            catch (ThreadAbortException)
+            {
+                status.Status = "";
+                status.Progress = "";
+            }
+            catch(Exception err)
+            {
+                status.Status = "<color=F28>Произлошла ошибка</color>";
+                status.Progress = "<size=8>" + err.Message + "</size>";
+                Debug.LogError(err);
+                Stop();
+            }
+        }
     }
 }
