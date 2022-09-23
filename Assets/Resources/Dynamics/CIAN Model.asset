@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b520f66774fdc9948bc5030902875317, type: 3}
   m_Name: CIAN Model
   m_EditorClassIdentifier: 
-  siteName: "\u0446\u0438\u0430\u043D"
+  siteName: "<\u0442\u0435\u0441\u0442\u043E\u0432\u044B\u0439 \u043F\u0430\u0440\u0441\u0435\u0440>"
   icon: {fileID: 21300000, guid: 9eaf1ec792badd049ac92b8d1d80da76, type: 3}
   websiteUrl: https://spb.cian.ru/
