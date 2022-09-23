@@ -1,8 +1,6 @@
 using InGame.Settings;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
-using System;
 using System.Collections.Generic;
 
 namespace InGame.Dynamics
@@ -19,7 +17,7 @@ namespace InGame.Dynamics
 
         public void Open()
         {
-            var service = ChromeDriverService.CreateDefaultService(Pathes.dataFolder + "/StreamingAssets", "yandexdriver.exe");
+            var service = ChromeDriverService.CreateDefaultService(Pathes.steamingAssets, "yandexdriver.exe");
             service.HideCommandPromptWindow = true;
 
             string downloadFilepath = @"C:\\Users\\REDIZIT\\Desktop\\1";

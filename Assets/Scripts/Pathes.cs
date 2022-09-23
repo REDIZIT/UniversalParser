@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEngine;
 
@@ -9,6 +8,7 @@ namespace InGame
         public static string buildFolder;
         public static string settingsFile;
         public static string dataFolder;
+        public static string steamingAssets;
 
         public static void Initialize()
         {
@@ -16,6 +16,7 @@ namespace InGame
             buildFolder = new DirectoryInfo(dataFolder).Parent.FullName;
 
             settingsFile = buildFolder + "/settings.json";
+            steamingAssets = dataFolder + "/StreamingAssets";
         }
 	}
 }
