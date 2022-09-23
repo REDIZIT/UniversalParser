@@ -5,6 +5,7 @@ using UnityEditor;
 using System.Reflection;
 using System;
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(SerializableDictionaryBase), true)]
 public class SerializableDictionaryPropertyDrawer : PropertyDrawer
 {
@@ -565,3 +566,4 @@ public class SerializableDictionaryStoragePropertyDrawer : PropertyDrawer
 		return EditorGUI.GetPropertyHeight(property);
 	}
 }
+#endif
