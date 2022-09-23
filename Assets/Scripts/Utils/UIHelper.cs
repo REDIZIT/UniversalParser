@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace InGame
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Type Safety", "UNT0014:Invalid type for call to GetComponent", Justification = "<��������>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Type Safety", "UNT0014:Invalid type for call to GetComponent", Justification = "")]
     public static class UIHelper
     {
         public static void ClearChildren(Transform content)
@@ -22,13 +22,23 @@ namespace InGame
 
 
 
-        public static void FillContent<TUIItem, TList>(Transform content, GameObject prefab, IEnumerable<TList> list, Action<TUIItem, TList> forEachFunc)
+        public static void FillContent<TUIItem, TList>(Transform content, GameObject prefab, IEnumerable<TList> list, Action<TUIItem, TList> forEachFunc, Func<GameObject, Transform, GameObject> instantiateFunc = null)
         {
             if (list == null) return;
 
             foreach (TList listItem in list)
             {
-                GameObject inst = Object.Instantiate(prefab, content);
+                GameObject inst;
+
+                if (instantiateFunc == null)
+                {
+                    inst = Object.Instantiate(prefab, content);
+                }
+                else
+                {
+                    inst = instantiateFunc(prefab, content);
+                }
+
                 forEachFunc(inst.GetComponent<TUIItem>(), listItem);
             }
         }
