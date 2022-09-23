@@ -1,4 +1,5 @@
 using InGame.Dynamics.UI;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -27,8 +28,7 @@ namespace InGame.Dynamics
         }
         public void OnParserSelected(IParserModel model)
         {
-            builder.Build(model);
-            ShowParser();
+            StartCoroutine(IEBuildParser(model));
         }
 
         public void ShowView()
@@ -40,6 +40,13 @@ namespace InGame.Dynamics
         {
             viewGroup.SetActive(false);
             parserGroup.SetActive(true);
+        }
+
+        private IEnumerator IEBuildParser(IParserModel model)
+        {
+            builder.Build(model);
+            yield return null;
+            ShowParser();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace InGame.UI
 {
     public class SpbAfyParseUI : MonoBehaviour
     {
-        [SerializeField] private SelectTableControl importTableControl, exportTableControl;
+        [SerializeField] private SelectTableElement importTableControl, exportTableControl;
         [SerializeField] private InputField urlField, pagesField;
         [SerializeField] private Button startButton, cancelButton;
         [SerializeField] private Text currentPageText;

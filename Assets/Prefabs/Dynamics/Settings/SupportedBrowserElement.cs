@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -80,25 +81,34 @@ namespace InGame.Dynamics
             string format = "<color=#efc8a4><size=12>";
             string formatEnd = "</size></color>";
 
-            b.AppendLine($"Версия Chromium: {format}{GetDriverVersion()}{formatEnd}");
-
-            string currentVersion = File.ReadAllText(Pathes.steamingAssets + DRIVER_INFO_PATH);
-            b.Append($"Парсер поддерживает версию браузера: {format}{currentVersion}{formatEnd}");
-
-
-            string latestVersion = GetLatestAsset().BrowserVersion;
-            if (latestVersion != currentVersion)
-            {
-                b.AppendLine($"\n\n<size=12><color=#efc8a4>Доступно обновление драйвера <size=10>({latestVersion})</size>. Обновите драйвер если после обновления браузера парсер перестал работать.</color></size>");
-                b.AppendLine();
-                updateButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                updateButton.gameObject.SetActive(false);
-            }
-
+            b.AppendLine($"Версия Chromium: {format}загрузка{formatEnd}");
+            b.Append($"Парсер поддерживает версию браузера: {format}загрузка{formatEnd}");
             versionText.text = b.ToString();
+            updateButton.gameObject.SetActive(false);
+
+            b.Clear();
+
+            Task t = Task.Run(() =>
+            {
+                b.AppendLine($"Версия Chromium: {format}{GetDriverVersion()}{formatEnd}");
+
+                string currentVersion = File.ReadAllText(Pathes.steamingAssets + DRIVER_INFO_PATH);
+                b.Append($"Парсер поддерживает версию браузера: {format}{currentVersion}{formatEnd}");
+
+
+                string latestVersion = GetLatestAsset().BrowserVersion;
+                if (latestVersion != currentVersion)
+                {
+                    b.AppendLine($"\n\n<size=12><color=#efc8a4>Доступно обновление драйвера <size=10>({latestVersion})</size>. Обновите драйвер если после обновления браузера парсер перестал работать.</color></size>");
+                    b.AppendLine();
+                }
+
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    updateButton.gameObject.SetActive(latestVersion != currentVersion);
+                    versionText.text = b.ToString();
+                });
+            });
         }
         private string GetDriverVersion()
         {

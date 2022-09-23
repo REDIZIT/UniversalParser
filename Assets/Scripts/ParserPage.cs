@@ -7,7 +7,7 @@ namespace InGame
 {
     public class ParserPage : UniversalParserPage
 	{
-		public SelectTableControl selectTableUI;
+		public SelectTableElement selectTableUI;
 		public UrlHandlerControl urlControl;
 		public SummaryControl summary;
 

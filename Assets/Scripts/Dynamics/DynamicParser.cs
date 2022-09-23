@@ -42,6 +42,7 @@ namespace InGame.Dynamics
             try
             {
                 OnStart();
+                Stop();
             }
             catch (ThreadAbortException)
             {

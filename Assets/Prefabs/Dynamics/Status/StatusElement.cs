@@ -19,6 +19,11 @@ namespace InGame.Dynamics
         {
             public DynamicParser parser;
             public Action onSwitchWorkStatus;
+
+            public Model(DynamicParser parser)
+            {
+                this.parser = parser;
+            }
         }
 
         private void Update()

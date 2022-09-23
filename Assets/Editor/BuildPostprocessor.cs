@@ -15,6 +15,8 @@ namespace InEditor
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            return;
+
             string[] splitted = PlayerSettings.bundleVersion.Split('.');
 
             string gitCommitNumber = GetVersion();
