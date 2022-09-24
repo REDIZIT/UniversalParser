@@ -1,3 +1,4 @@
+using HtmlAgilityPack;
 using InGame.Settings;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,6 +11,7 @@ namespace InGame.Dynamics
         IWebDriver Driver { get; }
         void Open();
         void Close();
+        HtmlDocument GetDocument();
     }
     public class Yandex : IBrowser
     {
@@ -40,6 +42,12 @@ namespace InGame.Dynamics
             Driver?.Quit();
             Driver?.Dispose();
             Driver = null;
+        }
+        public HtmlDocument GetDocument()
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(Driver.PageSource);
+            return doc;
         }
     }
 }

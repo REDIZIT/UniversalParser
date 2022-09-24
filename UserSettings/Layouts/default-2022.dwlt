@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Game
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 62
+  controlID: 517
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -120,14 +120,14 @@ MonoBehaviour:
     y: 569
     width: 1466
     height: 378
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 17}
+  m_MinSize: {x: 231, y: 271}
+  m_MaxSize: {x: 10001, y: 10021}
+  m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 12}
   - {fileID: 17}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 63
+  controlID: 518
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -270,12 +270,12 @@ MonoBehaviour:
     height: 569
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 15}
+  m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 15}
   - {fileID: 16}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -305,7 +305,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: useful
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -317,36 +317,36 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/Dynamics/Settings
+    - Assets/Editor
     m_Globs: []
-    m_OriginalText: 
+    m_OriginalText: useful
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs/Dynamics/Settings
+  - Assets/Editor
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\REDIZIT\Documents\GitHub\UniversalParser
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 93}
-    m_SelectedIDs: 22520000
-    m_LastClickedID: 21026
-    m_ExpandedIDs: 00000000fa510000fc510000fe51000000520000025200000c52000000ca9a3b
+    scrollPos: {x: 0, y: 115}
+    m_SelectedIDs: 665b0000
+    m_LastClickedID: 23398
+    m_ExpandedIDs: 00000000f4510000f6510000f8510000fa5100000252000086570000a2590000e65e0000fe5f00007a600000a6f1000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Prefabs
+      m_OriginalName: Prefabs
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 20980
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 5}
     m_SearchString: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fa510000fc510000fe5100000052000002520000
+    m_ExpandedIDs: 00000000f2510000f4510000f6510000f8510000fa510000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -387,7 +387,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000c88d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -490,21 +490,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 06fbffff20fbffff4e5000006850000082500000aa500000
+      m_ExpandedIDs: c601fefffc01feffaa03feffca07feff5419feff8819feff461bfeff661ffeff848bfeffca8bfeff9ebefeffce16ffffa418ffff6a19ffff882cffff5435ffffa840ffffaa62ffffde62ffff9e64ffffc268ffff6471ffff9871ffff5873ffff7c77ffff40d5ffffe6eeffff28fbffff60500000206f0000327000007a7000005c9a0000629a0000769a0000909a0000989a0000b49a000008cb000000d2000012dc00002add000072dd000038df000050df000088df000092df00008ce00000aae00000f2e000003ce200004ee3000096e300007eeb000096eb0000a6eb0000d6eb0000f2300100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Update Button
-        m_OriginalName: Update Button
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -1274
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 4}
       m_SearchString: 
@@ -805,9 +805,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 532.69543, y: 259.03506, z: 1.4796143}
+    m_Target: {x: 315.3579, y: 364.47772, z: -1.2629919}
     speed: 2
-    m_Value: {x: 532.69543, y: 259.03506, z: 1.4796143}
+    m_Value: {x: 315.3579, y: 364.47772, z: -1.2629919}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -857,9 +857,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 287.36307
+    m_Target: 181.8431
     speed: 2
-    m_Value: 287.36307
+    m_Value: 181.8431
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -950,7 +950,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1

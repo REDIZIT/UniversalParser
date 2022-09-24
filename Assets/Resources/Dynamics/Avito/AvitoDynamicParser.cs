@@ -2,13 +2,11 @@ using HtmlAgilityPack;
 using InGame.Parse;
 using InGame.Recognition;
 using InGame.UI;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
-using OpenQA.Selenium;
 using RestSharp.Contrib;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using Zenject;
 
 namespace InGame.Dynamics
@@ -49,17 +47,20 @@ namespace InGame.Dynamics
         protected override void OnStart()
         {
             browser.Open();
+            browser.Driver.Navigate().GoToUrl(url.Text);
+
+            paging.RequestPagesCount = GetPagesCount();
 
             IParseResult bigResult = new ParseResult<AvitoLot>();
 
             for (int i = 0; i < paging.Count; i++)
             {
-                int currentUrlIndex = paging.Start + i;
+                int pageIndex = paging.Start + i;
 
                 status.Status = "Скачиваю страницу";
                 status.Progress = i + "/" + paging.Count;
 
-                ParseResult<AvitoLot> result = ParsePage(url.Text);
+                ParseResult<AvitoLot> result = ParsePage(paging.GetPagedUrl(url.Text, pageIndex));
                 bigResult.AddRange(result.lots);
             }
 
@@ -71,6 +72,15 @@ namespace InGame.Dynamics
             browser.Close();
         }
 
+        private int GetPagesCount()
+        {
+            // pagination-button
+            var doc = browser.GetDocument();
+            var pageGroup = doc.DocumentNode.SelectSingleNode(".//div[@data-marker='pagination-button']");
+            var lastPage = pageGroup.ChildNodes[^2];
+
+            return int.Parse(lastPage.InnerText);
+        }
         private ParseResult<AvitoLot> ParsePage(string url)
         {
             browser.Driver.Navigate().GoToUrl(url);
