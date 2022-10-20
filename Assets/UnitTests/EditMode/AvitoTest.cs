@@ -8,6 +8,14 @@ public class AvitoTest : ZenjectUnitTestFixture
     public void Install()
     {
         Container.Bind<AvitoDynamicParser>().AsSingle();
+
+        Container.Bind<IInputField>().FromSubstitute();
+        Container.Bind<IPaging>().FromSubstitute();
+        Container.Bind<ISelectTable>().FromSubstitute();
+        Container.Bind<IStatus>().FromSubstitute();
+        Container.Bind<IBrowser>().FromSubstitute();
+
+        
         Container.Inject(this);
     }
 
@@ -15,6 +23,11 @@ public class AvitoTest : ZenjectUnitTestFixture
 
     [Test]
     public void Test1()
+    {
+        parser.Start();
+    }
+
+    public class SubstituteBase
     {
 
     }

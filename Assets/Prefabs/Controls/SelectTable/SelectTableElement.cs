@@ -1,4 +1,3 @@
-using InGame.Dynamics;
 using InGame.Parse;
 using SFB;
 using System;
@@ -8,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityParser;
 
-namespace InGame.UI
+namespace InGame.Dynamics
 {
     public interface ISelectTable : IElement<ISelectTable.Model>
     {
@@ -16,7 +15,7 @@ namespace InGame.UI
 
         public class Model : ElementModel
         {
-            
+
         }
     }
     /// <summary>Control for selecting excel table for next working</summary>
@@ -35,7 +34,7 @@ namespace InGame.UI
         [SerializeField] private Text tableNameText;
 
         [SerializeField] private GameObject newTableButton, oldTableButton, separator;
-        
+
         public enum TableSelectMode
         {
             NewAndOld,
@@ -49,7 +48,7 @@ namespace InGame.UI
             ExistingTable
         }
 
-        
+
 
 
 

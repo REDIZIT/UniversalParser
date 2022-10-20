@@ -1,7 +1,6 @@
 using HtmlAgilityPack;
 using InGame.Parse;
 using InGame.Recognition;
-using InGame.UI;
 using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +14,15 @@ namespace InGame.Dynamics
         private IInputField url;
         private IPaging paging;
         private ISelectTable table;
-        private IStatus status;
 
         private IBrowser browser;
 
         [Inject]
-        private void Construct(IInputField url, IPaging paging, ISelectTable table, IStatus status, IBrowser browser)
+        private void Construct(IInputField url, IPaging paging, ISelectTable table, IBrowser browser)
         {
             this.url = url;
             this.paging = paging;
             this.table = table;
-            this.status = status;
             this.browser = browser;
 
             url.Setup(new()

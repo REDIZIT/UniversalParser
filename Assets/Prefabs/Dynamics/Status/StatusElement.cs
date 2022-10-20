@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +33,7 @@ namespace InGame.Dynamics
         {
             buttonText.text = model.parser.IsWorking ? "Остановить" : "Запустить";
             statusText.text = Status + "\r\n<size=10><color=#BBB>" + Progress + "</color></size>";
-            startButton.interactable = ActiveParser.Elements.All(e => e.IsValid);
+            startButton.interactable = ActiveParser.IsReadyToStart();
         }
         public void OnClick()
         {

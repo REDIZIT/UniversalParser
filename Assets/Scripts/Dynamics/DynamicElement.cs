@@ -20,8 +20,6 @@ namespace InGame.Dynamics
 
         private void Start()
         {
-            ActiveParser.Elements.Add(this);
-
             if (model == null)
             {
                 Debug.LogError($"You need to setup DynamicElement ({name}) before Start event");

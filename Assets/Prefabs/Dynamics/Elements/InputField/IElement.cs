@@ -1,6 +1,6 @@
 namespace InGame.Dynamics
 {
-    public interface IElement<TModel>
+    public interface IElement<TModel> : IDynamicElement
     {
         void Setup(TModel model);
     }
