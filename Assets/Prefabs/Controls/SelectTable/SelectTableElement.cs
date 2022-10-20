@@ -10,9 +10,18 @@ using UnityParser;
 
 namespace InGame.UI
 {
+    public interface ISelectTable : IElement<ISelectTable.Model>
+    {
+        void SaveResult(IParseResult result);
+
+        public class Model : ElementModel
+        {
+            
+        }
+    }
     /// <summary>Control for selecting excel table for next working</summary>
-	public class SelectTableElement : DynamicElement<SelectTableElement.Model>
-	{
+	public class SelectTableElement : DynamicElement<ISelectTable.Model>, ISelectTable
+    {
         public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
 
         public WorkingTableType workingTableType;
@@ -27,10 +36,6 @@ namespace InGame.UI
 
         [SerializeField] private GameObject newTableButton, oldTableButton, separator;
         
-        public class Model
-        {
-
-        }
         public enum TableSelectMode
         {
             NewAndOld,

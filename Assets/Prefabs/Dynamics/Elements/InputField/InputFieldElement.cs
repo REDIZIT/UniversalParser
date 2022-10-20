@@ -5,15 +5,11 @@ using UnityEngine.UI;
 
 namespace InGame.Dynamics
 {
-    public class InputFieldElement : DynamicElement<InputFieldElement.Model>
+    public interface IInputField : IElement<IInputField.Model>
     {
-        public string Text => inputField.text;
+        string Text { get; }
 
-        [SerializeField] private Text label, placeholderText;
-        [SerializeField] private InputField inputField;
-        [SerializeField] private ThemedImage themed;
-
-        public class Model
+        public class Model : ElementModel
         {
             public string labelText, placeholderText;
             public Action onTextChanged;
@@ -21,6 +17,14 @@ namespace InGame.Dynamics
             /// <summary>Will be invoked on text change. Return <see langword="true"/> if new value is vaild</summary>
             public Func<string, bool> validityCheckFunc;
         }
+    }
+    public class InputFieldElement : DynamicElement<IInputField.Model>, IInputField
+    {
+        public string Text => inputField.text;
+
+        [SerializeField] private Text label, placeholderText;
+        [SerializeField] private InputField inputField;
+        [SerializeField] private ThemedImage themed;
 
         protected override void OnSetup()
         {

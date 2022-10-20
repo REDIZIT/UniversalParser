@@ -6,7 +6,20 @@ using UnityEngine.UI;
 
 namespace InGame.Dynamics
 {
-    public class PagingElement : DynamicElement<PagingElement.Model>
+    public interface IPaging : IElement<IPaging.Model>
+    {
+        int RequestPagesCount { get; set; }
+        int Count { get; }
+        int Start { get; }
+
+        string GetPagedUrl(string url, int page);
+
+        public class Model : ElementModel
+        {
+            public string pageArgument = "p";
+        }
+    }
+    public class PagingElement : DynamicElement<IPaging.Model>, IPaging
     {
         public int Start { get; private set; }
         public int End
@@ -28,11 +41,6 @@ namespace InGame.Dynamics
         [SerializeField] private ThemedImage rangeImage;
 
         private int _end;
-
-        public class Model
-        {
-            public string pageArgument = "p";
-        }
 
         protected override void OnSetup()
         {

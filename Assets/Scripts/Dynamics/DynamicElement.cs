@@ -3,7 +3,7 @@ using Zenject;
 
 namespace InGame.Dynamics
 {
-    public abstract class DynamicElement<TModel> : MonoBehaviour, IDynamicElement
+    public abstract class DynamicElement<TModel> : MonoBehaviour, IDynamicElement where TModel : ElementModel
     {
         public bool IsValid { get; protected set; } = true;
 

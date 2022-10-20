@@ -6,22 +6,21 @@ using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
 using Zenject;
 
 namespace InGame.Dynamics
 {
     public class AvitoDynamicParser : DynamicParser
     {
-        private InputFieldElement url;
-        private PagingElement paging;
-        private SelectTableElement table;
-        private StatusElement status;
+        private IInputField url;
+        private IPaging paging;
+        private ISelectTable table;
+        private IStatus status;
 
         private IBrowser browser;
 
         [Inject]
-        private void Construct(InputFieldElement url, PagingElement paging, SelectTableElement table, StatusElement status, IBrowser browser)
+        private void Construct(IInputField url, IPaging paging, ISelectTable table, IStatus status, IBrowser browser)
         {
             this.url = url;
             this.paging = paging;
@@ -29,17 +28,14 @@ namespace InGame.Dynamics
             this.status = status;
             this.browser = browser;
 
-            url.Setup(new InputFieldElement.Model()
+            url.Setup(new()
             {
                 labelText = "—сылка на авито с фильтрами",
                 placeholderText = "—сылка"
             });
-            paging.Setup(new PagingElement.Model()
-            {
-
-            });
-            table.Setup(new SelectTableElement.Model());
-            status.Setup(new StatusElement.Model(this)
+            paging.Setup(new());
+            table.Setup(new());
+            status.Setup(new(this)
             {
                 onSwitchWorkStatus = SwitchWorkState
             });;
