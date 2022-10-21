@@ -18,6 +18,20 @@ namespace InGame.Dynamics
             public Func<string, bool> validityCheckFunc;
         }
     }
+    public class FakeInputField : IInputField
+    {
+        public string Text => constantText;
+        public GameObject gameObject => null;
+        public bool IsValid => true;
+
+        private string constantText;
+
+        public void Setup(IInputField.Model model) { }
+        public void Setup(string constantText)
+        {
+            this.constantText = constantText;
+        }
+    }
     public class InputFieldElement : DynamicElement<IInputField.Model>, IInputField
     {
         public string Text => inputField.text;

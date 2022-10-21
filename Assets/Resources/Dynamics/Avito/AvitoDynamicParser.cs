@@ -5,6 +5,7 @@ using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using Zenject;
 
 namespace InGame.Dynamics
@@ -16,6 +17,8 @@ namespace InGame.Dynamics
         private ISelectTable table;
 
         private IBrowser browser;
+
+        private HtmlDocument doc = new();
 
         [Inject]
         private void Construct(IInputField url, IPaging paging, ISelectTable table, IBrowser browser)
@@ -40,7 +43,6 @@ namespace InGame.Dynamics
         protected override void OnStart()
         {
             browser.Open();
-            browser.Driver.Navigate().GoToUrl(url.Text);
 
             paging.RequestPagesCount = GetPagesCount();
 
@@ -68,7 +70,8 @@ namespace InGame.Dynamics
         private int GetPagesCount()
         {
             // pagination-button
-            var doc = browser.GetDocument();
+            browser.GoToUrl(paging.GetPagedUrl(url.Text, paging.Start));
+            browser.GetDocument(doc);
             var pageGroup = doc.DocumentNode.SelectSingleNode(".//div[@data-marker='pagination-button']");
             var lastPage = pageGroup.ChildNodes[^2];
 
@@ -76,10 +79,8 @@ namespace InGame.Dynamics
         }
         private ParseResult<AvitoLot> ParsePage(string url)
         {
-            browser.Driver.Navigate().GoToUrl(url);
-
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(browser.Driver.PageSource);
+            browser.GoToUrl(url);
+            browser.GetDocument(doc);
 
             var nodes = GetNodesToParse(doc);
 
@@ -117,7 +118,6 @@ namespace InGame.Dynamics
             #region Title (name, area, storyes)
 
             string text = HttpUtility.HtmlDecode(titleNode.ChildNodes[0].InnerText);
-
 
             // Get area from recognizer and remove this from name text
             if (Recognizer.TryRecognize(text, out Recognizer.Result result))

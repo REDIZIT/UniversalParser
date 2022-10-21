@@ -3,6 +3,7 @@ using SFB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityParser;
@@ -17,6 +18,18 @@ namespace InGame.Dynamics
         {
 
         }
+    }
+    public class FakeSelectTable : ISelectTable
+    {
+        public GameObject gameObject => null;
+        public bool IsValid => true;
+
+        public void SaveResult(IParseResult result)
+        {
+            Debug.Log("Save results: " + result.EnumerateLots().Count());
+        }
+
+        public void Setup(ISelectTable.Model model) { }
     }
     /// <summary>Control for selecting excel table for next working</summary>
 	public class SelectTableElement : DynamicElement<ISelectTable.Model>, ISelectTable

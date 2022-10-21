@@ -19,6 +19,59 @@ namespace InGame.Dynamics
             public string pageArgument = "p";
         }
     }
+    public class FakePaging : IPaging
+    {
+        public int Start { get; private set; }
+        public int End
+        {
+            get
+            {
+                if (_end == -1) return RequestPagesCount;
+                else return Mathf.Clamp(_end, 1, RequestPagesCount);
+            }
+        }
+
+        /// <summary>Shows how many pages selected in range. Will be equal to <see cref="int.MaxValue"/> if start or end is not defined.</summary>
+        public int Count => End - Start + 1;
+
+        public int RequestPagesCount { get; set; }
+
+        public GameObject gameObject => null;
+        public bool IsValid => true;
+
+        private int _end;
+        private IPaging.Model model;
+
+        public string GetPagedUrl(string url, int page)
+        {
+            string website = url.Split('?')[0];
+            List<string> arguments = url.Split('?')[1].Split('&').ToList();
+
+            bool hasPageArg = false;
+            for (int i = 0; i < arguments.Count; i++)
+            {
+                string argName = arguments[i].Split('=')[0];
+                if (argName == model.pageArgument)
+                {
+                    arguments[i] = argName + "=" + page;
+                    hasPageArg = true;
+                    break;
+                }
+            }
+
+            if (hasPageArg == false)
+            {
+                arguments.Add(model.pageArgument + "=" + page);
+            }
+
+            return website + "?" + string.Join("&", arguments);
+        }
+
+        public void Setup(IPaging.Model model)
+        {
+            this.model = model;
+        }
+    }
     public class PagingElement : DynamicElement<IPaging.Model>, IPaging
     {
         public int Start { get; private set; }
@@ -46,6 +99,8 @@ namespace InGame.Dynamics
         {
             start.onValueChanged.AddListener((_) => UpdateFields());
             end.onValueChanged.AddListener((_) => UpdateFields());
+
+            UpdateFields();
         }
 
         public string GetPagedUrl(string url, int page)

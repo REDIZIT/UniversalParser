@@ -21,13 +21,21 @@ namespace InGame.Dynamics
         private void Construct(IStatus status)
         {
             this.status = status;
+            BakeElements();
         }
-        public void Start()
+        public void Start(bool useThreading)
         {
             IsWorking = true;
-            BakeElements();
-            thread = new Thread(ThreadStart);
-            thread.Start();
+
+            if (useThreading)
+            {
+                thread = new Thread(ThreadStart);
+                thread.Start();
+            }
+            else
+            {
+                ThreadStart();
+            }
         }
         public void Stop()
         {
@@ -37,12 +45,12 @@ namespace InGame.Dynamics
         }
         public bool IsReadyToStart()
         {
-            return false;
+            return elements.All(e => e.IsValid);
         }
         protected void SwitchWorkState()
         {
             if (IsWorking) Stop();
-            else Start();
+            else Start(true);
         }
 
         protected abstract void OnStart();
@@ -75,9 +83,6 @@ namespace InGame.Dynamics
             var props = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
             var where = props.Where(f => f.GetValue(this) is IDynamicElement).ToArray();
             elements = where.Select(f => f.GetValue(this)).Cast<IDynamicElement>().ToArray();
-
-
-            Debug.Log("Baked types: " + string.Join(", ", elements.Select(e => e.GetType().Name)));
         }
     }
 }

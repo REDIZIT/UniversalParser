@@ -3,19 +3,43 @@ using InGame.Settings;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
 namespace InGame.Dynamics
 {
     public interface IBrowser
     {
-        IWebDriver Driver { get; }
         void Open();
         void Close();
-        HtmlDocument GetDocument();
+        void GoToUrl(string url);
+        void GetDocument(HtmlDocument documentToUpdate);
+    }
+    public class FakeBrowser : IBrowser
+    {
+        public void Open() { }
+        public void Close() { }
+
+        private int getNumber = 0;
+        private readonly string[] html;
+
+        public FakeBrowser(string[] html)
+        {
+            this.html = html;
+            Debug.Log("Fake browser has been loaded with " + html.Length + " documents");
+        }
+        public void GoToUrl(string url) { }
+        public void GetDocument(HtmlDocument doc)
+        {
+            Debug.Log("Get fake document: " + getNumber);
+            doc.LoadHtml(html[getNumber]);
+            getNumber++;
+        }
     }
     public class Yandex : IBrowser
     {
-        public IWebDriver Driver { get; private set; }
+        private IWebDriver Driver;
+        private int i;
 
         public void Open()
         {
@@ -43,11 +67,19 @@ namespace InGame.Dynamics
             Driver?.Dispose();
             Driver = null;
         }
-        public HtmlDocument GetDocument()
+        public void GoToUrl(string url)
         {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(Driver.PageSource);
-            return doc;
+            Debug.Log("GoToUrl " + url);
+            Driver.Navigate().GoToUrl(url);
+        }
+        public void GetDocument(HtmlDocument documentToUpdate)
+        {
+            string html = Driver.PageSource;
+
+            documentToUpdate.LoadHtml(html);
+
+            i++;
+            File.WriteAllText("C:\\Users\\REDIZIT\\Documents\\GitHub\\UniversalParser\\Assets\\UnitTests\\EditMode\\AvitoTest\\doc_" + i + ".html", html);
         }
     }
 }
