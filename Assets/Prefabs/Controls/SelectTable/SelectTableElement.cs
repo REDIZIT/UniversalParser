@@ -3,35 +3,12 @@ using SFB;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityParser;
 
 namespace InGame.Dynamics
 {
-    public interface ISelectTable : IElement<ISelectTable.Model>
-    {
-        void SaveResult(IParseResult result);
-
-        public class Model : ElementModel
-        {
-
-        }
-    }
-    public class FakeSelectTable : ISelectTable
-    {
-        public GameObject gameObject => null;
-        public bool IsValid => true;
-
-        public void SaveResult(IParseResult result)
-        {
-            Debug.Log("Save results: " + result.EnumerateLots().Count());
-        }
-
-        public void Setup(ISelectTable.Model model) { }
-    }
-    /// <summary>Control for selecting excel table for next working</summary>
 	public class SelectTableElement : DynamicElement<ISelectTable.Model>, ISelectTable
     {
         public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
@@ -60,9 +37,6 @@ namespace InGame.Dynamics
             CreateNewTable,
             ExistingTable
         }
-
-
-
 
 
         private void Update()

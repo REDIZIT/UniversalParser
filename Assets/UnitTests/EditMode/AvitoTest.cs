@@ -1,11 +1,9 @@
 using InGame;
 using InGame.Dynamics;
 using InGame.Recognition;
-using NSubstitute;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 using Zenject;
 
 public class AvitoTest : ZenjectUnitTestFixture
@@ -35,7 +33,7 @@ public class AvitoTest : ZenjectUnitTestFixture
 
         Container.Inject(this);
 
-
+        Pathes.Initialize();
         RecognizerArea.Initialize();
         RecognizerStoreys.Initialize();
     }
@@ -43,15 +41,12 @@ public class AvitoTest : ZenjectUnitTestFixture
     [Inject] private AvitoDynamicParser parser;
 
     [Test]
-    public void Test1()
+    public void DownloadAndCheckCount()
     {
-        Pathes.Initialize();
-
         parser.Start(false);
-    }
 
-    public class SubstituteBase
-    {
+        FakeSelectTable table = (FakeSelectTable)Container.Resolve<ISelectTable>();
 
+        Assert.AreEqual(91, table.resultToSave.EnumerateLots().Count());
     }
 }
