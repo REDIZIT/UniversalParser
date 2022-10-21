@@ -1,3 +1,4 @@
+using InGame.Settings;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,7 @@ namespace InGame.Dynamics
     {
         private List<string> urls = new List<string>();
 
-        private Thread watcherThread;
         private IInputField folder;
-        //private IBrowser browser;
         private WebClient c;
         private float chillTimeLeft;
 
@@ -30,11 +29,21 @@ namespace InGame.Dynamics
         public const int CHILL_DELAY = 30;
 
         [Inject]
-        private void Construct(IInputField folder/*, IBrowser browser*/)
+        private void Construct(IInputField folder)
         {
             this.folder = folder;
-            //this.browser = browser;
-            c = new();
+            c = new WebClient();
+
+            if (SettingsManager.settings.isProxyEnabled)
+            {
+                Debug.Log("Proxe is enabled");
+
+                c.Proxy = new WebProxy
+                {
+                    Address = new Uri(SettingsManager.settings.proxyAddress + ":" + SettingsManager.settings.proxyPort),
+                    BypassProxyOnLocal = false
+                };
+            }
 
             folder.Setup(new()
             {
@@ -42,31 +51,19 @@ namespace InGame.Dynamics
                 placeholderText = "Путь до папки",
                 validityCheckFunc = (s) => Directory.Exists(s)
             });
+
+            BakeElements();
         }
 
         protected override void OnStart()
         {
-            Debug.Log("On start");
-
             urls = urlsCreator.Create();
-
-            var handler = new HttpClientHandler();
-            Debug.Log("Disable proxy? " + File.Exists(Pathes.steamingAssets + "/noproxy.txt"));
-            if (File.Exists(Pathes.steamingAssets + "/noproxy.txt") == false)
-            {
-                handler.Proxy = new WebProxy
-                {
-                    Address = new Uri("http://proxy.ko.wan:808"),
-                    BypassProxyOnLocal = false
-                };
-            }
 
             HandleUrls();
         }
 
         protected override void OnStop()
         {
-            watcherThread?.Abort();
             status.Status = "Stopped";
         }
         public void HandleUrls()
@@ -144,12 +141,6 @@ namespace InGame.Dynamics
                 status.Status = "Done at " + DateTime.Now.TimeOfDay;
                 //browser.Close();
             }
-        }
-
-        public void Dispose()
-        {
-            //browser?.Close();
-            watcherThread?.Abort();
         }
     }
 }

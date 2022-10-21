@@ -14,7 +14,7 @@ namespace InGame.Dynamics
         protected IStatus status;
 
         private Thread thread;
-        private IDynamicElement[] elements;
+        private IDynamicElement[] elements = new IDynamicElement[0];
 
         [Inject]
         private void Construct(IStatus status)
@@ -24,7 +24,6 @@ namespace InGame.Dynamics
             {
                 onSwitchWorkStatus = SwitchWorkState
             });
-            BakeElements();
         }
         public void Start(bool useThreading)
         {
@@ -48,7 +47,7 @@ namespace InGame.Dynamics
         }
         public bool IsReadyToStart()
         {
-            return elements.All(e => e.IsValid);
+            return elements.Count() > 0 && elements.All(e => e.IsValid);
         }
         protected void SwitchWorkState()
         {
@@ -79,13 +78,15 @@ namespace InGame.Dynamics
                 Stop();
             }
         }
-        private void BakeElements()
+        protected void BakeElements()
         {
             Type type = typeof(IDynamicElement);
 
             var props = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
             var where = props.Where(f => f.GetValue(this) is IDynamicElement).ToArray();
             elements = where.Select(f => f.GetValue(this)).Cast<IDynamicElement>().ToArray();
+
+            Debug.Log("Baked elements: " + String.Join(", ", elements.Select(e => e.GetType().Name)));
         }
     }
 }

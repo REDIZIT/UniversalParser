@@ -35,6 +35,8 @@ namespace InGame.Dynamics
             });
             paging.Setup(new());
             table.Setup(new());
+
+            BakeElements();
         }
         protected override void OnStart()
         {
