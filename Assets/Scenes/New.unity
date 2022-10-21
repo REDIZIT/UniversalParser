@@ -451,16 +451,15 @@ MonoBehaviour:
   elementsContainer: {fileID: 72612472}
   progressContainer: {fileID: 1337590393}
   settingsContainer: {fileID: 1027236935}
-  elements:
-  - {fileID: 4693674309314446731, guid: d89b3afb98c165a45a68e03d20febb06, type: 3}
-  - {fileID: 3552619156568328995, guid: 4448fb62cfaed9b47aec1f01fbb3979c, type: 3}
-  - {fileID: 283400385351154687, guid: 4749e1536b765734eb133df2965626dc, type: 3}
-  progressElements:
-  - {fileID: 5423034493239227372, guid: f7875d8abe101ae4cb4d89894c3b827d, type: 3}
   settingsElements:
   - {fileID: 1694415399223269578, guid: 627ee3d720baf494cbdb22448686c781, type: 3}
   - {fileID: 6678255654437588047, guid: e61462303843a0e438fcaec86c0a4931, type: 3}
   builder: {fileID: 628624407}
+  inputField: {fileID: 4693674309314446731, guid: d89b3afb98c165a45a68e03d20febb06, type: 3}
+  paging: {fileID: 3552619156568328995, guid: 4448fb62cfaed9b47aec1f01fbb3979c, type: 3}
+  selectTable: {fileID: 283400385351154687, guid: 4749e1536b765734eb133df2965626dc, type: 3}
+  status: {fileID: 5423034493239227372, guid: f7875d8abe101ae4cb4d89894c3b827d, type: 3}
+  folder: {fileID: 4966770623426012244, guid: 6b633d0914676404595f3cd1b0f4351c, type: 3}
 --- !u!114 &847021690
 MonoBehaviour:
   m_ObjectHideFlags: 0

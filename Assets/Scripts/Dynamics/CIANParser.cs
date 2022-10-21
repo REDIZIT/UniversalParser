@@ -20,17 +20,17 @@ namespace InGame.Dynamics
             this.url = url;
             this.browser = browser;
 
-            status.Setup(new StatusElement.Model(this)
+            status.Setup(new(this)
             {
                 onSwitchWorkStatus = SwitchWorkState
             });
-            folderSelect.Setup(new InputFieldElement.Model()
+            folderSelect.Setup(new()
             {
                 labelText = "ѕуть до папки, куда будут выгружены таблицы",
                 placeholderText = "ѕуть до папки",
                 validityCheckFunc = s => Directory.Exists(s)
             });
-            url.Setup(new InputFieldElement.Model()
+            url.Setup(new()
             {
                 labelText = "—сылка с фильтрами",
                 placeholderText = "—сылка",

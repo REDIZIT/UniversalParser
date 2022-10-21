@@ -1,8 +1,5 @@
 ﻿using InGame.Recognition;
 using NUnit.Framework;
-using RestSharp.Contrib;
-using UnityEngine;
-
 public class RecognizeTest
 {
     [Test]

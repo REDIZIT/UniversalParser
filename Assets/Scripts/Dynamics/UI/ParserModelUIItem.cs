@@ -25,7 +25,7 @@ namespace InGame.Dynamics.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            websiteButton.SetActive(true);
+            websiteButton.SetActive(string.IsNullOrWhiteSpace(model.WebsiteUrl) == false);
             themed.SetColor(ColorLayer.ListItemSelected);
         }
 

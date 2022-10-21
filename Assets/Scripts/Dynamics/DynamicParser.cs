@@ -1,8 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 namespace InGame.Dynamics
 {
@@ -10,15 +11,33 @@ namespace InGame.Dynamics
     {
         public bool IsWorking { get; private set; }
 
-        public List<IDynamicElement> Elements { get; private set; } = new();
+        protected IStatus status;
 
         private Thread thread;
+        private IDynamicElement[] elements = new IDynamicElement[0];
 
-        public void Start()
+        [Inject]
+        private void Construct(IStatus status)
+        {
+            this.status = status;
+            status.Setup(new(this)
+            {
+                onSwitchWorkStatus = SwitchWorkState
+            });
+        }
+        public void Start(bool useThreading)
         {
             IsWorking = true;
-            thread = new Thread(ThreadStart);
-            thread.Start();
+
+            if (useThreading)
+            {
+                thread = new Thread(ThreadStart);
+                thread.Start();
+            }
+            else
+            {
+                ThreadStart();
+            }
         }
         public void Stop()
         {
@@ -26,10 +45,14 @@ namespace InGame.Dynamics
             OnStop();
             thread?.Abort();
         }
+        public bool IsReadyToStart()
+        {
+            return elements.Count() > 0 && elements.All(e => e.IsValid);
+        }
         protected void SwitchWorkState()
         {
             if (IsWorking) Stop();
-            else Start();
+            else Start(true);
         }
 
         protected abstract void OnStart();
@@ -37,8 +60,6 @@ namespace InGame.Dynamics
 
         private void ThreadStart()
         {
-            StatusElement status = (StatusElement)Elements.First(e => e is StatusElement);
-
             try
             {
                 OnStart();
@@ -56,6 +77,16 @@ namespace InGame.Dynamics
                 Debug.LogError(err);
                 Stop();
             }
+        }
+        protected void BakeElements()
+        {
+            Type type = typeof(IDynamicElement);
+
+            var props = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
+            var where = props.Where(f => f.GetValue(this) is IDynamicElement).ToArray();
+            elements = where.Select(f => f.GetValue(this)).Cast<IDynamicElement>().ToArray();
+
+            Debug.Log("Baked elements: " + String.Join(", ", elements.Select(e => e.GetType().Name)));
         }
     }
 }

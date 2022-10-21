@@ -1,3 +1,4 @@
+using InGame.Dynamics;
 using InGame.Parse;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityParser;
 
 namespace InGame.UI
 {
-	public class PropertyAuctionsParseUI : MonoBehaviour
+    public class PropertyAuctionsParseUI : MonoBehaviour
 	{
 		public SelectTableElement selectTableUI;
 		public UrlHandlerControl urlControl;

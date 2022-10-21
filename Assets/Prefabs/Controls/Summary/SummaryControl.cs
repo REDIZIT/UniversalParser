@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityParser;
+using InGame.Dynamics;
 
 namespace InGame.UI
 {

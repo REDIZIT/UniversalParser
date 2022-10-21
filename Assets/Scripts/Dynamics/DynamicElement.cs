@@ -3,7 +3,7 @@ using Zenject;
 
 namespace InGame.Dynamics
 {
-    public abstract class DynamicElement<TModel> : MonoBehaviour, IDynamicElement
+    public abstract class DynamicElement<TModel> : MonoBehaviour, IDynamicElement where TModel : ElementModel
     {
         public bool IsValid { get; protected set; } = true;
 
@@ -20,8 +20,6 @@ namespace InGame.Dynamics
 
         private void Start()
         {
-            ActiveParser.Elements.Add(this);
-
             if (model == null)
             {
                 Debug.LogError($"You need to setup DynamicElement ({name}) before Start event");

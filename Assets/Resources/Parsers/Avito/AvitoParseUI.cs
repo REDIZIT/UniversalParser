@@ -1,3 +1,4 @@
+using InGame.Dynamics;
 using InGame.Parse;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using UnityParser;
 
 namespace InGame.UI
 {
-	public class AvitoParseUI : MonoBehaviour
+    public class AvitoParseUI : MonoBehaviour
 	{
 		public SelectTableElement selectTableUI => page.selectTableUI;
 		public UrlHandlerControl urlControl => page.urlControl;

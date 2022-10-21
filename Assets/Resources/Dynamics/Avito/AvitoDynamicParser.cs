@@ -1,65 +1,59 @@
 using HtmlAgilityPack;
 using InGame.Parse;
 using InGame.Recognition;
-using InGame.UI;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
-using OpenQA.Selenium;
 using RestSharp.Contrib;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using Zenject;
 
 namespace InGame.Dynamics
 {
     public class AvitoDynamicParser : DynamicParser
     {
-        private InputFieldElement url;
-        private PagingElement paging;
-        private SelectTableElement table;
-        private StatusElement status;
+        private IInputField url;
+        private IPaging paging;
+        private ISelectTable table;
 
         private IBrowser browser;
 
+        private HtmlDocument doc = new();
+
         [Inject]
-        private void Construct(InputFieldElement url, PagingElement paging, SelectTableElement table, StatusElement status, IBrowser browser)
+        private void Construct(IInputField url, IPaging paging, ISelectTable table, IBrowser browser)
         {
             this.url = url;
             this.paging = paging;
             this.table = table;
-            this.status = status;
             this.browser = browser;
 
-            url.Setup(new InputFieldElement.Model()
+            url.Setup(new()
             {
                 labelText = "—сылка на авито с фильтрами",
                 placeholderText = "—сылка"
             });
-            paging.Setup(new PagingElement.Model()
-            {
+            paging.Setup(new());
+            table.Setup(new());
 
-            });
-            table.Setup(new SelectTableElement.Model());
-            status.Setup(new StatusElement.Model(this)
-            {
-                onSwitchWorkStatus = SwitchWorkState
-            });;
+            BakeElements();
         }
         protected override void OnStart()
         {
             browser.Open();
 
+            paging.RequestPagesCount = GetPagesCount();
+
             IParseResult bigResult = new ParseResult<AvitoLot>();
 
             for (int i = 0; i < paging.Count; i++)
             {
-                int currentUrlIndex = paging.Start + i;
+                int pageIndex = paging.Start + i;
 
                 status.Status = "—качиваю страницу";
                 status.Progress = i + "/" + paging.Count;
 
-                ParseResult<AvitoLot> result = ParsePage(url.Text);
+                ParseResult<AvitoLot> result = ParsePage(paging.GetPagedUrl(url.Text, pageIndex));
                 bigResult.AddRange(result.lots);
             }
 
@@ -71,12 +65,20 @@ namespace InGame.Dynamics
             browser.Close();
         }
 
+        private int GetPagesCount()
+        {
+            // pagination-button
+            browser.GoToUrl(paging.GetPagedUrl(url.Text, paging.Start));
+            browser.GetDocument(doc);
+            var pageGroup = doc.DocumentNode.SelectSingleNode(".//div[@data-marker='pagination-button']");
+            var lastPage = pageGroup.ChildNodes[^2];
+
+            return int.Parse(lastPage.InnerText);
+        }
         private ParseResult<AvitoLot> ParsePage(string url)
         {
-            browser.Driver.Navigate().GoToUrl(url);
-
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(browser.Driver.PageSource);
+            browser.GoToUrl(url);
+            browser.GetDocument(doc);
 
             var nodes = GetNodesToParse(doc);
 
@@ -114,7 +116,6 @@ namespace InGame.Dynamics
             #region Title (name, area, storyes)
 
             string text = HttpUtility.HtmlDecode(titleNode.ChildNodes[0].InnerText);
-
 
             // Get area from recognizer and remove this from name text
             if (Recognizer.TryRecognize(text, out Recognizer.Result result))

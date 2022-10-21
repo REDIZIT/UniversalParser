@@ -1,3 +1,4 @@
+using InGame.Dynamics;
 using InGame.UI;
 using System;
 using System.Reflection;
@@ -18,6 +19,8 @@ namespace InGame
 			Type classType = Assembly.GetExecutingAssembly().GetType(parserInfo.parseUIType);
 			MonoBehaviour mono = Activator.CreateInstance(classType) as MonoBehaviour;
 			gameObject.AddComponent(mono.GetType());
-		}
+
+			selectTableUI.Setup(new());
+        }
 	}
 }
