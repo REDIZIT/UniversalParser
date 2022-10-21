@@ -20,6 +20,10 @@ namespace InGame.Dynamics
         private void Construct(IStatus status)
         {
             this.status = status;
+            status.Setup(new(this)
+            {
+                onSwitchWorkStatus = SwitchWorkState
+            });
             BakeElements();
         }
         public void Start(bool useThreading)

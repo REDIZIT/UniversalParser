@@ -8,51 +8,21 @@ using UnityEngine;
 
 namespace InGame.Dynamics
 {
-    public interface IBrowser
-    {
-        void Open();
-        void Close();
-        void GoToUrl(string url);
-        void GetDocument(HtmlDocument documentToUpdate);
-    }
-    public class FakeBrowser : IBrowser
-    {
-        public void Open() { }
-        public void Close() { }
-
-        private int getNumber = 0;
-        private readonly string[] html;
-
-        public FakeBrowser(string[] html)
-        {
-            this.html = html;
-            Debug.Log("Fake browser has been loaded with " + html.Length + " documents");
-        }
-        public void GoToUrl(string url) { }
-        public void GetDocument(HtmlDocument doc)
-        {
-            Debug.Log("Get fake document: " + getNumber);
-            doc.LoadHtml(html[getNumber]);
-            getNumber++;
-        }
-    }
     public class Yandex : IBrowser
     {
         private IWebDriver Driver;
-        private int i;
 
         public void Open()
         {
             var service = ChromeDriverService.CreateDefaultService(Pathes.steamingAssets, "yandexdriver.exe");
             service.HideCommandPromptWindow = true;
 
-            string downloadFilepath = @"C:\\Users\\REDIZIT\\Desktop\\1";
             Dictionary<string, object> chromePrefs = new();
             chromePrefs.Add("profile.default_content_settings.popups", 0);
-            chromePrefs.Add("download.default_directory", downloadFilepath);
             ChromeOptions options = new ChromeOptions();
 
             options.AddUserProfilePreference("prefs", chromePrefs);
+            options.AddArgument("download.default_directory=C:/Users/REDIZIT/Desktop/1");
 
             if (SettingsManager.settings.enableImageLoading == false)
             {
@@ -77,9 +47,6 @@ namespace InGame.Dynamics
             string html = Driver.PageSource;
 
             documentToUpdate.LoadHtml(html);
-
-            i++;
-            File.WriteAllText("C:\\Users\\REDIZIT\\Documents\\GitHub\\UniversalParser\\Assets\\UnitTests\\EditMode\\AvitoTest\\doc_" + i + ".html", html);
         }
     }
 }

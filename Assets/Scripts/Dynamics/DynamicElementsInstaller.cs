@@ -9,13 +9,15 @@ namespace InGame.Dynamics
         [SerializeField] private GameObject[] settingsElements;
         [SerializeField] private ParserBuilder builder;
 
-        [SerializeField] private GameObject inputField, paging, selectTable, status;
+        [SerializeField] private GameObject inputField, paging, selectTable, status, folder;
 
         public override void InstallBindings()
         {
             BindElement<IInputField>(inputField, elementsContainer);
             BindElement<IPaging>(paging, elementsContainer);
             BindElement<ISelectTable>(selectTable, elementsContainer);
+            BindElement<ISelectFolder>(folder, elementsContainer);
+
             BindElement<IStatus>(status, progressContainer);
 
             foreach (GameObject go in settingsElements)

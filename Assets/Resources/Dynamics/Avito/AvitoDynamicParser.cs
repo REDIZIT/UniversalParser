@@ -35,10 +35,6 @@ namespace InGame.Dynamics
             });
             paging.Setup(new());
             table.Setup(new());
-            status.Setup(new(this)
-            {
-                onSwitchWorkStatus = SwitchWorkState
-            });;
         }
         protected override void OnStart()
         {

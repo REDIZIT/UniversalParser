@@ -9,7 +9,8 @@ using UnityParser;
 
 namespace InGame.Dynamics
 {
-	public class SelectTableElement : DynamicElement<ISelectTable.Model>, ISelectTable
+
+    public class SelectTableElement : DynamicElement<ISelectTable.Model>, ISelectTable
     {
         public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
 
