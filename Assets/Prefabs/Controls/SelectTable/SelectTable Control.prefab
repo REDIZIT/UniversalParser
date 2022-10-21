@@ -26,6 +26,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8399969380191626036}
   - {fileID: 8399969380136053762}
@@ -63,6 +64,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8399969379109195973}
   - {fileID: 8399969379911938227}
@@ -102,6 +104,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8399969380191626036}
   m_RootOrder: 1
@@ -177,6 +180,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8399969379911938227}
   m_RootOrder: 0
@@ -257,6 +261,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8399969379448129395}
   m_RootOrder: 0
@@ -338,6 +343,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8399969379032408212}
   m_Father: {fileID: 8399969380191626036}
@@ -430,8 +436,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8468740325866994636}
-        m_TargetAssemblyTypeName: InGame.UI.SelectTableControl, Core
+      - m_Target: {fileID: 7735609825713313972}
+        m_TargetAssemblyTypeName: InGame.Dynamics.SelectTableElement, Core
         m_MethodName: ClickUseExistingTable
         m_Mode: 1
         m_Arguments:
@@ -470,6 +476,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8399969378962911873}
   m_RootOrder: 0
@@ -550,13 +557,14 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 505581037810125239}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -13.8}
+  m_AnchoredPosition: {x: 0, y: -13.799988}
   m_SizeDelta: {x: -290, y: 30}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8399969379109195975
@@ -631,6 +639,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8399969378924949614}
   m_Father: {fileID: 8399969380191626036}
@@ -723,8 +732,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8468740325866994636}
-        m_TargetAssemblyTypeName: InGame.UI.SelectTableControl, Core
+      - m_Target: {fileID: 7735609825713313972}
+        m_TargetAssemblyTypeName: InGame.Dynamics.SelectTableElement, Core
         m_MethodName: ClickUseNewTable
         m_Mode: 1
         m_Arguments:
@@ -764,6 +773,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8399969378713767310}
   m_Father: {fileID: 505581037810125239}
@@ -856,8 +866,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8468740325866994636}
-        m_TargetAssemblyTypeName: InGame.UI.SelectTableControl, Core
+      - m_Target: {fileID: 7735609825713313972}
+        m_TargetAssemblyTypeName: InGame.Dynamics.SelectTableElement, Core
         m_MethodName: ClickChangeTable
         m_Mode: 1
         m_Arguments:
@@ -879,7 +889,7 @@ GameObject:
   - component: {fileID: 8399969380072626646}
   - component: {fileID: 8399969380072626640}
   - component: {fileID: 8399969380072626647}
-  - component: {fileID: 8468740325866994636}
+  - component: {fileID: 7735609825713313972}
   m_Layer: 5
   m_Name: SelectTable Control
   m_TagString: Untagged
@@ -894,9 +904,10 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8399969380072626645}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 934295147192820896}
   - {fileID: 505581037810125239}
@@ -946,7 +957,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8468740325866994636
+--- !u!114 &7735609825713313972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -955,7 +966,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8399969380072626645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d47aaf51228c6f248b6751d2380a20b6, type: 3}
+  m_Script: {fileID: 11500000, guid: bccd9ed84a2c3bd4488700517d19fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   workingTableType: 0
@@ -995,6 +1006,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 934295147192820896}
   m_RootOrder: 1
@@ -1076,6 +1088,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8399969379448129395}
   - {fileID: 8399969378340119873}

@@ -50,7 +50,7 @@ namespace UnityParser
 			int row = table.NumberOfRows;
 
 			List<ExcelStringAttribute> attributes = new List<ExcelStringAttribute>();
-            Debug.Log("Type: " + lotType + " lots count: " + lots.Count());
+            Debug.Log($"{lots.Count()} lots <{lotType}> were saved");
             foreach (FieldInfo field in lotType.GetFields())
 			{
 				var attribute = field.GetCustomAttribute<ExcelStringAttribute>();

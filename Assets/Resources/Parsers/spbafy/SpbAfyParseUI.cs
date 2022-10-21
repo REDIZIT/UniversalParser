@@ -15,6 +15,11 @@ namespace InGame.UI
         private SpbAfyParser parser = new SpbAfyParser();
         private int pagesCount;
 
+        private void Awake()
+        {
+            importTableControl.Setup(new());
+            exportTableControl.Setup(new());
+        }
         private void Update()
         {
             startButton.gameObject.SetActive(parser.IsWorking == false);
