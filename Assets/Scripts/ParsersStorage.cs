@@ -27,7 +27,6 @@ namespace InGame
 					pages.Add(page);
 					if (prefab.name == "Avito Page")
                     {
-						Debug.Log("Default page is " + prefab.name);
 						defaultPage = page;
                     }
                 }

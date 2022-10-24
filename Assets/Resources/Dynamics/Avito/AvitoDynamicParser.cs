@@ -5,7 +5,6 @@ using RestSharp.Contrib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
 using Zenject;
 
 namespace InGame.Dynamics
@@ -33,7 +32,7 @@ namespace InGame.Dynamics
                 labelText = "—сылка на авито с фильтрами",
                 placeholderText = "—сылка"
             });
-            paging.Setup(new());
+            paging.Setup(new IPaging.ArgumentModel());
             table.Setup(new());
 
             BakeElements();
