@@ -148,7 +148,7 @@ namespace InGame.Parse
                 lot.metroOrDistrict = metroNode.InnerText;
             }
 
-            lot.address = node.SelectSingleNode(".//div[@class='ClickableAddress__links']").InnerText;
+            lot.address = node.SelectSingleNode(".//div[@class='ClClickableAddress__links']").InnerText;
 
             return lot;
         }
