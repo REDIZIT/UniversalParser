@@ -15,6 +15,7 @@ namespace InGame.Dynamics
     {
         private List<string> urls = new List<string>();
 
+        private IOption option;
         private IInputField folder;
         private WebClient c;
         private float chillTimeLeft;
@@ -29,8 +30,9 @@ namespace InGame.Dynamics
         public const int CHILL_DELAY = 30;
 
         [Inject]
-        private void Construct(IInputField folder)
+        private void Construct(IOption option, IInputField folder)
         {
+            this.option = option;
             this.folder = folder;
             c = new WebClient();
 
@@ -45,6 +47,15 @@ namespace InGame.Dynamics
                 };
             }
 
+            option.Setup(new IOption.Model()
+            {
+                title = "Выберите макет выгрузки",
+                items = new List<IOption.Item>()
+                {
+                    new IOption.Item() { text = "Вторичка по Адмиралтейскому" },
+                    new IOption.Item() { text = "Первичка по всем районам" }
+                }
+            });
             folder.Setup(new()
             {
                 labelText = "Выгрузить таблицы в папку",
