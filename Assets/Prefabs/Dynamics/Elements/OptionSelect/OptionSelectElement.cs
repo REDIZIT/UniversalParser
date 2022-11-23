@@ -18,7 +18,7 @@ namespace InGame
         public class Item
         {
             public string text;
-            public Action methodToInvoke;
+            public object value;
         }
     }
     public class OptionSelectElement : DynamicElement<IOption.Model>, IOption
