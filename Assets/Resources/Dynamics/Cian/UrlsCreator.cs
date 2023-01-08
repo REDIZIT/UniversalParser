@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization.Configuration;
-using System.Security.Policy;
 using UnityEngine;
 
 namespace InGame.Dynamics
@@ -200,7 +197,6 @@ namespace InGame.Dynamics
 
             url = AppendRoomArgs(url, rooms, range);
 
-            Debug.Log(url);
             return url;
         }
         private string AppendRoomArgs(string url, int rooms, Range range)
