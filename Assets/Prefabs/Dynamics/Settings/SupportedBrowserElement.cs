@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace InGame.Dynamics
 {
@@ -18,6 +19,8 @@ namespace InGame.Dynamics
         [SerializeField] private Button updateButton;
 
         private WebClient c = new WebClient();
+
+        [Inject] private IBrowser browser;
 
         private const string LATEST_URL = "https://api.github.com/repos/yandex/YandexDriver/releases";
         private const string DRIVER_INFO_PATH = "/driverAssetInfo.txt";
@@ -53,6 +56,9 @@ namespace InGame.Dynamics
         {
             updateButton.interactable = false;
             yield return null;
+
+            Debug.Log("Closing browser");
+            browser.Close();
 
             Asset winAsset = GetLatestAsset();
 

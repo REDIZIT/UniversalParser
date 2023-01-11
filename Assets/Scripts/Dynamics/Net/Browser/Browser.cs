@@ -11,11 +11,12 @@ namespace InGame.Dynamics
     public class Yandex : IBrowser
     {
         private IWebDriver Driver;
+        private ChromeDriverService service;
 
         public void Open()
         {
-            var service = ChromeDriverService.CreateDefaultService(Pathes.steamingAssets, "yandexdriver.exe");
-            service.HideCommandPromptWindow = true;
+            service = ChromeDriverService.CreateDefaultService(Pathes.steamingAssets, "yandexdriver.exe");
+            service.HideCommandPromptWindow = false;
 
             Dictionary<string, object> chromePrefs = new();
             chromePrefs.Add("profile.default_content_settings.popups", 0);
@@ -33,9 +34,14 @@ namespace InGame.Dynamics
         }
         public void Close()
         {
+            Debug.Log("Yandex close");
+
+            Driver?.Close();
             Driver?.Quit();
             Driver?.Dispose();
             Driver = null;
+
+            service?.Dispose();
         }
         public void GoToUrl(string url)
         {
