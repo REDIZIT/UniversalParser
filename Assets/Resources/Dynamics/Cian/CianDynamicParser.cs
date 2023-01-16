@@ -49,10 +49,12 @@ namespace InGame.Dynamics
                 title = "Выберите макет выгрузки",
                 items = new List<IOption.Item>()
                 {
-                    new IOption.Item() { text = "Вторичка (район + площади)", value = UrlsCreator.Type.SaleDistrictArea },
-                    new IOption.Item() { text = "Аренда (район + площади)", value = UrlsCreator.Type.RentDistrictArea },
-                    new IOption.Item() { text = "Комнаты (только район)", value = UrlsCreator.Type.SaleRoomsDistrict },
+                    new IOption.Item() { text = "Вторичка (районы + площади)", value = UrlsCreator.Type.SaleDistrictArea },
+                    new IOption.Item() { text = "Аренда (районы + площади)", value = UrlsCreator.Type.RentDistrictArea },
+                    new IOption.Item() { text = "Комнаты (только районы)", value = UrlsCreator.Type.SaleRoomsDistrict },
                     new IOption.Item() { text = "Аппартаменты (площади по новым правилам)", value = UrlsCreator.Type.SaleApartmentsSpecial },
+                    new IOption.Item() { text = "ИЖС (районы)", value = UrlsCreator.Type.Houses },
+                    new IOption.Item() { text = "Первичка (районы + площади)", value = UrlsCreator.Type.FirstHands },
                 }
             });
             folder.Setup(new()

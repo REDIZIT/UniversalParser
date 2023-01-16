@@ -21,16 +21,20 @@ namespace InGame.Dynamics
 
         public enum Type
         {
-            /// <summary>Вторичка (район + площади)</summary>
+            /// <summary>Вторичка (районы + площади)</summary>
             SaleDistrictArea,
-            /// <summary>Аренда (район + площади)</summary>
+            /// <summary>Аренда (районы + площади)</summary>
             RentDistrictArea,
             /// <summary>Комуналки (только районы)</summary>
             SaleRoomsDistrict,
             /// <summary>Апартаменты по новым правилам  (только площади)</summary>
             SaleApartmentsSpecial,
             /// <summary>Первичка по новым правилам  (только площади)</summary>
-            SaleFirstSpecial
+            SaleFirstSpecial,
+            /// <summary>ИЖС (дома, районы)</summary>
+            Houses,
+            /// <summary>Первичка (тоже самое, что и вторичка [районы + площади])</summary>
+            FirstHands,
         }
 
         public List<string> Create(Type type)
@@ -81,6 +85,8 @@ namespace InGame.Dynamics
                 Type.RentDistrictArea => "https://spb.cian.ru/cat.php?deal_type=rent&district%5B0%5D={0}&engine_version=2&offer_type=flat&only_flat=1&room1=1&totime=604800&type=4",
                 Type.SaleRoomsDistrict => "https://spb.cian.ru/cat.php?deal_type=sale&district%5B0%5D={0}&engine_version=2&offer_type=flat&room0=1&totime=2592000",
                 Type.SaleApartmentsSpecial => "https://spb.cian.ru/cat.php?apartment=1&deal_type=sale&engine_version=2&offer_type=flat&region=2&totime=2592000",
+                Type.Houses => "https://spb.cian.ru/cat.php?deal_type=sale&district%5B0%5D={0}&engine_version=2&offer_type=suburban&object_type%5B0%5D=1",
+                Type.FirstHands => "https://spb.cian.ru/cat.php?deal_type=sale&region=2&engine_version=2&object_type%5B0%5D=2&offer_type=flat&district%5B0%5D={0}",
                 _ => throw new System.NotImplementedException("Failed to get url for cian type = " + type),
             };
         }
@@ -137,8 +143,19 @@ namespace InGame.Dynamics
         {
             List<string> urls = new List<string>();
 
-            bool includeDistricts = type == Type.SaleRoomsDistrict || type == Type.SaleDistrictArea || type == Type.RentDistrictArea;
-            bool includeAreas = type == Type.SaleDistrictArea || type == Type.RentDistrictArea || type == Type.SaleFirstSpecial || type == Type.SaleApartmentsSpecial;
+            bool includeDistricts = 
+                type == Type.SaleRoomsDistrict || 
+                type == Type.SaleDistrictArea || 
+                type == Type.RentDistrictArea || 
+                type == Type.Houses || 
+                type == Type.FirstHands;
+
+            bool includeAreas = 
+                type == Type.SaleDistrictArea ||
+                type == Type.RentDistrictArea ||
+                type == Type.SaleFirstSpecial ||
+                type == Type.SaleApartmentsSpecial ||
+                type == Type.FirstHands;
 
             if (includeDistricts)
             {
@@ -188,7 +205,7 @@ namespace InGame.Dynamics
                 }
             }
 
-            Debug.Log("Type = " + type + ", urls:\n" + string.Join("\n", urls));
+            Debug.Log($"Type = {type}, urls ({urls.Count}):\n" + string.Join("\n", urls));
             return urls;
         }
         private string CreateUrl(string district, int rooms, Range range)
