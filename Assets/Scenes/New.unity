@@ -460,6 +460,7 @@ MonoBehaviour:
   selectTable: {fileID: 283400385351154687, guid: 4749e1536b765734eb133df2965626dc, type: 3}
   status: {fileID: 5423034493239227372, guid: f7875d8abe101ae4cb4d89894c3b827d, type: 3}
   folder: {fileID: 4966770623426012244, guid: 6b633d0914676404595f3cd1b0f4351c, type: 3}
+  option: {fileID: 2232464096257740098, guid: 80bc3ac435ed0974797270459a37003f, type: 3}
 --- !u!114 &847021690
 MonoBehaviour:
   m_ObjectHideFlags: 0

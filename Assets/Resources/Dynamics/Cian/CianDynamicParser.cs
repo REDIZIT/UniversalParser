@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using UnityEngine;
 using Zenject;
@@ -15,6 +14,7 @@ namespace InGame.Dynamics
     {
         private List<string> urls = new List<string>();
 
+        private IOption option;
         private IInputField folder;
         private WebClient c;
         private float chillTimeLeft;
@@ -29,15 +29,14 @@ namespace InGame.Dynamics
         public const int CHILL_DELAY = 30;
 
         [Inject]
-        private void Construct(IInputField folder)
+        private void Construct(IOption option, IInputField folder)
         {
+            this.option = option;
             this.folder = folder;
             c = new WebClient();
 
             if (SettingsManager.settings.isProxyEnabled)
             {
-                Debug.Log("Proxe is enabled");
-
                 c.Proxy = new WebProxy
                 {
                     Address = new Uri(SettingsManager.settings.proxyAddress + ":" + SettingsManager.settings.proxyPort),
@@ -45,6 +44,19 @@ namespace InGame.Dynamics
                 };
             }
 
+            option.Setup(new IOption.Model()
+            {
+                title = "Выберите макет выгрузки",
+                items = new List<IOption.Item>()
+                {
+                    new IOption.Item() { text = "Вторичка (районы + площади)", value = UrlsCreator.Type.SaleDistrictArea },
+                    new IOption.Item() { text = "Аренда (районы + площади)", value = UrlsCreator.Type.RentDistrictArea },
+                    new IOption.Item() { text = "Комнаты (только районы)", value = UrlsCreator.Type.SaleRoomsDistrict },
+                    new IOption.Item() { text = "Аппартаменты (площади по новым правилам)", value = UrlsCreator.Type.SaleApartmentsSpecial },
+                    new IOption.Item() { text = "ИЖС (районы)", value = UrlsCreator.Type.Houses },
+                    new IOption.Item() { text = "Первичка (районы + площади)", value = UrlsCreator.Type.FirstHands },
+                }
+            });
             folder.Setup(new()
             {
                 labelText = "Выгрузить таблицы в папку",
@@ -57,7 +69,7 @@ namespace InGame.Dynamics
 
         protected override void OnStart()
         {
-            urls = urlsCreator.Create();
+            urls = urlsCreator.Create((UrlsCreator.Type)option.Selected.value);
 
             HandleUrls();
         }
@@ -83,6 +95,8 @@ namespace InGame.Dynamics
                     {
                         // Export url
                         // https://spb.cian.ru/export/xls/offers/?deal_type=sale&district%5B0%5D=747&engine_version=2&object_type%5B0%5D=1&offer_type=flat&room7=1&room9=1&totime=864000
+                        // Second url, rent: https://spb.cian.ru/cat.php?deal_type=rent&engine_version=2&offer_type=flat&only_flat=1&region=2&room1=1&totime=604800&type=4
+                        // Thrird url, with another rules: https://spb.cian.ru/cat.php?deal_type=sale&district%5B0%5D=747&engine_version=2&object_type%5B0%5D=1&offer_type=flat&room1=1&totime=864000
                         //url = url.Replace("cat.php", "export/xls/offers");
 
                         if (i % CHILL_URLS_COUNT == 0 && i > 0)
@@ -103,7 +117,7 @@ namespace InGame.Dynamics
                         string targetFileName = folder.Text + "/" + (Directory.GetFiles(folder.Text).Length + 1) + ".xlsx";
                         c.DownloadFile(downloadUrl, targetFileName);
 
-                        Thread.Sleep(DELAY_SECONDS * 1000);
+                        Thread.Sleep(DELAY_SECONDS * 1250);
                     }
                     catch (Exception err)
                     {
@@ -139,7 +153,6 @@ namespace InGame.Dynamics
             finally
             {
                 status.Status = "Done at " + DateTime.Now.TimeOfDay;
-                //browser.Close();
             }
         }
     }

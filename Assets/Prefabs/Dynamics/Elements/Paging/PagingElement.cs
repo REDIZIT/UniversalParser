@@ -11,65 +11,54 @@ namespace InGame.Dynamics
         int RequestPagesCount { get; set; }
         int Count { get; }
         int Start { get; }
+        int End { get; }
 
         string GetPagedUrl(string url, int page);
 
-        public class Model : ElementModel
+        public abstract class Model : ElementModel
+        {
+            public abstract string GetPagedUrl(string originalUrl, int page);
+        }
+        public class ArgumentModel : Model
         {
             public string pageArgument = "p";
-        }
-    }
-    public class FakePaging : IPaging
-    {
-        public int Start { get; private set; }
-        public int End
-        {
-            get
+
+            public override string GetPagedUrl(string originalUrl, int page)
             {
-                if (_end == -1) return RequestPagesCount;
-                else return Mathf.Clamp(_end, 1, RequestPagesCount);
-            }
-        }
+                string website = originalUrl.Split('?')[0];
+                List<string> arguments = originalUrl.Split('?')[1].Split('&').ToList();
 
-        /// <summary>Shows how many pages selected in range. Will be equal to <see cref="int.MaxValue"/> if start or end is not defined.</summary>
-        public int Count => End - Start + 1;
-
-        public int RequestPagesCount { get; set; }
-
-        public GameObject gameObject => null;
-        public bool IsValid => true;
-
-        private int _end;
-        private IPaging.Model model;
-
-        public string GetPagedUrl(string url, int page)
-        {
-            string website = url.Split('?')[0];
-            List<string> arguments = url.Split('?')[1].Split('&').ToList();
-
-            bool hasPageArg = false;
-            for (int i = 0; i < arguments.Count; i++)
-            {
-                string argName = arguments[i].Split('=')[0];
-                if (argName == model.pageArgument)
+                bool hasPageArg = false;
+                for (int i = 0; i < arguments.Count; i++)
                 {
-                    arguments[i] = argName + "=" + page;
-                    hasPageArg = true;
-                    break;
+                    string argName = arguments[i].Split('=')[0];
+                    if (argName == pageArgument)
+                    {
+                        arguments[i] = argName + "=" + page;
+                        hasPageArg = true;
+                        break;
+                    }
                 }
-            }
 
-            if (hasPageArg == false)
-            {
-                arguments.Add(model.pageArgument + "=" + page);
-            }
+                if (hasPageArg == false)
+                {
+                    arguments.Add(pageArgument + "=" + page);
+                }
 
-            return website + "?" + string.Join("&", arguments);
+                return website + "?" + string.Join("&", arguments);
+            }
         }
-
-        public void Setup(IPaging.Model model)
+        public class PageModel : Model
         {
-            this.model = model;
+            public string pagePattern = "page-{0}";
+
+            public override string GetPagedUrl(string originalUrl, int page)
+            {
+                string[] splitted = originalUrl.Split('?');
+                string url = splitted[0] + "/" + string.Format(pagePattern, page);
+                if (splitted.Length > 1) url+= "?" + splitted[1];
+                return url;
+            }
         }
     }
     public class PagingElement : DynamicElement<IPaging.Model>, IPaging
@@ -105,27 +94,7 @@ namespace InGame.Dynamics
 
         public string GetPagedUrl(string url, int page)
         {
-            string website = url.Split('?')[0];
-            List<string> arguments = url.Split('?')[1].Split('&').ToList();
-
-            bool hasPageArg = false;
-            for (int i = 0; i < arguments.Count; i++)
-            {
-                string argName = arguments[i].Split('=')[0];
-                if (argName == model.pageArgument)
-                {
-                    arguments[i] = argName + "=" + page;
-                    hasPageArg = true;
-                    break;
-                }
-            }
-
-            if (hasPageArg == false)
-            {
-                arguments.Add(model.pageArgument + "=" + page);
-            }
-            
-            return website + "?" + string.Join("&", arguments);
+            return model.GetPagedUrl(url, page);
         }
 
         private void UpdateFields()

@@ -25,7 +25,7 @@ namespace InGame
 				if (page != null)
                 {
 					pages.Add(page);
-					if (page.name == "Парсер avito")
+					if (prefab.name == "Avito Page")
                     {
 						defaultPage = page;
                     }

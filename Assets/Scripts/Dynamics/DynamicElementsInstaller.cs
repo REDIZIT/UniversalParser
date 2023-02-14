@@ -9,7 +9,7 @@ namespace InGame.Dynamics
         [SerializeField] private GameObject[] settingsElements;
         [SerializeField] private ParserBuilder builder;
 
-        [SerializeField] private GameObject inputField, paging, selectTable, status, folder;
+        [SerializeField] private GameObject inputField, paging, selectTable, status, folder, option;
 
         public override void InstallBindings()
         {
@@ -17,6 +17,7 @@ namespace InGame.Dynamics
             BindElement<IPaging>(paging, elementsContainer);
             BindElement<ISelectTable>(selectTable, elementsContainer);
             BindElement<ISelectFolder>(folder, elementsContainer);
+            BindElement<IOption>(option, elementsContainer);
 
             BindElement<IStatus>(status, progressContainer);
 
@@ -28,16 +29,6 @@ namespace InGame.Dynamics
             Container.BindInstance(builder);
         }
 
-        private void BindElement(GameObject go, Transform parent)
-        {
-            IDynamicElement element = go.GetComponent<IDynamicElement>();
-
-            Container.Bind(element.GetType())
-                .FromComponentInNewPrefab(go)
-                .UnderTransform(parent)
-                .AsTransient()
-                .Lazy();
-        }
         private void BindElement<TInterface>(GameObject go, Transform parent)
         {
             TInterface element = go.GetComponent<TInterface>();
