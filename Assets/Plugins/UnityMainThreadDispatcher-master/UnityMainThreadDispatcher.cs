@@ -102,9 +102,23 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 		}
 		return _instance;
 	}
+	public static void Log(string message)
+	{
+		Instance().Enqueue(() =>
+		{
+			Debug.Log(message);
+		});
+	}
+    public static void LogError(string message)
+    {
+        Instance().Enqueue(() =>
+        {
+            Debug.LogError(message);
+        });
+    }
 
 
-	void Awake() {
+    void Awake() {
 		if (_instance == null) {
 			_instance = this;
 			DontDestroyOnLoad(this.gameObject);
