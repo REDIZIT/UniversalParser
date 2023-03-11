@@ -1,3 +1,4 @@
+using InGame.Settings;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -18,7 +19,7 @@ namespace InGame.Dynamics
         [SerializeField] private Text versionText;
         [SerializeField] private Button updateButton;
 
-        private WebClient c = new WebClient();
+        private WebClient c;
 
         [Inject] private IBrowser browser;
 
@@ -47,6 +48,16 @@ namespace InGame.Dynamics
         private void Start()
         {
             UpdateVersionText();
+
+            c = new WebClient();
+            if (SettingsManager.settings.isProxyEnabled)
+            {
+                c.Proxy = new WebProxy
+                {
+                    Address = new Uri(SettingsManager.settings.proxyAddress + ":" + SettingsManager.settings.proxyPort),
+                    BypassProxyOnLocal = false
+                };
+            }
         }
         public void OnUpdateClicked()
         {
