@@ -241,7 +241,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   workingTableType: 0
-  selectMode: 0
   tableFilePath: 
   selectGroup: {fileID: 3841039731115183854}
   deselectGroup: {fileID: 3812505768807110090}

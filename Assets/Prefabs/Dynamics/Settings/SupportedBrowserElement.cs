@@ -109,16 +109,10 @@ namespace InGame.Dynamics
             {
                 try
                 {
-                    UnityMainThreadDispatcher.Log("GetVersion task run");
-
                     b.AppendLine($"Версия Chromium: {format}{GetDriverVersion()}{formatEnd}");
-
-                    UnityMainThreadDispatcher.Log("GetVersion driver got: " + b.ToString());
 
                     string currentVersion = File.ReadAllText(Pathes.steamingAssets + DRIVER_INFO_PATH);
                     b.Append($"Парсер поддерживает версию браузера: {format}{currentVersion}{formatEnd}");
-
-                    UnityMainThreadDispatcher.Log("GetVersion browser got: " + b.ToString());
 
                     string latestVersion = GetLatestAsset().BrowserVersion;
                     if (latestVersion != currentVersion)
@@ -126,8 +120,6 @@ namespace InGame.Dynamics
                         b.AppendLine($"\n\n<size=12><color=#efc8a4>Доступно обновление драйвера <size=10>({latestVersion})</size>. Обновите драйвер если после обновления браузера парсер перестал работать.</color></size>");
                         b.AppendLine();
                     }
-                    UnityMainThreadDispatcher.Log("GetVersion lastest asset got: " + b.ToString() + ", " + latestVersion);
-
                     UnityMainThreadDispatcher.Instance().Enqueue(() =>
                     {
                         updateButton.gameObject.SetActive(latestVersion != currentVersion);

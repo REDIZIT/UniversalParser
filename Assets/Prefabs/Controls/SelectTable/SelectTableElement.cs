@@ -13,9 +13,9 @@ namespace InGame.Dynamics
     public class SelectTableElement : DynamicElement<ISelectTable.Model>, ISelectTable
     {
         public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
+        public TableSelectMode SelectMode => model.mode;
 
         public WorkingTableType workingTableType;
-        public TableSelectMode selectMode;
         public string tableFilePath;
 
         public Action onTableReset;
@@ -45,9 +45,9 @@ namespace InGame.Dynamics
             selectGroup.SetActive(workingTableType == WorkingTableType.NotSelected);
             deselectGroup.SetActive(workingTableType != WorkingTableType.NotSelected);
 
-            newTableButton.SetActive(selectMode == TableSelectMode.NewAndOld || selectMode == TableSelectMode.OnlyNew);
-            oldTableButton.SetActive(selectMode == TableSelectMode.NewAndOld || selectMode == TableSelectMode.OnlyOld);
-            separator.SetActive(selectMode == TableSelectMode.NewAndOld);
+            newTableButton.SetActive(SelectMode == TableSelectMode.NewAndOld || SelectMode == TableSelectMode.OnlyNew);
+            oldTableButton.SetActive(SelectMode == TableSelectMode.NewAndOld || SelectMode == TableSelectMode.OnlyOld);
+            separator.SetActive(SelectMode == TableSelectMode.NewAndOld);
 
 
             if (workingTableType != WorkingTableType.NotSelected)

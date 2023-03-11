@@ -1,4 +1,5 @@
 using InGame.Parse;
+using static InGame.Dynamics.SelectTableElement;
 
 namespace InGame.Dynamics
 {
@@ -8,7 +9,7 @@ namespace InGame.Dynamics
 
         public class Model : ElementModel
         {
-
+            public TableSelectMode mode;
         }
     }
 }
