@@ -8,6 +8,7 @@ namespace InGame.Dynamics
     {
         public GameObject gameObject => null;
         public bool IsValid => true;
+        public string FilePath => null;
 
         public IParseResult resultToSave;
 

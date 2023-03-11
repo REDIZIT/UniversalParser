@@ -14,6 +14,7 @@ namespace InGame.Dynamics
     {
         public bool IsSelected => string.IsNullOrWhiteSpace(tableFilePath) == false;
         public TableSelectMode SelectMode => model.mode;
+        public string FilePath => tableFilePath;
 
         public WorkingTableType workingTableType;
         public string tableFilePath;

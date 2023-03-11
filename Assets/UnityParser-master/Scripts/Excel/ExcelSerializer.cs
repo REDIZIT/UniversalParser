@@ -44,6 +44,73 @@ namespace UnityParser
 			Excel excel = ExcelHelper.LoadExcel(filepath);
 			return GetAllIDs(typeof(T), excel.Tables[0]);
         }
+		public static IEnumerable<T> LoadLots<T>(string filepath) where T : Lot
+		{
+            Excel excel = ExcelHelper.LoadExcel(filepath);
+
+
+			// Extract ExcelStringAttributes from Lot class
+			List<ExcelStringAttribute> stringAttributes = new();
+			Dictionary<ExcelStringAttribute, FieldInfo> fieldInfoByAttribute = new();
+
+            foreach (FieldInfo field in typeof(T).GetFields())
+            {
+				ExcelStringAttribute attribute = field.GetCustomAttribute<ExcelStringAttribute>();
+				if (attribute != null)
+				{
+                    stringAttributes.Add(attribute);
+                    fieldInfoByAttribute.Add(attribute, field);
+                }
+            }
+
+
+			// Extract Excel table header columns
+            int headerWidth = excel.Tables[0].NumberOfColumns;
+			List<string> headerColumns = new List<string>();
+
+			for (int i = 1; i <= headerWidth; i++)
+			{
+				headerColumns.Add((string)excel.Tables[0].GetValue(1, i));
+			}
+
+
+			// Match ExcelStringAttrinute with it's order in Excel table's header
+            Dictionary<int, ExcelStringAttribute> lotFieldByHeaderIndex = new();
+
+			for (int i = 0; i < headerColumns.Count; i++)
+			{
+				string headerColumn = headerColumns[i];
+				ExcelStringAttribute matchedAttribute = stringAttributes.FirstOrDefault(a => a.name == headerColumn);
+
+				if (matchedAttribute == null)
+				{
+					Debug.Log("No matching attribute found for: " + headerColumn);
+				}
+				else
+				{
+					lotFieldByHeaderIndex.Add(i + 1, matchedAttribute);
+				}
+			}
+
+
+			// Enumerate Excel table's row by dictionary
+			for (int i = 2; i <= excel.Tables[0].NumberOfRows; i++)
+			{
+				T lot = Activator.CreateInstance<T>();
+
+				foreach (KeyValuePair<int, ExcelStringAttribute> kv in lotFieldByHeaderIndex)
+				{
+					int column = kv.Key;
+					ExcelStringAttribute attribute = kv.Value;
+
+					string cellValue = (string)excel.Tables[0].GetValue(i, column);
+
+					fieldInfoByAttribute[attribute].SetValue(lot, cellValue);
+				}
+
+				yield return lot;
+			}
+        }
 
 		private static void AppendLots(Type lotType, ExcelTable table, IEnumerable<Lot> lots)
         {
