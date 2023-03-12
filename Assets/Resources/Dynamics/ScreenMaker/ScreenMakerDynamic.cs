@@ -34,13 +34,16 @@ namespace InGame.Dynamics
 
         protected override void OnStart()
         {
+            string templatePath = '"' + HttpUtility.HtmlEncode(Application.streamingAssetsPath + "/Bridge/template.docx") + '"';
+
             foreach (ScreenMakerLot lot in ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath))
             {
                 string lotJson = '"' + HttpUtility.HtmlEncode(JsonConvert.SerializeObject(lot)) + '"';
-                string targetPath = '"' + HttpUtility.HtmlEncode(folderSelect.Text + "/" + lot.id + ".docx") + '"';
+                string targetPath = '"' + HttpUtility.HtmlEncode(folderSelect.Text + "/" + lot.id) + '"';
+               
 
                 System.Diagnostics.ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
-                info.Arguments = Application.streamingAssetsPath + "/Bridge/template.docx " + lotJson + " " + targetPath;
+                info.Arguments = templatePath + " " + lotJson + " " + targetPath;
                 System.Diagnostics.Process.Start(info);
             }
         }

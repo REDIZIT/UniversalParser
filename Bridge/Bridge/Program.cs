@@ -24,7 +24,7 @@ namespace Bridge
             ScreenMakerLot lot = JsonConvert.DeserializeObject<ScreenMakerLot>(HttpUtility.HtmlDecode(args[1]));
             string savePath = HttpUtility.HtmlDecode(args[2]);
 
-            string filename = args[0];
+            string filename = HttpUtility.HtmlDecode(args[0]);
 
             try
             {
@@ -42,6 +42,8 @@ namespace Bridge
                 string levels = lot.levels.Split(",")[0];
                 string type = string.Join(',', lot.levels.Split(',').Skip(1)).ToLower().Trim();
 
+                DateTime dateTime = DateTime.Parse(lot.date);
+
                 Replace("price", _price.ToString());
                 Replace("price_abilities", priceAbilities);
                 Replace("price_per_meter", pricePerMeter.ToString());
@@ -50,7 +52,7 @@ namespace Bridge
                 Replace("levels", levels);
                 Replace("type", type);
                 Replace("description", lot.description);
-                Replace("date", DateTime.Parse(lot.date).ToString("M") + ", " + DateTime.Parse(lot.date).ToString("t"));
+                Replace("date", dateTime.ToString("M") + ", " + dateTime.ToString("t"));
 
                 Replace("lift", lot.lift);
                 Replace("balcony", lot.balcony);
@@ -65,14 +67,20 @@ namespace Bridge
                 Replace("rooms", lot.rooms);
                 Replace("phones", lot.phones);
 
-                doc.SaveAs(savePath);
+                string docx = savePath + ".docx";
+                string pdf = savePath + ".pdf";
+                doc.SaveAs(docx);
 
                 // Converting to .pdf
                 Spire.Doc.Document document = new Spire.Doc.Document();
-                document.LoadFromFile(savePath);
-                document.SaveToFile(savePath + ".pdf");
+                document.LoadFromFile(docx);
+                document.SaveToFile(pdf);
 
-                File.Delete(savePath);
+                File.Delete(docx);
+
+                File.SetCreationTime(pdf, dateTime);
+                File.SetLastWriteTime(pdf, dateTime);
+                File.SetLastAccessTime(pdf, dateTime);
             }
             catch(Exception ex)
             {
