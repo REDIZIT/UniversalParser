@@ -51,5 +51,8 @@ namespace InGame.Dynamics
 
         [ExcelString("Есть телефон")]
         public string hasTel;
+
+        [ExcelString("ID")]
+        public string id;
     }
 }

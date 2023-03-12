@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using RestSharp.Contrib;
+using System.IO;
 using UnityEngine;
 using UnityParser;
 using Zenject;
@@ -8,7 +9,6 @@ namespace InGame.Dynamics
 {
     public class ScreenMakerDynamic : DynamicParser
     {
-        //private IBrowser browser;
         private IInputField folderSelect;
         private ISelectTable tableSelect;
 
@@ -26,7 +26,7 @@ namespace InGame.Dynamics
             {
                 labelText = "Папка для скриншотов",
                 placeholderText = "Путь до папки",
-                validityCheckFunc = (s) => string.IsNullOrWhiteSpace(s)
+                validityCheckFunc = (s) => Directory.Exists(s)
             });
 
             BakeElements();
@@ -34,13 +34,13 @@ namespace InGame.Dynamics
 
         protected override void OnStart()
         {
-            Debug.Log("Load table");
             foreach (ScreenMakerLot lot in ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath))
             {
-                string args = HttpUtility.HtmlEncode(JsonConvert.SerializeObject(lot));
+                string lotJson = '"' + HttpUtility.HtmlEncode(JsonConvert.SerializeObject(lot)) + '"';
+                string targetPath = '"' + HttpUtility.HtmlEncode(folderSelect.Text + "/" + lot.id + ".docx") + '"';
 
                 System.Diagnostics.ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
-                info.Arguments = Application.streamingAssetsPath + "/Bridge/template.docx " + '"' + args + '"';
+                info.Arguments = Application.streamingAssetsPath + "/Bridge/template.docx " + lotJson + " " + targetPath;
                 System.Diagnostics.Process.Start(info);
             }
         }

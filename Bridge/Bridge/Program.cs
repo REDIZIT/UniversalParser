@@ -22,6 +22,7 @@ namespace Bridge
             }
 
             ScreenMakerLot lot = JsonConvert.DeserializeObject<ScreenMakerLot>(HttpUtility.HtmlDecode(args[1]));
+            string savePath = HttpUtility.HtmlDecode(args[2]);
 
             string filename = args[0];
 
@@ -64,7 +65,7 @@ namespace Bridge
                 Replace("rooms", lot.rooms);
                 Replace("phones", lot.phones);
 
-                doc.SaveAs(@"C:\Users\REDIZIT\Documents\GitHub\UniversalParser\Assets\StreamingAssets\Bridge\result.docx");
+                doc.SaveAs(savePath);
             }
             catch(Exception ex)
             {
@@ -73,7 +74,6 @@ namespace Bridge
             }
 
             Console.WriteLine("Done");
-            Console.ReadLine();
         }
         private static void Replace(string name, string newValue, bool? isEmpty = null)
         {

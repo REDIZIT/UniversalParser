@@ -94,7 +94,7 @@ namespace UnityParser
 
 
 			// Enumerate Excel table's row by dictionary
-			for (int i = 2; i <= /*excel.Tables[0].NumberOfRows*/2; i++)
+			for (int i = 2; i <= excel.Tables[0].NumberOfRows; i++)
 			{
 				T lot = Activator.CreateInstance<T>();
 
