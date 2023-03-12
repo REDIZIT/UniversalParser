@@ -66,6 +66,13 @@ namespace Bridge
                 Replace("phones", lot.phones);
 
                 doc.SaveAs(savePath);
+
+                // Converting to .pdf
+                Spire.Doc.Document document = new Spire.Doc.Document();
+                document.LoadFromFile(savePath);
+                document.SaveToFile(savePath + ".pdf");
+
+                File.Delete(savePath);
             }
             catch(Exception ex)
             {
