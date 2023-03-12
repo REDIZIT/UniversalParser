@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using RestSharp.Contrib;
 using UnityEngine;
 using UnityParser;
 using Zenject;
@@ -35,15 +37,12 @@ namespace InGame.Dynamics
             Debug.Log("Load table");
             foreach (ScreenMakerLot lot in ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath))
             {
-                Debug.Log("Lift: " + lot.lift);
+                string args = HttpUtility.HtmlEncode(JsonConvert.SerializeObject(lot));
+
+                System.Diagnostics.ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
+                info.Arguments = Application.streamingAssetsPath + "/Bridge/template.docx " + '"' + args + '"';
+                System.Diagnostics.Process.Start(info);
             }
-
-            //System.Diagnostics.ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
-
-            //List
-
-            //info.Arguments = Application.streamingAssetsPath + "/Bridge/template.docx" + " 123123";
-            //System.Diagnostics.Process.Start(info);
         }
 
         protected override void OnStop()

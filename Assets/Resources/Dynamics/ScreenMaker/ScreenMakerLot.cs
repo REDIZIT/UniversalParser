@@ -36,5 +36,20 @@ namespace InGame.Dynamics
 
         [ExcelString("Ссылка на объявление")]
         public string lotUrl;
+
+        [ExcelString("Количество комнат")]
+        public string rooms;
+
+        [ExcelString("Площадь, м2")]
+        public string area;
+
+        [ExcelString("Телефоны")]
+        public string phones;
+
+        [ExcelString("Площадь комнат, м2")]
+        public string areaRooms;
+
+        [ExcelString("Есть телефон")]
+        public string hasTel;
     }
 }
