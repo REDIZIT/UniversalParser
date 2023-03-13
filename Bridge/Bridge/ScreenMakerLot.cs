@@ -18,5 +18,6 @@ namespace InGame.Dynamics
         public string phones;
         public string areaRooms;
         public string hasTel;
+        public string id;
     }
 }

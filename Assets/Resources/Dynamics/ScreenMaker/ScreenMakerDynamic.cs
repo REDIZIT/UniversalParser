@@ -41,7 +41,6 @@ namespace InGame.Dynamics
                 string lotJson = '"' + HttpUtility.HtmlEncode(JsonConvert.SerializeObject(lot)) + '"';
                 string targetPath = '"' + HttpUtility.HtmlEncode(folderSelect.Text + "/" + lot.id) + '"';
                
-
                 System.Diagnostics.ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
                 info.Arguments = templatePath + " " + lotJson + " " + targetPath;
                 System.Diagnostics.Process.Start(info);
@@ -50,7 +49,6 @@ namespace InGame.Dynamics
 
         protected override void OnStop()
         {
-            //throw new System.NotImplementedException();
         }
     }
 }

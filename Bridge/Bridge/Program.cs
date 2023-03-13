@@ -27,7 +27,7 @@ namespace Bridge
                 }
 
                 Console.WriteLine("Press any key to continue");
-                Console.Read();
+                //Console.Read();
 
                 if (args.Length < 1)
                 {
@@ -39,19 +39,19 @@ namespace Bridge
 
                 Console.WriteLine("Lot created = " + lot);
                 Console.WriteLine("Press any key to continue");
-                Console.Read();
+                //Console.Read();
 
                 string savePath = HttpUtility.HtmlDecode(args[2]);
 
                 Console.WriteLine("savePath = " + savePath);
                 Console.WriteLine("Press any key to continue");
-                Console.Read();
+                //Console.Read();
 
                 string filename = HttpUtility.HtmlDecode(args[0]);
 
                 Console.WriteLine("filename = " + filename);
                 Console.WriteLine("Press any key to continue");
-                Console.Read();
+                //Console.Read();
 
                 try
                 {
@@ -73,7 +73,10 @@ namespace Bridge
                     string levels = lot.levels.Split(",")[0];
                     string type = string.Join(',', lot.levels.Split(',').Skip(1)).ToLower().Trim();
 
+                    Random rnd = new(int.Parse(lot.id));
+
                     DateTime dateTime = DateTime.Parse(lot.date);
+                    dateTime = dateTime.Add(new TimeSpan(rnd.Next(6, 23), rnd.Next(0, 59), rnd.Next(0, 59)));
 
                     Replace("price", _price.ToString());
                     Replace("price_abilities", priceAbilities);
@@ -82,7 +85,7 @@ namespace Bridge
                     Replace("metro", lot.metro);
                     Replace("levels", levels);
                     Replace("type", type);
-                    Replace("description", lot.description);
+                    Replace("description", lot.description.Replace("\n", "").Trim());
                     Replace("date", dateTime.ToString("M") + ", " + dateTime.ToString("t"));
 
                     Replace("lift", lot.lift);
@@ -95,8 +98,10 @@ namespace Bridge
                     Replace("area_rooms", lot.areaRooms + AREA_METER, string.IsNullOrWhiteSpace(lot.areaRooms));
                     Replace("hasTel", string.IsNullOrWhiteSpace(lot.hasTel) ? GAP : "нет");
 
-                    Replace("rooms", lot.rooms);
+                    Replace("rooms", lot.rooms + " кв.");
+                    Replace("id", lot.id);
                     Replace("phones", lot.phones);
+                    Replace("footer_year", dateTime.Year.ToString());
 
                     Console.WriteLine("Tempate replaced");
 
