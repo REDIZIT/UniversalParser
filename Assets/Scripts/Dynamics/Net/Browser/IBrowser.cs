@@ -8,5 +8,6 @@ namespace InGame.Dynamics
         void Close();
         void GoToUrl(string url);
         void GetDocument(HtmlDocument documentToUpdate);
+        void Maximize();
     }
 }

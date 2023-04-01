@@ -54,5 +54,14 @@ namespace InGame.Dynamics
 
             documentToUpdate.LoadHtml(html);
         }
+        public void Maximize()
+        {
+            Driver.Manage().Window.Maximize();
+        }
+        public void Screenshot()
+        {
+            var screenshot = ((ChromeDriver)Driver).GetScreenshot();
+            screenshot.SaveAsFile("C:\\Users\\REDIZIT\\Desktop\\1\\123.png", ScreenshotImageFormat.Png);
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace InGame.Dynamics
     {
         public void Open() { }
         public void Close() { }
+        public void Maximize() { }
 
         private int getNumber = 0;
         private readonly string[] html;
