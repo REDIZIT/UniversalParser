@@ -6,6 +6,12 @@ using Xceed.Words.NET;
 
 namespace Bridge
 {
+    public class Args
+    {
+        public string templatePath;
+        public List<ScreenMakerLot> lots;
+        public string targetPath;
+    }
     public static class Program
     {
         private static DocX doc;
@@ -13,141 +19,140 @@ namespace Bridge
         private const string AREA_METER = " м²";
         private const string GAP = "—";
 
-        public static void Main(string[] args)
+        public static void Main(string[] arg)
         {
             try
             {
-                Console.WriteLine("Bridge launched. Arguments count: " + args.Length);
+                //Console.WriteLine("Bridge launched. Arg = " + arg);
 
-                for (int i = 0; i < args.Length; i++)
-                {
-                    Console.WriteLine("\n=== Argument " + i + "===");
-                    Console.WriteLine(args[i]);
-                    Console.WriteLine();
-                }
 
-                Console.WriteLine("Press any key to continue");
+
+                string json = HttpUtility.HtmlDecode(arg[0]);
+                //Console.WriteLine("Json = " + json);
                 //Console.Read();
 
-                if (args.Length < 1)
-                {
-                    Console.WriteLine("No .docx file path argument passed");
-                    Console.Read();
-                }
+                Args args = JsonConvert.DeserializeObject<Args>(json);
 
-                ScreenMakerLot lot = JsonConvert.DeserializeObject<ScreenMakerLot>(HttpUtility.HtmlDecode(args[1]));
-
-                Console.WriteLine("Lot created = " + lot);
-                Console.WriteLine("Press any key to continue");
+                //Console.WriteLine("Args = " + args);
                 //Console.Read();
 
-                string savePath = HttpUtility.HtmlDecode(args[2]);
+                
 
-                Console.WriteLine("savePath = " + savePath);
-                Console.WriteLine("Press any key to continue");
-                //Console.Read();
-
-                string filename = HttpUtility.HtmlDecode(args[0]);
-
-                Console.WriteLine("filename = " + filename);
-                Console.WriteLine("Press any key to continue");
-                //Console.Read();
-
-                try
+                foreach (var lot in args.lots)
                 {
-                    Console.WriteLine("Template block enter");
+                    string savePath = args.targetPath + lot.id;
 
-                    doc = DocX.Load(filename);
+                    Console.WriteLine("savePath = " + savePath);
 
-                    Console.WriteLine("Tempate loaded");
+                    string filename = args.templatePath;
 
-                    string price = lot.price.Split(',')[0];
-                    string priceAbilities = string.Join(',', lot.price.Split(',').Skip(1));
+                    Console.WriteLine("filename = " + filename);
 
-                    string[] areas = lot.area.Split('/');
+                    try
+                    {
+                        Console.WriteLine("Template block enter");
 
-                    float _price = float.Parse(price.Split()[0]);
-                    float _area = float.Parse(areas[0].Replace('.', ','));
-                    float pricePerMeter = _price / _area;
+                        doc = DocX.Load(filename);
 
-                    string levels = lot.levels.Split(",")[0];
-                    string type = string.Join(',', lot.levels.Split(',').Skip(1)).ToLower().Trim();
+                        Console.WriteLine("Tempate loaded");
 
-                    Random rnd = new(int.Parse(lot.id));
+                        string price = lot.price.Split(',')[0];
+                        string priceAbilities = string.Join(',', lot.price.Split(',').Skip(1));
 
-                    DateTime dateTime = DateTime.Parse(lot.date);
-                    dateTime = dateTime.Add(new TimeSpan(rnd.Next(6, 23), rnd.Next(0, 59), rnd.Next(0, 59)));
+                        string[] areas = lot.area.Split('/');
 
-                    Replace("price", _price.ToString());
-                    Replace("price_abilities", priceAbilities);
-                    Replace("price_per_meter", pricePerMeter.ToString());
-                    Replace("address", lot.address);
-                    Replace("metro", lot.metro);
-                    Replace("levels", levels);
-                    Replace("type", type);
-                    Replace("description", lot.description.Replace("\n", "").Trim());
-                    Replace("date", dateTime.ToString("M") + ", " + dateTime.ToString("t"));
+                        float _price = float.Parse(price.Split()[0]);
+                        float _area = float.Parse(areas[0].Replace('.', ','));
+                        float pricePerMeter = _price / _area;
 
-                    Replace("lift", lot.lift);
-                    Replace("balcony", lot.balcony);
-                    Replace("bathroom", lot.bathroom);
-                    Replace("view", lot.outsideView);
-                    Replace("area", areas[0] + AREA_METER, string.IsNullOrWhiteSpace(areas[0]));
-                    Replace("area_hab", areas[1] + AREA_METER, string.IsNullOrWhiteSpace(areas[1]));
-                    Replace("area_kitchen", areas[2] + AREA_METER, string.IsNullOrWhiteSpace(areas[2]));
-                    Replace("area_rooms", lot.areaRooms + AREA_METER, string.IsNullOrWhiteSpace(lot.areaRooms));
-                    Replace("hasTel", string.IsNullOrWhiteSpace(lot.hasTel) ? GAP : "нет");
+                        string levels = lot.levels.Split(",")[0];
+                        string type = string.Join(',', lot.levels.Split(',').Skip(1)).ToLower().Trim();
 
-                    Replace("rooms", lot.rooms + " кв.");
-                    Replace("id", lot.id);
-                    Replace("phones", lot.phones);
-                    Replace("footer_year", dateTime.Year.ToString());
+                        Random rnd = new(int.Parse(lot.id));
 
-                    Console.WriteLine("Tempate replaced");
+                        DateTime dateTime = DateTime.Parse(lot.date);
+                        dateTime = dateTime.Add(new TimeSpan(rnd.Next(6, 23), rnd.Next(0, 59), rnd.Next(0, 59)));
 
-                    string docx = savePath + ".docx";
-                    string pdf = savePath + ".pdf";
+                        Replace("price", _price.ToString());
+                        Replace("price_abilities", priceAbilities);
+                        Replace("price_per_meter", pricePerMeter.ToString());
+                        Replace("address", lot.address);
+                        Replace("metro", lot.metro);
+                        Replace("levels", levels);
+                        Replace("type", type);
+                        Replace("description", lot.description.Replace("\n", "").Trim());
+                        Replace("date", dateTime.ToString("M") + ", " + dateTime.ToString("t"));
 
-                    Console.WriteLine("docx = " + docx);
-                    Console.WriteLine("pdf = " + pdf);
+                        Replace("lift", lot.lift);
+                        Replace("balcony", lot.balcony);
+                        Replace("bathroom", lot.bathroom);
+                        Replace("view", lot.outsideView);
 
-                    doc.SaveAs(docx);
-                    Console.WriteLine("Docx saved");
+                        Replace("area", areas.Length >= 1 ? areas[0] + AREA_METER : "", areas.Length < 1);
+                        Replace("area_hab", areas.Length >= 2 ? areas[1] + AREA_METER : "", areas.Length < 2);
+                        Replace("area_kitchen", areas.Length >= 3 ? areas[2] + AREA_METER : "", areas.Length < 3);
 
-                    // Converting to .pdf
-                    Spire.Doc.Document document = new Spire.Doc.Document();
-                    document.LoadFromFile(docx);
-                    Console.WriteLine("Docx loaded");
-                    document.SaveToFile(pdf);
-                    Console.WriteLine("Pdf saved");
+                        Replace("area_rooms", lot.areaRooms + AREA_METER, string.IsNullOrWhiteSpace(lot.areaRooms));
+                        Replace("hasTel", string.IsNullOrWhiteSpace(lot.hasTel) ? GAP : "нет");
 
-                    File.Delete(docx);
+                        Replace("rooms", lot.rooms + " кв.");
+                        Replace("id", lot.id);
+                        Replace("phones", lot.phones);
+                        Replace("footer_year", dateTime.Year.ToString());
 
-                    Console.WriteLine("Docx deleted");
+                        Console.WriteLine("Tempate replaced");
 
-                    File.SetCreationTime(pdf, dateTime);
-                    File.SetLastWriteTime(pdf, dateTime);
-                    File.SetLastAccessTime(pdf, dateTime);
+                        string docx = savePath + ".docx";
+                        string pdf = savePath + ".pdf";
 
-                    Console.WriteLine("File dates changed");
+                        Console.WriteLine("docx = " + docx);
+                        Console.WriteLine("pdf = " + pdf);
+
+                        doc.SaveAs(docx);
+                        Console.WriteLine("Docx saved");
+
+                        // Converting to .pdf
+                        Spire.Doc.Document document = new Spire.Doc.Document();
+                        document.LoadFromFile(docx);
+                        Console.WriteLine("Docx loaded");
+                        document.SaveToFile(pdf);
+                        document.Dispose();
+                        Console.WriteLine("Pdf saved");
+
+                        File.Delete(docx);
+
+                        Console.WriteLine("Docx deleted");
+
+                        File.SetCreationTime(pdf, dateTime);
+                        File.SetLastWriteTime(pdf, dateTime);
+                        File.SetLastAccessTime(pdf, dateTime);
+
+                        Console.WriteLine("File dates changed");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                        Console.ReadLine();
+                    }
+
+                    Console.WriteLine("Done");
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    Console.ReadLine();
-                }
-
-                Console.WriteLine("Done");
+                
             }
             catch (Exception err)
             {
                 Console.WriteLine("Main block exception:");
                 Console.WriteLine(err.ToString());
+
+                Console.ReadLine();
             }
 
             Console.WriteLine();
             Console.WriteLine("Program end, press any to exit");
-            Console.ReadLine();
+
+            doc?.Dispose();
+
+            //Console.ReadLine();
         }
         private static void Replace(string name, string newValue, bool? isEmpty = null)
         {

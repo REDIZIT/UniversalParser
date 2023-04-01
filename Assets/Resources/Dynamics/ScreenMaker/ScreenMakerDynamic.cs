@@ -1,6 +1,10 @@
 using Newtonsoft.Json;
 using RestSharp.Contrib;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityParser;
 using Zenject;
@@ -34,21 +38,50 @@ namespace InGame.Dynamics
 
         protected override void OnStart()
         {
-            string templatePath = '"' + HttpUtility.HtmlEncode(Application.streamingAssetsPath + "/Bridge/template.docx") + '"';
+            string templatePath = Application.streamingAssetsPath + "/Bridge/template.docx";
 
-            foreach (ScreenMakerLot lot in ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath))
+            ScreenMakerLot[] lots = ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath).ToArray();
+
+            List<Process> processes = new List<Process>();
+
+            int groupSize = 10;
+            int currentLotIndex = 0;
+
+            while(currentLotIndex < lots.Length)
             {
-                string lotJson = '"' + HttpUtility.HtmlEncode(JsonConvert.SerializeObject(lot)) + '"';
-                string targetPath = '"' + HttpUtility.HtmlEncode(folderSelect.Text + "/" + lot.id) + '"';
-               
-                System.Diagnostics.ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
-                info.Arguments = templatePath + " " + lotJson + " " + targetPath;
-                System.Diagnostics.Process.Start(info);
+                ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
+
+                Args args = new Args()
+                {
+                    templatePath = templatePath,
+                    lots = lots.Skip(currentLotIndex).Take(groupSize).ToList(),
+                    targetPath = folderSelect.Text + "/",
+                };
+
+                currentLotIndex += groupSize;
+
+                info.Arguments = '"' + HttpUtility.HtmlEncode(JsonConvert.SerializeObject(args)) + '"';
+
+                var proc = Process.Start(info);
+                processes.Add(proc);
+
+                while(processes.Count >= 10 && processes.All(p => p.HasExited == false))
+                {
+                    Thread.Sleep(100);
+                }
+                processes.RemoveAll(p => p.HasExited);
             }
         }
 
         protected override void OnStop()
         {
+        }
+
+        public class Args
+        {
+            public string templatePath;
+            public List<ScreenMakerLot> lots;
+            public string targetPath;
         }
     }
 }
