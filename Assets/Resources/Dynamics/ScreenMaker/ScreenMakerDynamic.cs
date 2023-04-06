@@ -28,7 +28,7 @@ namespace InGame.Dynamics
             });
             folderSelect.Setup(new IInputField.Model()
             {
-                labelText = "Папка для скриншотов",
+                labelText = "Куда сохранять pdf файлы",
                 placeholderText = "Путь до папки",
                 validityCheckFunc = (s) => Directory.Exists(s)
             });
@@ -47,13 +47,16 @@ namespace InGame.Dynamics
             int groupSize = 10;
             int currentLotIndex = 0;
 
-            while(currentLotIndex < lots.Length)
+            string screenshotsPath = Application.streamingAssetsPath + "/CianScreenshots";
+
+            while (currentLotIndex < lots.Length)
             {
                 ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
 
                 Args args = new Args()
                 {
                     templatePath = templatePath,
+                    screenshotsPath = screenshotsPath,
                     lots = lots.Skip(currentLotIndex).Take(groupSize).ToList(),
                     targetPath = folderSelect.Text + "/",
                 };
@@ -80,6 +83,7 @@ namespace InGame.Dynamics
         public class Args
         {
             public string templatePath;
+            public string screenshotsPath;
             public List<ScreenMakerLot> lots;
             public string targetPath;
         }
