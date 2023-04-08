@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEngine;
 using UnityParser;
 using Zenject;
+using Debug = UnityEngine.Debug;
 
 namespace InGame.Dynamics
 {
@@ -40,7 +42,7 @@ namespace InGame.Dynamics
         {
             string templatePath = Application.streamingAssetsPath + "/Bridge/template.docx";
 
-            ScreenMakerLot[] lots = ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath).ToArray();
+            ScreenMakerLot[] lots = GetLots();
 
             List<Process> processes = new List<Process>();
 
@@ -78,6 +80,55 @@ namespace InGame.Dynamics
 
         protected override void OnStop()
         {
+        }
+
+        private ScreenMakerLot[] GetLots()
+        {
+            ScreenMakerLot[] lots = ExcelSerializer.LoadLots<ScreenMakerLot>(tableSelect.FilePath).ToArray();
+
+            var table = ExcelHelper.LoadExcel(Application.streamingAssetsPath + "/CianScreenshots/exceptions.xlsx");
+
+            string[] tableArray = ToArray(table.Tables[0]);
+
+            foreach (ScreenMakerLot lot in lots)
+            {
+                CalculateScreenshotName(lot, tableArray);
+            }
+
+            return lots;
+        }
+        private void CalculateScreenshotName(ScreenMakerLot lot, string[] tableArray)
+        {
+            foreach (string except in tableArray)
+            {
+                Regex regex = new Regex(except + @"\W", RegexOptions.IgnoreCase);
+
+                if (regex.IsMatch(lot.address))
+                {
+                    lot.screenshot = except;
+                    return;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(lot.metro) == false)
+            {
+                string metroName = lot.metro.Replace("ì. ", "");
+                int metroBracketIndex = metroName.IndexOf('(');
+                metroName = metroName.Substring(0, metroBracketIndex);
+
+                lot.screenshot = metroName;
+            }
+        }
+        private string[] ToArray(ExcelTable table)
+        {
+            string[] array = new string[table.NumberOfRows - 1];
+
+            for (int y = 2; y <= table.NumberOfRows; y++)
+            {
+                array[y - 2] = ((string)table.GetValue(y, 1));
+            }
+
+            return array;
         }
 
         public class Args

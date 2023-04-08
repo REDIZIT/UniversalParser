@@ -84,7 +84,7 @@ namespace UnityParser
 
 				if (matchedAttribute == null)
 				{
-					Debug.Log("No matching attribute found for: " + headerColumn);
+					Debug.LogWarning("No matching attribute found for: " + headerColumn);
 				}
 				else
 				{

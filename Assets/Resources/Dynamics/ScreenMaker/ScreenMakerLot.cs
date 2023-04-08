@@ -54,5 +54,7 @@ namespace InGame.Dynamics
 
         [ExcelString("ID")]
         public string id;
+
+        public string screenshot;
     }
 }

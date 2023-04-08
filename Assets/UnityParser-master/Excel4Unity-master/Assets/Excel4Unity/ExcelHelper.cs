@@ -5,7 +5,6 @@ using System.IO;
 
 public class ExcelHelper
 {
-
     public static Excel LoadExcel(string path)
     {
         FileInfo file = new FileInfo(path);
@@ -30,8 +29,10 @@ public class ExcelHelper
         {
             ExcelTable table = xls.Tables[i];
             ExcelWorksheet sheet = ep.Workbook.Worksheets.Add(table.TableName);
-            for (int row = 1; row <= table.NumberOfRows; row++) {
-                for (int column = 1; column <= table.NumberOfColumns; column++) {
+            for (int row = 1; row <= table.NumberOfRows; row++)
+            {
+                for (int column = 1; column <= table.NumberOfColumns; column++)
+                {
                     sheet.Cells[row, column].Value = table.GetValue(row, column);
                 }
             }

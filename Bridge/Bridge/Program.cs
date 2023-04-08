@@ -158,21 +158,19 @@ namespace Bridge
 
                     // Replace image
 
-                    if (string.IsNullOrWhiteSpace(lot.metro) == false)
+                    if (string.IsNullOrWhiteSpace(lot.screenshot) == false)
                     {
-                        string metroName = lot.metro.Replace("м. ", "");
-                        int metroBracketIndex = metroName.IndexOf('(');
-                        metroName = metroName.Substring(0, metroBracketIndex);
+                        Console.WriteLine("screenshot: " + lot.screenshot);
 
-                        Console.WriteLine("metroName: " + metroName);
-
-                        var names = Directory.GetFiles(args.screenshotsPath).Where(p => Path.GetFileName(p).StartsWith(metroName) && Path.GetExtension(p) != ".meta");
+                        var names = Directory.GetFiles(args.screenshotsPath).Where(p => Path.GetFileName(p).StartsWith(lot.screenshot) && Path.GetExtension(p) != ".meta");
                         if (names.Count() > 0)
                         {
                             Console.WriteLine("Names: " + string.Join("\n", names));
                             ReplaceImage(names.ElementAt(rnd.Next(0, names.Count() - 1)));
                         }
                     }
+
+                    // Save .docx
 
                     string docx = savePath + ".docx";
                     string pdf = savePath + ".pdf";
