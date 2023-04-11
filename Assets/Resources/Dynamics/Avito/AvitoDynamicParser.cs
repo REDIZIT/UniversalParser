@@ -3,6 +3,7 @@ using InGame.Parse;
 using InGame.Recognition;
 using RestSharp.Contrib;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Zenject;
@@ -69,8 +70,10 @@ namespace InGame.Dynamics
             // pagination-button
             browser.GoToUrl(paging.GetPagedUrl(url.Text, paging.Start));
             browser.GetDocument(doc);
-            var pageGroup = doc.DocumentNode.SelectSingleNode(".//div[@data-marker='pagination-button']");
-            var lastPage = pageGroup.ChildNodes[^2];
+
+            var lastPage = doc.DocumentNode.SelectSingleNode("//*[@id=\"app\"]/div/div[2]/div/div[2]/div[3]/div[3]/div[5]/nav/ul/li[8]");
+
+            UnityEngine.Debug.Log("Last page = " + lastPage.InnerText);
 
             return int.Parse(lastPage.InnerText);
         }
