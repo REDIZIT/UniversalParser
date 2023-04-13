@@ -71,7 +71,9 @@ namespace InGame.Dynamics
             browser.GoToUrl(paging.GetPagedUrl(url.Text, paging.Start));
             browser.GetDocument(doc);
 
-            var lastPage = doc.DocumentNode.SelectSingleNode("//*[@id=\"app\"]/div/div[2]/div/div[2]/div[3]/div[3]/div[5]/nav/ul/li[8]");
+            var list = doc.DocumentNode.SelectSingleNode(".//ul[@data-marker='pagination-button']");
+
+            var lastPage = list.ChildNodes[list.ChildNodes.Count - 2];
 
             UnityEngine.Debug.Log("Last page = " + lastPage.InnerText);
 
