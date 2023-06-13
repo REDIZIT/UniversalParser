@@ -151,9 +151,9 @@ namespace InGame.Dynamics
 
             #region Price
 
-            HtmlNode priceNode = node.SelectSingleNode(".//span[@data-marker='item-price']");
-            HtmlNode priceSpan = priceNode.SelectSingleNode(".//span");
-            lot.price = priceSpan.InnerText.Replace("&nbsp;", " ");
+            HtmlNode priceNode = node.SelectSingleNode(".//p[@data-marker='item-price']");
+            string[] priceSplit = priceNode.InnerText.Split("&nbsp;");
+            lot.price = string.Join("", priceSplit.Take(priceSplit.Length - 1));
 
             #endregion
 
