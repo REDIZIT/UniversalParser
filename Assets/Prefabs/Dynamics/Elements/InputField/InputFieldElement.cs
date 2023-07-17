@@ -11,8 +11,9 @@ namespace InGame.Dynamics
 
         public class Model : ElementModel
         {
-            public string labelText, placeholderText;
+            public string labelText, placeholderText, defaultText;
             public Action onTextChanged;
+            public bool isNumberField;
 
             /// <summary>Will be invoked on text change. Return <see langword="true"/> if new value is vaild</summary>
             public Func<string, bool> validityCheckFunc;
@@ -44,6 +45,8 @@ namespace InGame.Dynamics
         {
             label.text = model.labelText;
             placeholderText.text = model.placeholderText;
+            inputField.contentType = model.isNumberField ? InputField.ContentType.DecimalNumber : InputField.ContentType.Standard;
+            inputField.text = model.defaultText;
             CheckValidity();
         }
 

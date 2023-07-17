@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Zenject;
 
 namespace InGame.Dynamics
 {
     public class AvitoDynamicParser : DynamicParser
     {
-        private IInputField url;
+        private IInputField url, timeout;
         private IPaging paging;
         private ISelectTable table;
 
@@ -21,12 +22,13 @@ namespace InGame.Dynamics
         private HtmlDocument doc = new();
 
         [Inject]
-        private void Construct(IInputField url, IPaging paging, ISelectTable table, IBrowser browser)
+        private void Construct(IInputField url, IPaging paging, ISelectTable table, IBrowser browser, IInputField timeout)
         {
             this.url = url;
             this.paging = paging;
             this.table = table;
             this.browser = browser;
+            this.timeout = timeout;
 
             url.Setup(new()
             {
@@ -35,6 +37,13 @@ namespace InGame.Dynamics
             });
             paging.Setup(new IPaging.ArgumentModel());
             table.Setup(new());
+            timeout.Setup(new()
+            {
+                labelText = "Время (сек) между запросами",
+                placeholderText = "Время в секундах",
+                isNumberField = true,
+                defaultText = "5"
+            });
 
             BakeElements();
         }
@@ -55,6 +64,12 @@ namespace InGame.Dynamics
 
                 ParseResult<AvitoLot> result = ParsePage(paging.GetPagedUrl(url.Text, pageIndex));
                 bigResult.AddRange(result.lots);
+
+                if (int.TryParse(timeout.Text, out int seconds) && seconds > 0)
+                {
+                    status.Status = "Ожидание перед следующим запросом (" + seconds + ")";
+                    Thread.Sleep(1000 * int.Parse(timeout.Text));
+                }
             }
 
             table.SaveResult(bigResult);
