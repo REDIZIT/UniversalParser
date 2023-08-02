@@ -9,6 +9,7 @@ namespace InGame.Dynamics
     public interface IWebClient
     {
         void Download(string url, HtmlDocument documentToUpdate);
+        void DownloadFile(string url, string fileName);
     }
     public class WebClientWrapper : IWebClient
     {
@@ -32,6 +33,10 @@ namespace InGame.Dynamics
         public void Download(string url, HtmlDocument documentToUpdate)
         {
             documentToUpdate.LoadHtml(client.DownloadString(url));
+        }
+        public void DownloadFile(string url, string fileName)
+        {
+            client.DownloadFile(url, fileName);
         }
     }
 }
