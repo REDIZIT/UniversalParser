@@ -17,13 +17,13 @@ namespace InGame.Dynamics
 
             url.Setup(new()
             {
-                labelText = "Ññûëêà ñ ôèëüòðàìè",
-                placeholderText = "Ññûëêà íà cian"
+                labelText = "Ð¡ÑÑ‹Ð»ÐºÐ° Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ð¼Ð¸",
+                placeholderText = "Ð¡ÑÑ‹Ð»ÐºÐ° Ð½Ð° cian"
             });
             folder.Setup(new()
             {
-                labelText = "Âûãðóçèòü òàáëèöû â ïàïêó",
-                placeholderText = "Ïóòü äî ïàïêè",
+                labelText = "Ð’Ñ‹Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ð² Ð¿Ð°Ð¿ÐºÑƒ",
+                placeholderText = "ÐŸÑƒÑ‚ÑŒ Ð´Ð¾ Ð¿Ð°Ð¿ÐºÐ¸",
                 validityCheckFunc = (s) => Directory.Exists(s)
             });
 

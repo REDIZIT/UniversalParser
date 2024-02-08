@@ -16,23 +16,24 @@ namespace InGame.Dynamics
 
         private IOption option;
         private IInputField folder;
+        
+        private IInputField delayField, bigDelayField, bigCountField;
+        
         private WebClient c;
         private float chillTimeLeft;
 
         private readonly UrlsCreator urlsCreator = new();
-
-        /// <summary>Delay between requests (in seconds)</summary>
-        public const int DELAY_SECONDS = 1;
-        /// <summary>Count of urls to check before have a chill</summary>
-        public const int CHILL_URLS_COUNT = 100;
-        /// <summary>Chill time in seconds</summary>
-        public const int CHILL_DELAY = 30;
+        
 
         [Inject]
-        private void Construct(IOption option, IInputField folder)
+        private void Construct(IOption option, IInputField folder, IInputField delayField, IInputField bigDelayField, IInputField bigCountField)
         {
             this.option = option;
             this.folder = folder;
+            this.delayField = delayField;
+            this.bigDelayField = bigDelayField;
+            this.bigCountField = bigCountField;
+            
             c = new WebClient();
 
             if (SettingsManager.settings.isProxyEnabled)
@@ -46,22 +47,46 @@ namespace InGame.Dynamics
 
             option.Setup(new IOption.Model()
             {
-                title = "¬˚·ÂËÚÂ Ï‡ÍÂÚ ‚˚„ÛÁÍË",
+                title = "–í—ã–±–µ—Ä–∏—Ç–µ –º–∞–∫–µ—Ç –≤—ã–≥—Ä—É–∑–∫–∏",
                 items = new List<IOption.Item>()
                 {
-                    new IOption.Item() { text = "¬ÚÓË˜Í‡ (‡ÈÓÌ˚ + ÔÎÓ˘‡‰Ë)", value = UrlsCreator.Type.SaleDistrictArea },
-                    new IOption.Item() { text = "¿ÂÌ‰‡ (‡ÈÓÌ˚ + ÔÎÓ˘‡‰Ë)", value = UrlsCreator.Type.RentDistrictArea },
-                    new IOption.Item() { text = " ÓÏÌ‡Ú˚ (ÚÓÎ¸ÍÓ ‡ÈÓÌ˚)", value = UrlsCreator.Type.SaleRoomsDistrict },
-                    new IOption.Item() { text = "¿ÔÔ‡Ú‡ÏÂÌÚ˚ (ÔÎÓ˘‡‰Ë ÔÓ ÌÓ‚˚Ï Ô‡‚ËÎ‡Ï)", value = UrlsCreator.Type.SaleApartmentsSpecial },
-                    new IOption.Item() { text = "»∆— (‡ÈÓÌ˚)", value = UrlsCreator.Type.Houses },
-                    new IOption.Item() { text = "œÂ‚Ë˜Í‡ (‡ÈÓÌ˚ + ÔÎÓ˘‡‰Ë)", value = UrlsCreator.Type.FirstHands },
+                    new IOption.Item() { text = "–í—Ç–æ—Ä–∏—á–∫–∞ (—Ä–∞–π–æ–Ω—ã + –ø–ª–æ—â–∞–¥–∏)", value = UrlsCreator.Type.SaleDistrictArea },
+                    new IOption.Item() { text = "–ê—Ä–µ–Ω–¥–∞ (—Ä–∞–π–æ–Ω—ã + –ø–ª–æ—â–∞–¥–∏)", value = UrlsCreator.Type.RentDistrictArea },
+                    new IOption.Item() { text = "–ö–æ–º–Ω–∞—Ç—ã (—Ç–æ–ª—å–∫–æ —Ä–∞–π–æ–Ω—ã)", value = UrlsCreator.Type.SaleRoomsDistrict },
+                    new IOption.Item() { text = "–ê–ø–ø–∞—Ä—Ç–∞–º–µ–Ω—Ç—ã (–ø–ª–æ—â–∞–¥–∏ –ø–æ –Ω–æ–≤—ã–º –ø—Ä–∞–≤–∏–ª–∞–º)", value = UrlsCreator.Type.SaleApartmentsSpecial },
+                    new IOption.Item() { text = "–ò–ñ–° (—Ä–∞–π–æ–Ω—ã)", value = UrlsCreator.Type.Houses },
+                    new IOption.Item() { text = "–ü–µ—Ä–≤–∏—á–∫–∞ (—Ä–∞–π–æ–Ω—ã + –ø–ª–æ—â–∞–¥–∏)", value = UrlsCreator.Type.FirstHands },
                 }
             });
             folder.Setup(new()
             {
-                labelText = "¬˚„ÛÁËÚ¸ Ú‡·ÎËˆ˚ ‚ Ô‡ÔÍÛ",
-                placeholderText = "œÛÚ¸ ‰Ó Ô‡ÔÍË",
+                labelText = "–í—ã–≥—Ä—É–∑–∏—Ç—å —Ç–∞–±–ª–∏—Ü—ã –≤ –ø–∞–ø–∫—É",
+                placeholderText = "–ü—É—Ç—å –¥–æ –ø–∞–ø–∫–∏",
                 validityCheckFunc = (s) => Directory.Exists(s)
+            });
+            delayField.Setup(new()
+            {
+                labelText = "–ó–∞–¥–µ—Ä–∂–∫–∞ –º–µ–∂–¥—É –∫–∞–∂–¥—ã–º –∑–∞–ø—Ä–æ—Å–æ–º",
+                placeholderText = "–í—Ä–µ–º—è –≤ —Å–µ–∫—É–Ω–¥–∞—Ö",
+                defaultText = "1",
+                validityCheckFunc = (s) => float.TryParse(s, out float n) && n > 0, 
+                isNumberField = true
+            });
+            bigDelayField.Setup(new()
+            {
+                labelText = "–ó–∞–¥–µ—Ä–∂–∫–∞ –º–µ–∂–¥—É –∫–∞–∂–¥—ã–º –ù –∑–∞–ø—Ä–æ—Å–æ–º",
+                placeholderText = "–í—Ä–µ–º—è –≤ —Å–µ–∫—É–Ω–¥–∞—Ö",
+                defaultText = "30",
+                validityCheckFunc = (s) => float.TryParse(s, out float n) && n > 0,
+                isNumberField = true
+            });
+            bigCountField.Setup(new()
+            {
+                labelText = "–ö–æ–ª–∏—á–µ—Å—Ç–≤–æ (–ù) –∑–∞–ø—Ä–æ—Å–æ–≤ –¥–æ –∑–∞–¥–µ—Ä–∂–∫–∏ (—É–∫–∞–∑–∞–Ω–Ω–æ–≥–æ –≤—ã—à–µ)",
+                placeholderText = "–ö–æ–ª–∏—á–µ—Å—Ç–≤–æ –∑–∞–ø—Ä–æ—Å–æ–≤",
+                defaultText = "100",
+                validityCheckFunc = (s) => int.TryParse(s, out int n) && n > 0,
+                isNumberField = true
             });
 
             BakeElements();
@@ -71,18 +96,22 @@ namespace InGame.Dynamics
         {
             urls = urlsCreator.Create((UrlsCreator.Type)option.Selected.value);
 
-            HandleUrls();
+            float delay = float.Parse(delayField.Text);
+            float chillDelay = float.Parse(bigDelayField.Text);
+            int chillCount = int.Parse(bigCountField.Text);
+            
+            HandleUrls(delay, chillDelay, chillCount);
         }
 
         protected override void OnStop()
         {
             status.Status = "Stopped";
         }
-        public void HandleUrls()
+        public void HandleUrls(float delay, float chillDelay, int chillCount)
         {
             try
             {
-                status.Status = "—Í‡˜Ë‚‡ÌËÂ";
+                status.Status = "–°–∫–∞—á–∏–≤–∞–Ω–∏–µ";
                 status.Progress = "0 / " + urls.Count;
 
                 for (int i = 1; i <= urls.Count; i++)
@@ -99,25 +128,25 @@ namespace InGame.Dynamics
                         // Thrird url, with another rules: https://spb.cian.ru/cat.php?deal_type=sale&district%5B0%5D=747&engine_version=2&object_type%5B0%5D=1&offer_type=flat&room1=1&totime=864000
                         //url = url.Replace("cat.php", "export/xls/offers");
 
-                        if (i % CHILL_URLS_COUNT == 0 && i > 0)
+                        if (i % chillCount == 0 && i > 0)
                         {
-                            chillTimeLeft = CHILL_DELAY;
+                            chillTimeLeft = chillDelay;
                             while (chillTimeLeft > 0)
                             {
-                                status.Status = "œ‡ÛÁ‡ (" + (int)chillTimeLeft + "Ò)";
+                                status.Status = "–ü–∞—É–∑–∞ (" + (int)chillTimeLeft + "—Å)";
                                 Thread.Sleep(1000);
                                 chillTimeLeft--;
                             }
                         }
 
-                        status.Status = "—Í‡˜Ë‚‡ÌËÂ";
+                        status.Status = "–°–∫–∞—á–∏–≤–∞–Ω–∏–µ";
 
                         string downloadUrl = url.Replace("cat.php", "export/xls/offers/");
 
                         string targetFileName = folder.Text + "/" + (Directory.GetFiles(folder.Text).Length + 1) + ".xlsx";
                         c.DownloadFile(downloadUrl, targetFileName);
 
-                        Thread.Sleep(DELAY_SECONDS * 1250);
+                        Thread.Sleep((int)(delay * 1000));
                     }
                     catch (Exception err)
                     {
