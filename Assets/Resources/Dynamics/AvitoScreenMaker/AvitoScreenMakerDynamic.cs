@@ -27,8 +27,8 @@ namespace InGame.Dynamics
             });
             folderSelect.Setup(new IInputField.Model()
             {
-                labelText = "Ïàïêà äëÿ ñêðèíøîòîâ",
-                placeholderText = "Ïóòü äî ïàïêè",
+                labelText = "ÐŸÐ°Ð¿ÐºÐ° Ð´Ð»Ñ ÑÐºÑ€Ð¸Ð½ÑˆÐ¾Ñ‚Ð¾Ð²",
+                placeholderText = "ÐŸÑƒÑ‚ÑŒ Ð´Ð¾ Ð¿Ð°Ð¿ÐºÐ¸",
                 validityCheckFunc = (s) => Directory.Exists(s)
             });
 
@@ -41,8 +41,8 @@ namespace InGame.Dynamics
 
             browser.Open();
             browser.Maximize();
-           
-            
+
+
             string content = File.ReadAllText(templatePath);
             content = Replace(content, "title", "Example title");
             content = Replace(content, "price", "123 000");

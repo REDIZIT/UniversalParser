@@ -72,7 +72,7 @@ namespace InGame.Dynamics
             }
             catch(Exception err)
             {
-                status.Status = "<color=F28>Произлошла ошибка</color>";
+                status.Status = "<color=F28>РџСЂРѕРёР·Р»РѕС€Р»Р° РѕС€РёР±РєР°</color>";
                 status.Progress = "<size=8>" + err.Message + "</size>";
                 Debug.LogError(err);
                 Stop();

@@ -3,7 +3,7 @@ using InGame.Settings;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Collections.Generic;
-using System.IO;
+using System.Threading;
 using UnityEngine;
 
 namespace InGame.Dynamics
@@ -30,12 +30,10 @@ namespace InGame.Dynamics
                 options.AddUserProfilePreference("profile.managed_default_content_settings.images", 2);
             }
 
-            Driver = new ChromeDriver(service, options);
+            Driver = new ChromeDriverEx(service, options);
         }
         public void Close()
         {
-            Debug.Log("Yandex close");
-
             Driver?.Close();
             Driver?.Quit();
             Driver?.Dispose();
@@ -45,7 +43,6 @@ namespace InGame.Dynamics
         }
         public void GoToUrl(string url)
         {
-            Debug.Log("GoToUrl " + url);
             Driver.Navigate().GoToUrl(url);
         }
         public void GetDocument(HtmlDocument documentToUpdate)
@@ -58,10 +55,19 @@ namespace InGame.Dynamics
         {
             Driver.Manage().Window.Maximize();
         }
+
         public void Screenshot()
         {
             var screenshot = ((ChromeDriver)Driver).GetScreenshot();
             screenshot.SaveAsFile("C:\\Users\\REDIZIT\\Desktop\\1\\123.png", ScreenshotImageFormat.Png);
+        }
+
+        public void ScreenshotFullPage(string filepath)
+        {
+            var driver = (ChromeDriverEx) Driver;
+
+            var screenshot = driver.GetFullPageScreenshot();
+            screenshot.SaveAsFile(filepath, ScreenshotImageFormat.Png);
         }
     }
 }
