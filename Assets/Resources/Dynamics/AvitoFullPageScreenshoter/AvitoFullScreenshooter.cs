@@ -1,5 +1,9 @@
 using System.IO;
 using System.Threading;
+using Bridge;
+using UnityEngine;
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 using Zenject;
 
 namespace InGame.Dynamics
@@ -74,7 +78,17 @@ namespace InGame.Dynamics
                 Thread.Sleep(delay * 1000);
 
                 status.Status = "Делаю скриншот";
-                yandex.ScreenshotFullPage(screenshotsFolder.Text + "/" + lotID + ".png");
+                string filename = screenshotsFolder.Text + "/" + lotID;
+                yandex.ScreenshotFullPage( filename + ".png");
+
+
+                var proc = Bridge.Invoke(Args.Command.ImageAndUrlToPDF, new ImageAndUrlToPDFModel()
+                {
+                    imagePath = filename + ".png",
+                    url = url,
+                    pdfPath = filename + ".pdf"
+                });
+                proc.WaitForExit();
             }
         }
 

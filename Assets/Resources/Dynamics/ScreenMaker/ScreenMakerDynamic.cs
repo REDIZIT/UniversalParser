@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Bridge;
 using UnityEngine;
 using UnityParser;
 using Zenject;
@@ -30,8 +31,8 @@ namespace InGame.Dynamics
             });
             folderSelect.Setup(new IInputField.Model()
             {
-                labelText = "Êóäà ñîõðàíÿòü pdf ôàéëû",
-                placeholderText = "Ïóòü äî ïàïêè",
+                labelText = "ÐšÑƒÐ´Ð° ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÑ‚ÑŒ pdf Ñ„Ð°Ð¹Ð»Ñ‹",
+                placeholderText = "ÐŸÑƒÑ‚ÑŒ Ð´Ð¾ Ð¿Ð°Ð¿ÐºÐ¸",
                 validityCheckFunc = (s) => Directory.Exists(s)
             });
 
@@ -53,21 +54,16 @@ namespace InGame.Dynamics
 
             while (currentLotIndex < lots.Length)
             {
-                ProcessStartInfo info = new(Application.streamingAssetsPath + "/Bridge/Debug/net6.0/Bridge.exe");
-
-                Args args = new Args()
+                Process proc = Bridge.Invoke(Args.Command.ScreenMaker, new ScreenMakerArgs()
                 {
                     templatePath = templatePath,
                     screenshotsPath = screenshotsPath,
                     lots = lots.Skip(currentLotIndex).Take(groupSize).ToList(),
                     targetPath = folderSelect.Text + "/",
-                };
+                });
 
                 currentLotIndex += groupSize;
 
-                info.Arguments = '"' + HttpUtility.HtmlEncode(JsonConvert.SerializeObject(args)) + '"';
-
-                var proc = Process.Start(info);
                 processes.Add(proc);
 
                 while(processes.Count >= 10 && processes.All(p => p.HasExited == false))
@@ -112,7 +108,7 @@ namespace InGame.Dynamics
 
             if (string.IsNullOrWhiteSpace(lot.metro) == false)
             {
-                string metroName = lot.metro.Replace("ì. ", "");
+                string metroName = lot.metro.Replace("Ð¼. ", "");
                 int metroBracketIndex = metroName.IndexOf('(');
                 metroName = metroName.Substring(0, metroBracketIndex);
 
@@ -129,14 +125,6 @@ namespace InGame.Dynamics
             }
 
             return array;
-        }
-
-        public class Args
-        {
-            public string templatePath;
-            public string screenshotsPath;
-            public List<ScreenMakerLot> lots;
-            public string targetPath;
         }
     }
 }
