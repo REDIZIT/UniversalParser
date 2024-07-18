@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Bridge;
 using UnityEngine;
@@ -68,7 +69,8 @@ namespace InGame.Dynamics
 
                 string url = table.GetCell(1 + i, 1).Value;
 
-                string[] split = url.Split("_");
+                string[] split = url.Split("/").Last().Split("_");
+
                 string lotID = split[split.Length - 1];
 
                 status.Status = "Скачиваю страницу";
