@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 using System.Web;
 using Newtonsoft.Json.Linq;
@@ -88,9 +87,9 @@ namespace Bridge
             Console.WriteLine("[ Universal Parser Bridge ]");
             Console.WriteLine("");
             Console.WriteLine("This console app has been created only for one purpose - use C# not in Unity bounds, but in native windows space");
-            Console.WriteLine("To use this app Unity-side should start Bridge.exe with json serialized (with type serialization) argument.");
+            Console.WriteLine("To use this app, Unity-side should start Bridge.exe with json serialized (with type serialization) argument.");
             Console.WriteLine("");
-            Console.WriteLine("Failed to define instructions");
+            Console.WriteLine("Failed to define the instructions");
         }
     }
 }

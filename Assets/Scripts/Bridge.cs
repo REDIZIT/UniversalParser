@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization.Formatters;
 using Bridge;
@@ -22,6 +23,7 @@ namespace Bridge
             ScreenMaker,
             WordToPDF,
             ImageAndUrlToPDF,
+            Ping
         }
     }
     public class ScreenMakerArgs
@@ -44,6 +46,18 @@ namespace InGame
 {
     public static class Bridge
     {
+        public static void Initialize()
+        {
+            try
+            {
+
+            }
+            catch (Exception err)
+            {
+                Debug.LogError("Bridge initialization failed. See details in another error message.");
+                Debug.LogException(err);
+            }
+        }
         public static Process Invoke(Args.Command command, object model)
         {
             ProcessStartInfo info = new(Pathes.bridgeExe);

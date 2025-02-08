@@ -10,6 +10,7 @@ namespace InGame.Dynamics.UI
         public override void InstallBindings()
         {
             Pathes.Initialize();
+            Bridge.Initialize();
 
             Container.Bind<UIHelperPort>().AsSingle();
             Container.BindInstance(themes).AsSingle();
